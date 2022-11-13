@@ -19,3 +19,23 @@ So this is a game I'm working on where the player manages the equipment of sever
 
 1047 a very small amount of reading suggests that I may as well just go with svelte. If this is entirely the wrong direction, so be it. 
 
+1052 it uses a tool called Vite, which I don't know. I might end up stripping that out eventually. I have some okay tooling already.
+
+1054 oh except it's basically all sveltekit tooling. Okay, fine. I don't really want typescript though. I just prefer classic flavour is all. So I'll work on stripping that sort of stuff out as I see it.
+
+1104 mostly what I want to be doing is migrating stuff in. I want this repo to be the one gettingn deployed so I don't want to get to indulgent with cleaning things up. It will be as gross as it is now and then get better over time.
+
+1217 I do not like this. I have been afk but so the problem I am having is that there isn't a `$lib` alias for imports to get me to like a base directory without having to do relative filesystem style imports (`../../../../`). There is a jsconfig.json file to which I have added 
+
+```
+    "baseUrl": ".",
+    "paths": {
+        "$lib": ["src/lib"],
+        "$lib/*": ["src/lib/*"]
+    }
+```
+
+which is how it was done in the last project but that is not having any affect. 
+
+1220 barl. I might just throw this away and straight up copy the old directory over. I mean fuck it right? 
+
