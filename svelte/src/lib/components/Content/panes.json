@@ -1,0 +1,78 @@
+[
+    { 
+        "icon": "❓",
+        "label": "About",
+        "idx": 0
+    },
+    { 
+        "icon": "🎒",
+        "label": "Backpack"
+    },
+    { 
+        "icon": "🏬",
+        "label": "Equipment Vendor",
+        "idx": 2
+    },
+    { 
+        "icon": "👤",
+        "label": "Character",
+        "idx": 3
+    },
+    { 
+        "icon": "🏦",
+        "label": "Chest",
+        "idx": 4
+    },
+    { 
+        "icon": "🏪",
+        "label": "Consumables Vendor",
+        "idx": 5
+    },
+    { 
+        "icon": "💰",
+        "label": "Currency",
+        "idx": 6
+    },
+    {
+        "icon": "📜",
+        "label": "Log",
+        "idx": 7
+    },
+    { 
+        "icon": "🧍",
+        "label": "Mannequin",
+        "idx": 8
+    },
+    {
+        "icon": "🗺",
+        "label": "Map",
+        "idx": 9
+    },
+    {
+        "icon": "🧭",
+        "label": "Navigation",
+        "idx": 10
+    },
+    { 
+        "icon": "⚙️",
+        "label": "Options"
+    },
+    { 
+        "icon": "🧍",
+        "label": "Paperdoll",
+        "idx": 12
+    },
+    { 
+        "icon": "👥",
+        "label": "Party",
+        "idx": 13
+    },
+    { 
+        "icon": "⏫",
+        "label": "Return to Main"
+    },
+    { 
+        "icon": "📗",
+        "label": "Tile"
+    }
+]

@@ -1,0 +1,1 @@
+<text x="8" y="20" font-size="10">Default</text>

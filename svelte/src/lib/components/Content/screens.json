@@ -1,0 +1,117 @@
+[
+    {
+        "panes": {
+            "top": [
+                {
+                    "icon": "🗺",
+                    "label": "Map"
+                }
+            ],
+            "bottom": [
+                {
+                    "icon": "📜",
+                    "label": "Log"
+                },
+                { 
+                    "icon": "📗",
+                    "label": "Tile"
+                },
+                { 
+                    "icon": "👥",
+                    "label": "Party"
+                }
+            ]
+        },
+        "icon": "A",
+        "id": "ADVENTURE",
+        "label": "Adventure"
+    },
+    {
+        "panes": {
+            "bottom": [
+                { 
+                    "icon": "❓",
+                    "label": "About"
+                },
+                { 
+                    "icon": "⚙️",
+                    "label": "Options"
+                },
+                { 
+                    "icon": "⏫",
+                    "label": "Return to Main"
+                }
+            ],
+            "top": [
+                { 
+                    "icon": "👤",
+                    "label": "Character"
+                },
+                { 
+                    "icon": "📗",
+                    "label": "Tile"
+                },
+                { 
+                    "icon": "👥",
+                    "label": "Party"
+                }
+            ]
+        },
+        "icon": "D",
+        "id": "DETAIL",
+        "label": "Detail",
+        "visible": false
+    },
+    {
+        "panes": {
+            "bottom": [
+                { 
+                    "icon": "🏦",
+                    "label": "Chest",
+                    "visible": true
+                },
+                { 
+                    "icon": "🔨",
+                    "label": "Blacksmith",
+                    "visible": false
+                },
+                { 
+                    "icon": "🕯",
+                    "label": "Inn",
+                    "visible": false
+                },
+                { 
+                    "icon": "⛑",
+                    "label": "Healer",
+                    "visible": false
+                },
+                { 
+                    "icon": "e",
+                    "label": "Eee",
+                    "visible": false
+                }
+            ],
+            "top": [
+                { 
+                    "icon": "🧍",
+                    "label": "Paperdoll",
+                    "visible": false
+                },
+                { 
+                    "icon": "🎒",
+                    "label": "Backpack",
+                    "visible": true
+                },
+                { 
+                    "icon": "🏦",
+                    "label": "Chest",
+                    "visible": true
+                }
+            ]
+        },
+        "icon": "T",
+        "id": "TRADE",
+        "label": "Trade",
+        "visible": true
+    }
+]

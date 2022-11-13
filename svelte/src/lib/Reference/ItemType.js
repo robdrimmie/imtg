@@ -1,0 +1,11 @@
+export default class ItemType {
+	static BACKPACKS = "ITEM_TYPE_BACKPACKS"
+	static BOOTS = "ITEM_TYPE_BOOTS"
+	static FOOD = "ITEM_TYPE_FOOD"
+	static HATS = "ITEM_TYPE_HATS"
+	static ITEM = "ITEM_TYPE_ITEM"
+	static POTIONS = "ITEM_TYPE_POTIONS"
+	static TORSOS = "ITEM_TYPE_TORSOS"
+	static WAISTS = "ITEM_TYPE_WAISTS"
+	static WEAPONS = "ITEM_TYPE_WEAPONS"
+}
