@@ -50,3 +50,49 @@ which is how it was done in the last project but that is not having any affect.
 1257 I'll have to start populating the wiki with some stuff too, and issues, and there's good tooling to help out with.
 
 1258 I'm going to rename this file to plan.md and then migrate over the 'current targets' doc as 'project.md'. Because I can.
+
+1307 okay, just pushed up the source for the first time. momentous! but not really. I suppose I could put instructions on how to build and run it locally eventually but anyway, the first step is to get back into the flow of developing, make some history. Git history.
+
+dishes first though.
+
+20221115 1001 So basically right now the goal is to get something fun happening. I think there is stuff of interest happening but almost none of that is exposed yet. If I think about playing the game from the start, the absolute thrashing that happens to every party on turn 3 or 4 or thereabouts is .. probably detrimental?
+
+Oh and probably parties should be able to flee from combat, or at least try. Eventually.
+
+1007 But so like that suggests that what I perhaps should do is up the number of characters. Try with three, perhaps? That should find all the many, many flaws in how this is all being done. 
+
+1010 I am very confused right now. I am making changes and they are not being reflected.
+
+1019 okay, I think that was the wrong terminal window or something. anyway, killed them all and now I am back and my changes are being reflected.
+
+and three characters are visible in the party pane so that's good.
+
+1020 trap projectiles all seem to reduce health by -0 which is not enough.
+
+1020 okay the party won the first fight with 9/9/5 health and they got like three or four items including a torso. that's like, way too much and not nearly enough damage done to them.
+
+So more enemy or less starting health? 10 hitpoints does seem like a lot. 
+
+1023 it's locked to 10 for all three. Could make them functions of endurance? 
+
+health: endurance and brawn and conscentiousness?
+energy: also a physical resource. hmm. conscientousness and endurance and neuroticism? high neuroticism is a form of high energy?
+
+satiety doesn't really come from anything, it is just an economy thing basically. a sink for currency if players need to buy lots of food or whatever. 
+
+1026 going to start with making them 10% of brawn and endurance for now. 
+
+20221116 1135 this version of the interface is so much better than previous attempts but it is still deeply flawed. I'm hopeful that sorting out what interactions I want will help me get closer. It's very clunky, flipping and toggling between views but it is in the right general neighbourhood in terms of updating the character's gear. 
+
+I didn't do much yesterday, I'm off work yesterday and today with a cold and likely will not do much today. but when I flip over to the tab to think about it, that's something that comes to mind fast. 
+
+Being pragmatic, the work to do is really about getting different characters working and so the next task should be to update selected character.
+
+So I want to put a method onto SpreadLayout probably and learn how to do dispatched stuff again, that's a lot better than passing things down through layers of components. Javascript events bubble up and this feels much more like that. 
+
+1141 I'm not entirely certain that event dispatching works how I think/hope it does but I guess I shall find out. 
+
+1204 okay so it still necessary to mark the event so it can be bubbled up, but bubbling it up to SpreadLayout works. Character Detail changes, paperdoll does not.
+
+Probably just need to find `$characters[0]` to do clean up
+1204 5 results including that on, not bad. Mannequin and Paperdoll both do it. 

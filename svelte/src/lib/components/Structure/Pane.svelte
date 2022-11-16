@@ -101,7 +101,9 @@
 {/if}
 
 {#if pane.label ==="Party"}
-    <Party />
+    <Party 
+        on:selectEntity
+    />
 {/if}
 
 {#if pane.label ==="Return to Main"}

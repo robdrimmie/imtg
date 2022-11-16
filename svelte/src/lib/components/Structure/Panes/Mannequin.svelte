@@ -9,15 +9,12 @@
 
 	import Transfer from '$lib/Utilities/Transfer.js'
 
-	import { characters } from '$lib/stores'
+	import { characters, selected } from '$lib/stores'
 
-    // $: let paperdoll
-	$: paperdoll = $characters[0].paperdoll
-
-	const characterIndex = 0
+	$: mannequin = $characters[$selected.character].paperdoll
 </script>
 
-{#if paperdoll?.slots}
+{#if mannequin?.slots}
 	<div class="doll">
 		<div class="cell topleftplaceholder">
 		</div>
@@ -25,7 +22,7 @@
 		<div class="cell head">
 			<Receptacle 
 				{flit}
-				items={[paperdoll.slots[Paperdoll.DOLL_SLOT_HEAD]]}
+				items={[mannequin.slots[Paperdoll.DOLL_SLOT_HEAD]]}
 				position={Positions.PAPERDOLL_HEAD}
 			/>
 		</div>
@@ -33,7 +30,7 @@
 		<div class="cell backpack">
 			<Receptacle 
 				{flit}
-				items={[paperdoll.slots[Paperdoll.DOLL_SLOT_BACK]]}
+				items={[mannequin.slots[Paperdoll.DOLL_SLOT_BACK]]}
 				position={Positions.PAPERDOLL_BACK}
 			/>
 		</div>
@@ -41,7 +38,7 @@
 		<div class="cell righthand">
 			<Receptacle 
 				{flit}
-				items={[paperdoll.slots[Paperdoll.DOLL_SLOT_HAND_RIGHT]]}
+				items={[mannequin.slots[Paperdoll.DOLL_SLOT_HAND_RIGHT]]}
 				position={Positions.PAPERDOLL_HAND_RIGHT}
 			/>
 		</div>
@@ -49,7 +46,7 @@
 		<div class="cell torso">
 			<Receptacle 
 				{flit}
-				items={[paperdoll.slots[Paperdoll.DOLL_SLOT_TORSO]]}
+				items={[mannequin.slots[Paperdoll.DOLL_SLOT_TORSO]]}
 				position={Positions.PAPERDOLL_TORSO}
 			/>
 		</div>
@@ -57,7 +54,7 @@
 		<div class="cell lefthand">
 			<Receptacle 
 				{flit}
-				items={[paperdoll.slots[Paperdoll.DOLL_SLOT_HAND_LEFT]]}
+				items={[mannequin.slots[Paperdoll.DOLL_SLOT_HAND_LEFT]]}
 				position={Positions.PAPERDOLL_HAND_LEFT}
 			/>
 		</div>
@@ -65,7 +62,7 @@
 		<div class="cell waist">
 			<Receptacle 
 				{flit}
-				items={[paperdoll.slots[Paperdoll.DOLL_SLOT_WAIST]]}
+				items={[mannequin.slots[Paperdoll.DOLL_SLOT_WAIST]]}
 				position={Positions.PAPERDOLL_WAIST}
 			/>
 		</div>
@@ -73,7 +70,7 @@
 		<div class="cell legs">
 			<Receptacle 
 				{flit}
-				items={[paperdoll.slots[Paperdoll.DOLL_SLOT_LEGS]]}
+				items={[mannequin.slots[Paperdoll.DOLL_SLOT_LEGS]]}
 				position={Positions.PAPERDOLL_LEGS}
 			/>
 		</div>

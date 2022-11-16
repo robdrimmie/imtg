@@ -17,4 +17,4 @@ There are many systems implemented and interactions between them, but they are a
 I have hopes for this. Very high among them the hope that other people find it, and eventually find it interesting as well.
 
 ## Contributing
-I'm not quite ready for contributions at this time, especially since this README is going to be the very first commit with no code or anything. 
+I'm not ready to accept contributions at this time. Someday!

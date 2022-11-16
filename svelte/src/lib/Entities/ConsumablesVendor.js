@@ -13,7 +13,7 @@ export default class ConsumablesVendor {
     }
 
     progress() {
-        console.log("consumables vendor progressing")
+        // console.log("consumables vendor progressing")
         return this
     }
 }

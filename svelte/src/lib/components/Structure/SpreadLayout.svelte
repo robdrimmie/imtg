@@ -300,7 +300,16 @@
 	const navigate = (e, details) => {
 		screenIsAdventure = !screenIsAdventure
 	}
-	// #endregion Screen, Pane and Navigation behaviours
+
+	const selectEntity = (e) => {
+		if(e.detail.character) {
+			let character = $characters.findIndex(char => {
+				return char.id === e.detail.character
+			})
+			
+			$selected.character = character > -1 ? character : $selected.character		
+		}
+	}
 
 	const topHeight = "60vh"
 	const navHeight = "7vh"
@@ -375,6 +384,7 @@
 						{flit}
 						height={botHeight}
 						pane={panes[13]}
+						on:selectEntity={selectEntity}
 					/>
 				</div>
 
@@ -399,6 +409,7 @@
 						{flit}
 						height={botHeight}
 						pane={panes[13]}
+						on:selectEntity={selectEntity}
 					/>
 				</div>
 

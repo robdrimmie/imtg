@@ -102,4 +102,4 @@ that is interesting.
 
 
 ## notes and such (reverse chrono)
-As work in the secions above gets completed, I archive it down here. This is not a _good_ system, but it is _a_ system. Eventually this should all be migrated into issues or the project tooling or whatever. 
+As work in the sections above gets completed, I archive it down here. This is not a _good_ system, but it is _a_ system. Eventually this should all be migrated into issues or the project tooling or whatever. 

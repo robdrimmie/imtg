@@ -7,30 +7,28 @@
     $: icon = item.attribute ? Attributes.icons[item.attribute] : ''
     $: name = item.name
 
-    let effectivenessIcon
-    switch (item.effectiveness) {
-        case Modifiers.EFFECTIVENESS_VERY_LOW:
-            effectivenessIcon = Modifiers.EFFECTIVENESS_VERY_LOW_ICON
-            break;
+    $: effectivenessIcon = setEffectivenessIcon(item.effectiveness)
 
-        case Modifiers.EFFECTIVENESS_LOW:
-            effectivenessIcon = Modifiers.EFFECTIVENESS_LOW_ICON
-            break;
+    const setEffectivenessIcon = (effectiveness) => {
+        switch (effectiveness) {
+            case Modifiers.EFFECTIVENESS_VERY_LOW:
+                return Modifiers.EFFECTIVENESS_VERY_LOW_ICON
 
-        case Modifiers.EFFECTIVENESS_MIDDLE:
-            effectivenessIcon = Modifiers.EFFECTIVENESS_MIDDLE_ICON
-            break;
+            case Modifiers.EFFECTIVENESS_LOW:
+                return Modifiers.EFFECTIVENESS_LOW_ICON
 
-        case Modifiers.EFFECTIVENESS_HIGH:
-            effectivenessIcon = Modifiers.EFFECTIVENESS_HIGH_ICON
-            break;
+            case Modifiers.EFFECTIVENESS_MIDDLE:
+                return  Modifiers.EFFECTIVENESS_MIDDLE_ICON
 
-        case Modifiers.EFFECTIVENESS_VERY_HIGH:
-            effectivenessIcon = Modifiers.EFFECTIVENESS_VERY_HIGH_ICON
-            break;
+            case Modifiers.EFFECTIVENESS_HIGH:
+                return Modifiers.EFFECTIVENESS_HIGH_ICON
 
-        default:
-            effectivenessIcon = Modifiers.EFFECTIVENESS_VERY_LOW_ICON
+            case Modifiers.EFFECTIVENESS_VERY_HIGH:
+                return Modifiers.EFFECTIVENESS_VERY_HIGH_ICON
+
+            default:
+                return Modifiers.EFFECTIVENESS_VERY_LOW_ICON
+        }
     }
 
     let xcreaseIcon = item.increase ? Modifiers.INCREASE_ICON : Modifiers.DECREASE_ICON

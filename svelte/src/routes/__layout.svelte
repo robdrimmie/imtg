@@ -26,7 +26,7 @@
 	import QuestItems from '$lib/Decks/QuestItems'
 
 	// rmd todo get this from an environment variable or config file or something
-	const isDev = false
+	const isDev = true
 
 	// setup initial game state.
 	function start(key, seed) {
@@ -38,7 +38,11 @@
 		});
 
 		// Create starting characters
-		$characters = [new Character({ startingGear: true })];
+		$characters = [
+			new Character({ startingGear: true }),
+			new Character({ startingGear: true }),
+			new Character({ startingGear: true }),
+		];
 
 		// Allocate Win Condition Items
 		// just one for now
@@ -57,6 +61,7 @@
 		$characters.forEach((value) => {
 			members = [...members, value.id];
 		});
+
 		$parties = [new Party({ members })];
 
 		// Start the log
@@ -145,7 +150,7 @@
 		$equipablesVendors.forEach( (ev, idx) => {
 			$equipablesVendors[idx] = ev.progress()
 		})
-		console.log("evs", $equipablesVendors)
+
 		$equipablesVendors = [...$equipablesVendors]
 		$consumablesVendors = [...$consumablesVendors]
 		$consumablesVendors.forEach( (cv, idx) => {

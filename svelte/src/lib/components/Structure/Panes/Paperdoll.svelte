@@ -7,11 +7,9 @@
 	import Positions from '$lib/Reference/Positions.js'
     import Receptacle from '$lib/components/Structure/Receptacle.svelte'
 
-	import { characters } from '$lib/stores'
-
-	$: paperdoll = $characters[0].paperdoll
-
-	const characterIndex = 0
+	import { characters, selected } from '$lib/stores'
+	
+	$: paperdoll = $characters[$selected.character].paperdoll
 
 	flit = () => {console.info("Paperdoll does not support flitting")}
 </script>

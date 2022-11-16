@@ -1,4 +1,5 @@
 <script>
+	// rmd todo delete old class?
 	import CharacterHighlights from '$lib/components/Content/CharacterHighlights.svelte';
 
 	import { characters, parties, moves } from '$lib/stores.js';
@@ -17,7 +18,6 @@
 						<li>
 							<CharacterHighlights
 								character={$characters.find((character) => character.id === memberId)}
-								on:characterSelected
 							/>
 						</li>
 					{/each}

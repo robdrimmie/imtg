@@ -18,7 +18,7 @@ export default class Names {
 				} else {
 					const lettersInSyllable = Dice.d4();
 					for (let letterIndex = 0; letterIndex < lettersInSyllable; letterIndex++) {
-						syllable += String.fromCharCode(Dice.roll(26) + 97); // start at lower case "a" ASCII value
+						syllable += String.fromCharCode(Dice.roll(26) + 96); // roll is 1-26, lower case "a" is 97
 					}
 				}
 

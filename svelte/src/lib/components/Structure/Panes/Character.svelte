@@ -1,15 +1,13 @@
 <script>
     import CharacterDetails from '$lib/components/Content/CharacterDetails.svelte'
-    import { characters } from '$lib/stores.js'
+    import { characters, selected } from '$lib/stores.js'
 
-    $: character = $characters[0]
+    $: character = $characters[$selected.character]
 
     $: () => {
         console.log(character.job)
     }
 </script>
-
-<!-- <CharacterDetails character={$characters[0]} /> -->
 
 <div class="character">
     <div class="name">

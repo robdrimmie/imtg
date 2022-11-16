@@ -8,9 +8,8 @@
 	const dispatch = createEventDispatcher();
 
 	const characterSelected = () => {
-		console.error("probably nothing listening to this dispatch")
-		dispatch('characterSelected', {
-			id: character.id
+		dispatch('selectEntity', {
+			character: character.id
 		});
 	}
 </script>

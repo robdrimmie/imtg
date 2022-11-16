@@ -48,9 +48,8 @@ export default class EquipablesVendor {
         return null
     }
 
-
     progress() {
-        console.log("equipables vendor progressing")
+        // console.log("equipables vendor progressing")
         // what slot can hold the most expensive thing we can build
         const slotIndex = this.slotForMatCount(this.equipablesMaterials)
 

@@ -2,8 +2,6 @@
     import {characters, parties, started } from '$lib/stores.js';
 
     import CharacterHighlights from '$lib/components/Content/CharacterHighlights.svelte'
-console.log($parties)
-console.log($characters)
 
     const found = {}
     const characterForId = (id) => {
@@ -12,7 +10,7 @@ console.log($characters)
         } 
 
         return found[id]
-    }
+    }  
 </script>
 
 <div class="parties">
@@ -24,6 +22,7 @@ console.log($characters)
                 <div>
                     <CharacterHighlights
                         character={characterForId(memberId)}
+                        on:selectEntity
                     />
                 </div>
             {/each}

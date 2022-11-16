@@ -55,7 +55,6 @@ export default class Character {
 
 		this.name = props.name ? props.name : Names.character();
 
-		this.resources = props.resources ? props.resources : this.startingResources();
 		this.currency = props.currency ? props.currency : this.job.startingCurrency();
 
 		const originTile = Tile.origin();
@@ -75,8 +74,10 @@ export default class Character {
 
 		this.physicality = props.physicality ? props.physicality : this.startingPhysicality();
 
-		this.currentTile = props.currentTile ? props.currentTile : originTile;
+		this.resources = props.resources ? props.resources : this.startingResources();
 
+		this.currentTile = props.currentTile ? props.currentTile : originTile;
+	
 		if (props.tileRelationships) {
 			this.tileRelationships = props.tileRelationships;
 		} else {
@@ -122,9 +123,9 @@ export default class Character {
 	startingResources() {
 		const resources = [];
 
-		resources[Attributes.RESOURCES_ENERGY] = 10;
-		resources[Attributes.RESOURCES_HEALTH] = 10;
-		resources[Attributes.RESOURCES_SATIETY] = 10;
+		resources[Attributes.RESOURCES_ENERGY] = Math.ceil(this.getCurrentEndurance() * .1)
+		resources[Attributes.RESOURCES_HEALTH] = Math.ceil(this.getCurrentBrawn() * .1)
+		resources[Attributes.RESOURCES_SATIETY] = 5
 
 		return Character.generateResources(resources);
 	}
@@ -209,7 +210,7 @@ export default class Character {
 		// 	(attribute.base * modifier) - attribute.base
 		// )
 
-		const attributeDelta = (attribute.base * modifier) - attribute.base
+		const attributeDelta = Math.round((attribute.base * modifier) - attribute.base)
 
 		const apparentAttribute = new Attributes(attribute.name, attribute.base, attribute.label)
 	// console.log(" ---- ", attribute.current, attributeDelta)
@@ -246,7 +247,7 @@ export default class Character {
 	}
 
 	getHealth() {
-		// console.log("CHARACTER GETHEALTH CALLED")
+		// console.log("CHARACTER GETHEALTH CALLED", this.getAttribute(Attributes.RESOURCES_HEALTH))
 		return this.getAttribute(Attributes.RESOURCES_HEALTH)
 	}
 
