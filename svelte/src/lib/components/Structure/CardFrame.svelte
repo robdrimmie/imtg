@@ -4,7 +4,7 @@
     import Attributes from '$lib/Attributes.js'
 	import Modifiers from '$lib/Modifiers.js'
 
-    $: icon = item.attribute ? Attributes.icons[item.attribute] : ''
+    $: icon = Attributes.icons[item.attribute]
     $: name = item.name
 
     $: effectivenessIcon = setEffectivenessIcon(item.effectiveness)

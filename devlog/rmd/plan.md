@@ -96,3 +96,6 @@ So I want to put a method onto SpreadLayout probably and learn how to do dispatc
 
 Probably just need to find `$characters[0]` to do clean up
 1204 5 results including that on, not bad. Mannequin and Paperdoll both do it. 
+
+1308 looks okay with initial behaviours. oh I haven't tried moving a lot of items between characters.
+

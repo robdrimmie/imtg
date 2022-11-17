@@ -192,7 +192,7 @@ class Job {
 	// Jobs can override this, healers might want to do something different although 
 	// it sort of seemed like it worked okay in a recent run through
 	resolveSuccessfulHit(actor, target) {
-		const actorWeapon = actor.paperdoll.slots[Paperdoll.DOLL_SLOT_HAND_LEFT];
+		const actorWeapon = actor.paperdoll.slots[Paperdoll.DOLL_SLOT_HAND_RIGHT];
 
 		// console.log("resolveSuccessfulHit - actor, target, actorWeapon", actor, target, actorWeapon)
 		// console.log("target currentHealth before: ", target.getCurrentHealth())
