@@ -99,5 +99,5 @@ it('it works', async () => {
 	const character = new Character(props);
 	// console.log("character", character)
 
-	expect(character.name).toBe('R{rhp Iri Gbrtqpm Cmscft{{v');
+	expect(character.name).toBe('Qzqgo Hqh Faqspol Blrbeszzu');
 });

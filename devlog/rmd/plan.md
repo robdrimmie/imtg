@@ -99,3 +99,148 @@ Probably just need to find `$characters[0]` to do clean up
 
 1308 looks okay with initial behaviours. oh I haven't tried moving a lot of items between characters.
 
+20221119 0813 I still have not tried that. I guess try that. 
+0814 works fine. 
+
+caught up still on the not-there-yet-ness of the interface. but it is enough for now. 
+
+0815 so think first play experience some more, that's the path to un-clunk the interface. The first combat scenario is not engaging. Is it the way the log is presented? No not really.
+
+there's also no point to the party doing anything right now. there's no goal in the game, how does the player know what the party is trying to do to make sure things are in line and see their impact? that is info that should go in the party pane but I don't know how to represent that. 
+
+I guess when the party makes decisions about their goals they can be shown there. it may or may not be of interest? is there a way to make visible the notion of equipping a pair of resist poison boots makes tiles with poison more attractive? probably! 
+
+0818 but for now I want to think about that first combat. 
+
+In the ideal case a party of characters with basic starting equipment - a weapon and a piece of armour - should _just_ win the fight. So close that in some number of scenarios they should lose. a very small number, like 5%? something like that. That level of detail of balancing will need to come sometime later when there's a lot more implemented systems so for now I just want to make it hard.
+
+The early stages of the game probably should include some amount of fiddliness, shouldn't it? I'm not super sure. 
+
+I want relatively quickly for the player to be able to buy something from a vendor and equip it. or even just find stuff. but it means they have to come back to town relatively quickly so the inventory can be managed. 
+
+I like that the contents of the bags are opaque until they get unloaded. That is kind of neat. 
+
+So the party should win the first fight and want to go back to town fast. The party should also empty their bags every time they get into town (and eventually equip what is in the mannequins but there's still no distinction there mechanically, so that can wait a bit probably but I'm kind of talking myself into doing it this shouldn't be a parenthetical anymore)
+
+0823 I do want to do that but not quite yet. Soon probably but first get them doing the fight and going back to town. 
+
+So let's walk through the process and decision making flow of the first few turns.
+
+move to tile -101
+move to tile 0-11
+move to tile 000
+move to tile -101
+rest - recover satiety
+rest - recover energy
+adventure - trap! everything is dodged
+adventure - combat! 60 actions for 3 characters and 3 mobs. 
+ - health: 0 1 0 so two chars die
+
+Okay so that's a solid point to start from. There's that weird loop at the top. Ideally party will go to a tile and adventure there. So why don't they?
+
+0829 okay so oddity right away, `scoredActionsAndTiles` is an important object in this process which I suppose is worth writing out in like the wiki or something? I'm feeling reluctant to bind myself to github but for this to be a community project some amount of adoption of a toolset is necessary.
+
+pills time
+
+0855 so where was I? oh yes, the scores make sense - >1 adv, <1 rest, <1 vend. the tiles though, there's a duplicate
+
+```
+Party progress - scoredActionsAndTiles 
+Object { adventure: {…}, rest: {…}, vend: {…} }
+​
+adventure: Object { score: 1.3310000000000004, tiles: (2) […] }
+​​
+score: 1.3310000000000004
+​​
+tiles: Array [ {…}, {…} ]
+​​​
+0: Object { environment: {…}, color: "green", id: "-101", … }
+​​​
+1: Object { environment: {…}, color: "green", id: "-101", … }
+​​​
+length: 2
+​​​
+<prototype>: Array []
+​​
+<prototype>: Object { … }
+​
+rest: Object { score: 0.7290000000000001, tiles: (6) […] }
+​
+vend: Object { score: 0.4000000000000001, tiles: (3) […] }
+​
+<prototype>: Object { … }
+Party.js:47:11
+```
+
+so the tile gets duplicated. so that's something to look into. also maybe now that the tests seem stable (there's was a cyclical reference bug in them for a long time) I can wrap some around these bits of logic. 
+
+0859 as I setup the party spec I realize that the notion of passing rolls won't work as I hoped probably. Well, not as broadly. Because creating a party triggers a lot of roles that can't be primed.
+
+BUT I am realizing that the test for creation doesn't really need to care about rolls, either just in general or because I can pass in specific props so that's all fine. 
+
+and like, creation gets validated in other ways as well, this is largely a redundant test - at least once there are other tests it will be.
+
+0910 keeping on, then.
+
+`member.scoreActionsAndTiles()` appears to be behaving as expected. It brings back an array of Maps and each character gives a score for each action, and their preferred tile for that action. So the duplicate likely happens when they're being smooshed together?
+
+0905 so is it supposed to be duplicated? Does that like.. weigh it more heavily? But then shouldn't there be three instances of it since that's what each character chose for adventure? I think?
+
+`tally.adventure.tiles.push(memberAdventure.tile);`
+
+0905 yep, each adventure tile is -101 so why is there exactly 2? it should either be 1 because it is deduped, or 3 because it gets pushed for each.
+
+0912 so it is the latter. It _should_ be three. Each character voted for that tile, it is a collection of votes, not the selection. 
+
+0913 so, things are fine so far, logic wise. I don't know what's up with the count becoming 2 but for now I'm okay with it I guess.
+
+0915 so the party chooses to adventure, the tile they each vote to adventure to is -101, so they move there. 
+
+0916 this is a pretty nasty chain of dependent functions all returning the same kind of object. some day I'll have an idea for how to clean this up.
+
+0918 and then they figure out the next tile to move into to go. 
+
+so that all works pretty much as expected. Now that they are in -101 though, why do they choose to move rather than explore? 
+
+they all vote for 0-11, so what's up with that process then?
+
+that's in Character.scoreActionsAndTiles and now we're getting into tile relationship shit. 
+
+desire to adventure is 1.3, others are .72 so that decision seems right. now how do they select the tile to go to, because this untapped tile should be more compelling than moving so why isn't it? 
+
+0922 `bestTilesForActions`
+
+0926 all tiles are getting the same scores for adventuring and resting. distance not impacting? 
+
+```
+Biajqhrf Qqlopyb Bp Zupcijnr considering -101 Character.js:665:9
+Region attributes/elements resistance is not gatekeeping/restricting character movement 2 Item.js:441:11
+distanceDampener 1 1.1333333333333333 Character.js:673:9
+tileScoreForAdventuring, tileScoreForResting, tileScoreForVending 1.4166666666666665 1.4166666666666665 1.1333333333333333 Character.js:684:9
+Biajqhrf Qqlopyb Bp Zupcijnr considering 0-11 Character.js:665:9
+Region attributes/elements resistance is not gatekeeping/restricting character movement 2 Item.js:441:11
+distanceDampener 0.9 1.1325 Character.js:673:9
+tileScoreForAdventuring, tileScoreForResting, tileScoreForVending 1.76953125 1.76953125 0
+```
+
+so the dampener and tileRelationshipScore are right, but then the score for adventuring goes _higher_ for 0-11 and it should be lower. So what's up there!
+
+0932 decksize knowledge of -101 is null, but of 0-11 is is SIZE_SMALL so that extra knowledge boosts it.
+
+Then I bet if I advance a turn, decksize knowledge for 0-11 becomes null? it gets written badly when they move into the tile perhaps?
+
+0934 no it looks like everything goes SIZE_SMALL 
+
+0935 and everyone's energy is low at this point so rest wins and they go back to origin town.
+
+that's really good actually I think, a couple of moves and then a rest makes a ton of sense.
+
+oh but no that's not what happens either, sheesh. they go through 000 to -101 and rest there. so... not a ton of sense. 
+
+this is some pretty convoluted decision-making alright. hrm hrm. 
+
+so. so so so so so. I'd like to have these decision-making numbers visible for myself now for development purposes and then maybe with that I can figure out how to expose this info to players as well. so I need to make like a spreadsheet layout with a bunch of this data then. alrighty then, new layout time again. 
+
+0938 I'm probably stopping around 10 for a while at least but I need to expose this. maybe a different route? 
+
+how does that work again - just make a file in that folder. handy sveltekit!

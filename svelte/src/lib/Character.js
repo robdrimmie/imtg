@@ -661,19 +661,19 @@ export default class Character {
 
 		// find the best tiles for each type of action based on this character's knowledge
 		this.tileRelationships.forEach((tileRelationship, key, map) => {
-			const tileUnderConsideration = tileRelationship.tile;
-
+			const tileUnderConsideration = tileRelationship.tile
+// console.log(`${this.name} considering ${tileUnderConsideration.id}`)
 			// Dampen the score based on the distance
-			const tileDistance = this.currentTile.distanceFromTile(tileUnderConsideration);
-			const distanceDampener = 1 - tileDistance * 0.1;
-			
-			// Get the tile relationship score
-			const tileRelationshipScore =
-				tileRelationship.calculateTileRelationshipScore(this) * distanceDampener;
+			const tileDistance = this.currentTile.distanceFromTile(tileUnderConsideration)
+			const distanceDampener = 1 - tileDistance * 0.1
 
+			// Get base the tile relationship score, dampened by distance
+			const tileRelationshipScore =
+				tileRelationship.calculateTileRelationshipScore(this) * distanceDampener
+// console.log("distanceDampener", distanceDampener, tileRelationshipScore)			
 			const tileKnowledge = tileUnderConsideration.getKnowledgeForLevel(
 				tileRelationship.knowledgeLevel
-			);
+			)
 
 			const tileScoreForAdventuring =
 				tileRelationshipScore * tileRelationship.calculateAdventuringValue(tileKnowledge);
@@ -681,7 +681,7 @@ export default class Character {
 				tileRelationshipScore * tileRelationship.calculateRestingValue(tileKnowledge);
 			const tileScoreForVending =
 				tileRelationshipScore * tileRelationship.calculateVendingValue(tileKnowledge);
-
+// console.log("tileScoreForAdventuring, tileScoreForResting, tileScoreForVending", tileScoreForAdventuring, tileScoreForResting, tileScoreForVending)
 			// update best tiles
 			if (tileScoreForAdventuring > bestTiles.adventure.score) {
 				bestTiles.adventure = {

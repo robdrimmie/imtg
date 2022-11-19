@@ -44,10 +44,12 @@ export default class Party {
 			this.membersInCharacters(characters)
 		);
 
+		// console.log("Party progress - scoredActionsAndTiles", scoredActionsAndTiles)
+
 		// Figure out the best tile for that action
 		const { selectedAction, selectedTile } = this.chooseActionAndTile(scoredActionsAndTiles);
 
-		// console.log("Party progress scoredActionsAndTiles, selectedAction, selectedTile", scoredActionsAndTiles, selectedAction, selectedTile)
+		console.log("Party progress scoredActionsAndTiles, selectedAction, selectedTile", scoredActionsAndTiles, selectedAction, selectedTile)
 
 		// If there already, do it!
 		if (this.tile.id === selectedTile.id) {
@@ -107,8 +109,7 @@ export default class Party {
 			selectedTiles = scoredActions.vend.tiles;
 		}
 
-		// count tiles and pick the one with the most occurances, or the very last one in the list.
-		// I suppose I could shuffle selectedTiles first if it becomes a problem
+		// count tiles and pick the one with the most occurances
 		// below from https://stackoverflow.com/a/20762713, "mode" of array, most frequently occuring element.
 		const selectedTile = selectedTiles
 			.sort(
@@ -132,7 +133,7 @@ export default class Party {
 			partyMemberVotes[memberIndex] = member.scoreActionsAndTiles();
 		}
 
-		// console.log("scoreActionsAndTiles partyMemberVotes", partyMemberVotes)
+		console.log("scoreActionsAndTiles partyMemberVotes", partyMemberVotes)
 
 		const tally = {
 			adventure: {
@@ -151,8 +152,6 @@ export default class Party {
 			}
 		};
 
-		// Get average score because char A picking .5 and char B picking .7 should be .6,
-		// it should not be 0.35
 		for (const thisMemberVote of partyMemberVotes) {
 			const memberAdventure = thisMemberVote.get('adventure');
 			tally.adventure.score += memberAdventure.score;
@@ -177,7 +176,7 @@ export default class Party {
 				tally.vend.tiles.push(memberVend.tile);
 			}
 		}
-
+console.log(tally.adventure.tiles[0].id, tally.adventure.tiles[1].id, tally.adventure.tiles[2].id)
 		tally.adventure.score /= partyMemberVotes.length;
 		tally.rest.score /= partyMemberVotes.length;
 		tally.vend.score /= partyMemberVotes.length;
@@ -204,6 +203,7 @@ export default class Party {
 			tally.vend.score = 0;
 		}
 
+		console.log(tally.adventure.tiles[0].id, tally.adventure.tiles[1].id, tally.adventure.tiles[2].id)
 		return tally;
 	}
 	// #endregion Action and Tile Selection
