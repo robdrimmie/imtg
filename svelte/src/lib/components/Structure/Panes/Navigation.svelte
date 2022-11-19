@@ -11,7 +11,7 @@
         Trade
     {/if}
     <br />
-    Click to toggle. Press any key to progress time.
+    Click to toggle. Press any key to progress time. <a href="/sheet">sheet</a>
 </div>
 
 <style>

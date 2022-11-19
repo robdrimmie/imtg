@@ -1,5 +1,5 @@
 <script>
-import { characters, parties, started } from '$lib/stores.js'
+import { characters, moves, parties, started } from '$lib/stores.js'
 
 
 $: partyScoreActionsAndTiles = $parties.map( party => {
@@ -7,24 +7,52 @@ $: partyScoreActionsAndTiles = $parties.map( party => {
         party.membersInCharacters($characters)
     )
 })
-
-console.log("here", partyScoreActionsAndTiles)
 </script>
+<a href="/">home</a>
+
 {#if started}
     <div class="rows">
         {#each $parties as party}
-            {party.name}
+            {party.name} move: {$moves.length}
         {/each}
 
-        {#each partyScoreActionsAndTiles as sAAT}
-            adv score: {sAAT.adventure.score}
-            adv tiles: 
-                {#each sAAT.adventure.tiles as tile}
-                    <div>{tile.id}</div>
-                {/each}
-            {console.log("saat a", sAAT.adventure)}
-        {/each}
+        <div class="saat">
+            <style>
+                .saat {
+                    display: grid;
+                    grid-template-columns: repeat(3, 1fr);
+                }
+            </style>
+            {#each partyScoreActionsAndTiles as sAAT}
+                <div class="saatadv">
+                    Adventure: {sAAT.adventure.score}
+                    <ul>
+                        {#each sAAT.adventure.tiles as tile}
+                        <li>{tile.id}</li>
+                    {/each}
+                    </ul>
+                </div>
 
+                <div class="saatrest">
+                    Rest: {sAAT.rest.score}
+                    <ul>
+                        {#each sAAT.rest.tiles as tile}
+                        <li>{tile.id}</li>
+                    {/each}
+                    </ul>
+                </div>
+
+                <div class="saatvend">
+                    Vend: {sAAT.vend.score}
+                    <ul>
+                        {#each sAAT.vend.tiles as tile}
+                        <li>{tile.id}</li>
+                    {/each}
+                    </ul>
+                </div>
+
+            {/each}
+        </div>
 
         {#each $characters as character}
             <div class="character">
@@ -32,6 +60,10 @@ console.log("here", partyScoreActionsAndTiles)
                     {character.name}
                     {console.log(character.bestTilesForActions())}
                 </h3>
+
+                <div><b>current tile</b> {character.currentTile.id}</div>
+                <div><b>resources</b></div>
+                <div> RMD TODO this next</div>
 
                 <div><b>best tiles</b></div>
                 <div class="best">
@@ -57,16 +89,34 @@ console.log("here", partyScoreActionsAndTiles)
                 <div><b>tile relationships</b></div>
                 <div class="relationships">
                     {#each [...character.tileRelationships] as relationship}
+                    <style>
+                        .ship {
+                            display: grid;
+                            grid-template-columns: repeat(7, 1fr);
+
+                        }
+                    </style>
                     <div class="ship">
                         <div>
                             tileid: {relationship[0]}
-                        </div>
 
+                            <div>
+                                <ul>
+                                    <li>cap: {relationship[1].calculateCapacityScore(character)}</li>
+                                    <li>nrg: {relationship[1].calculateEnergyScore(character)}</li>
+                                    <li>ger: {relationship[1].calculateGearScore(character)}</li>
+                                    <li>hth: {relationship[1].calculateHealthScore(character)}</li>
+                                    <li>sat: {relationship[1].calculateSatietyScore(character)}</li>
+                                </ul>
+                            </div>
+
+
+
+                        </div>
 
                         <div>
                             knowledge level: {relationship[1].knowledgeLevel}
                         </div>
-
 
                         <div>
                             adv val: {
@@ -76,7 +126,6 @@ console.log("here", partyScoreActionsAndTiles)
                             }
                         </div>
 
-
                         <div>
                             rest val: {
                                 relationship[1].calculateRestingValue(
@@ -85,7 +134,6 @@ console.log("here", partyScoreActionsAndTiles)
                             }
                         </div>
 
-
                         <div>
                             vend val: {
                                 relationship[1].calculateVendingValue(
@@ -93,7 +141,6 @@ console.log("here", partyScoreActionsAndTiles)
                                 )
                             }
                         </div>
-
 
                         <div>
 
@@ -136,11 +183,5 @@ press key to start
     flex-direction: column;
 
     padding-left: 1vw;
-}
-
-.ship {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-
 }
 </style>

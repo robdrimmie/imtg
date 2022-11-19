@@ -244,3 +244,25 @@ so. so so so so so. I'd like to have these decision-making numbers visible for m
 0938 I'm probably stopping around 10 for a while at least but I need to expose this. maybe a different route? 
 
 how does that work again - just make a file in that folder. handy sveltekit!
+
+1145 showing lots, still working on showing more. I'm not sure yet I'm showing anything especially helpful?
+
+1153 so why does rest have 6 tiles
+
+1204 alright, working on getting resources onto the screen. I am going to have to componentize this soon, there's definitely a big clutter of information going on. 
+
+1249 at game start everyone's ranking -101 pretty high for vend but there are no vendors there? 
+
+it's scoring all the origin neighbors 1.25 for rest as well. I guess that's sort of okay-ish? There are rest cards on all of them. 
+
+1250 so what's the party voting about
+
+1251 maybe it is time to draw the flow. does github markdown support mermaid?
+
+```mermaid
+graph TD;
+    A-->B;
+    A-->C;
+    B-->D;
+    C-->D;
+```

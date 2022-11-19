@@ -1,5 +1,6 @@
 <script>
-	import { page } from '$app/stores';
+///// rmd todo pretty sure this is a dead file
+import { page } from '$app/stores';
 </script>
 
 <ul>

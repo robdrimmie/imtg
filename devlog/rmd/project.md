@@ -2,6 +2,8 @@
 ✅🟠🚩 = status
 * = current task
 
+*NOTE:* This list is not a commitment to you, it is a reference for me. There is no guarantee that any of these items will be implemented.
+
 ## big tasks (not prioritized, but a little bit preference-ized)
 - 🟠 improve item generation
   - flitting from vendors to characters should work
@@ -17,10 +19,12 @@
   - is there a better way to store the win condition? There must be. it is weird to take up the boot slot
   - backpack too  
 - then try 6 party members?
+  - working with 3 for now
 - rebalance combat rewards when entire party is in place
 - pretty sure traps are misbehaving now, result of item modifiers?
 - then try with 6 win condition items and 6 destination tiles?
   - no longer convinced this is a priority for launch
+- * spreadsheet-type view at /sheet to help understand the variables in play
 
 ### scope creep - this are future current targets
 - add more encounters
