@@ -176,7 +176,7 @@ export default class Party {
 				tally.vend.tiles.push(memberVend.tile);
 			}
 		}
-console.log(tally.adventure.tiles[0].id, tally.adventure.tiles[1].id, tally.adventure.tiles[2].id)
+
 		tally.adventure.score /= partyMemberVotes.length;
 		tally.rest.score /= partyMemberVotes.length;
 		tally.vend.score /= partyMemberVotes.length;
@@ -203,7 +203,6 @@ console.log(tally.adventure.tiles[0].id, tally.adventure.tiles[1].id, tally.adve
 			tally.vend.score = 0;
 		}
 
-		console.log(tally.adventure.tiles[0].id, tally.adventure.tiles[1].id, tally.adventure.tiles[2].id)
 		return tally;
 	}
 	// #endregion Action and Tile Selection

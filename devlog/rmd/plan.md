@@ -266,3 +266,52 @@ graph TD;
     B-->D;
     C-->D;
 ```
+
+1252 it does!
+
+though, this document looks real bad on github lol, this is not a good way to keep up with goings on, really. this is not blog, friend. I guess I knew that, there's a note somewhere - probably old repo - about a commit action that pulls content out and into a blog for github pages or something similar but that's not really going to happen either. Probably I will never do anything about that.
+
+1254 so I'm trying to visualize how the party makes decisions, which eventually will require some things. uhhh I don't know. 
+
+So, hmm, maybe something can be written down. a docs folder for now. 
+
+1256 I made a thing but I don't want to noodle around in it just yet? I called it `game flow.md` that's not very good. 
+
+trying to think of how to break it down into documents.
+
+```
+game starts
+  v
+dice is seeded
+  v
+the board is made
+  v
+starting characters are made
+  v
+win item is allocated
+  v
+starting chest is made
+  v
+vendors are made
+  v
+a party is made with the starting characters
+  v
+the moves store is created
+  v
+started store is set to true
+  v
+won store is set to false
+```
+
+So that's game initialization right? 
+
+1351 made the doc. 
+
+1421 made a few docs
+
+1422 honing in on party decision making process. I could diagram score actins and tiles but it seems to be working correctly, doesn't it? 
+
+1424 uhhhh probably not I guess?
+
+I'm confusing myself a little bit I think, because the scores visible in the sheet are anticipating the next move not the one they just took.
+

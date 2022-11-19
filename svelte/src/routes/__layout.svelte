@@ -76,11 +76,10 @@
 
 		$moves = [firstMove];
 
+		$won = false;
+
 		// The game has begun!
 		$started = true;
-
-		// But not yet finished
-		$won = false;
 
 		// console.log(
 		//   '__layout.start(): board, characters, chests, moves, parties, started, won',
@@ -105,10 +104,12 @@
 
 	function progress(key) {
 		if (!$started) {
+			// #region start game
+			
 			// fixed seed for debugging, milliseconds since epoch for prod, since easy.
 			const seed = isDev ? 20 : Date.now();
 			start(key, seed);
-
+			
 			let turn = 0;
 			// autopilot setting here
 			// CHANGE THIS VALUE TO AUTOPLAY
@@ -119,13 +120,14 @@
 				turn++;
 				progress(key);
 			}
-
-			console.log('resuming');
+			
+			// #endregion start game
 		}
 
+		// #region progress parties
 		let updatedCharacters = [];
 		const updatedParties = [];
-
+		
 		$parties.forEach((party, index) => {
 			const {
 				progressedBoard,
@@ -137,25 +139,29 @@
 				$characters,
 				$chests,
 				$moves
-			)
-
-			$board = progressedBoard
-			$characters = progressedCharacters
-			$chests = progressedChests
-			$moves = progressedMoves
-
-			$parties[index] = party
+				)
+				
+				$board = progressedBoard
+				$characters = progressedCharacters
+				$chests = progressedChests
+				$moves = progressedMoves
+				
+				$parties[index] = party
 		});
+		// #endregion progress parties
 
+		// #region progress vendors
 		$equipablesVendors.forEach( (ev, idx) => {
 			$equipablesVendors[idx] = ev.progress()
 		})
-
-		$equipablesVendors = [...$equipablesVendors]
-		$consumablesVendors = [...$consumablesVendors]
+		
 		$consumablesVendors.forEach( (cv, idx) => {
 			$consumablesVendors[idx] = cv.progress()
 		})
+		
+		$equipablesVendors = [...$equipablesVendors]
+		$consumablesVendors = [...$consumablesVendors]
+		// #endregion progress vendors
 
 		if ($board.allWinConditionsReturned() ) {
 			console.error("GAME HAS BEEN WON")
