@@ -531,3 +531,6 @@ distance from origin might be compelling for a character with high openness for 
 
 1132 nice! Good behavioural change! Party now goes to -101, adventures and rests as much as they are able, then proceeds in a clockwise circle around 000 because they are always able to rest and health and such, they never need to return to town. well they do eventually but like a lot of turns later - moves.length 67ish when all characters are completely full. so capacity calculations need tweaking but there's still a lot of real good change here, yay!
 
+1139 so I think that is kind of perhaps most of it for this branch of progression? writing out and modifying all the stats is probably going to be a longer grind though it is probably not as buggy since it was touched not terribly long ago versus this stuff which was probably like a year old or something, it's been a while since I got into those systems.
+
+1155 just read http://www.ericharshbarger.org/dice/go_first_dice.html that is pretty nifty. 
