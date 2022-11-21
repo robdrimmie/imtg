@@ -691,8 +691,7 @@ export default class Character {
 			const distanceDampener = 1 - tileDistance * 0.1
 
 			// Get base the tile relationship score, dampened by distance
-			const tileRelationshipScore =
-				tileRelationship.scores.overall * distanceDampener
+			const tileRelationshipScore = tileRelationship.scores.overall * distanceDampener
 // console.log("distanceDampener", distanceDampener, tileRelationshipScore)			
 			const tileKnowledge = tileUnderConsideration.getKnowledgeForLevel(
 				tileRelationship.knowledgeLevel

@@ -478,3 +478,30 @@ Now they go M-101, M0-11, A0-11 which is better! but it still seems like they sh
 0938 It would probably be beneficial to build a combat debugging screen or something. I'm not sure what that would look like but figure out a way to put a lot more detail of the combat into the log and then a big log screen, or something like that. 
 
 one of my earlier designs was like an overview and ways to make certain parts - especially the log - overlap other parts and maybe a 'full-screen' mode for each of the panes might be an interesting way to have specific interactions easier to get to. there'es something ruminating in there. but ultimately I need to have a better understanding of what interactions I want to support. 
+
+0944 there's a whole other half of character progression still, all the current/apparent stats and shit. Assuming I'm done with relationships for now but really I'm not, there's still weird decisions. So stick with this, the current/apparent stats should fix the roof-less energy and satiety situation too when I get there. But decision-making. 
+
+0946 energy scores are the same, and 0-11 still gets a much higher adv score. so calc energy stuff....
+
+```
+let distanceScore = 1; // RMD TODO HexUtils.distance(tileToConsider, currentTile)
+```
+
+hello
+
+1014 okay. so now at the start everything for all the neighbor tiles are scored identically and all scores are at 1. it feels like it might make sense but I'm a little concerned about the fact that everything changed and now it's all 1 right away. But that's what it should be, everything is brand new. 000 gets a 0 for adventuring score which is exactly correct because there's no cards. So everything makes a lot of sense here.
+
+1015 and then a lot changes when the turn goes. 0-11 still wins for adventure, which is the highest demand still. 
+
+nrg is still scored the same and now it is 1.1 so is distance the same? I can put distance score on the page. 
+
+1019 oohhhhhhh `knowledge level: 3` for 0-11. Oh does it not change at all for -101? 
+
+1020 -110 also increases to 3. 
+
+1021 yes, so when entering the tile, more is learned about the neighbours but not the tile itself. That makes 0-11 (right upwards) and -110 (right downwards) of more adventuring value than the one the chaaracter is on. Then it gets reset when they move out of that tile and eventually knowledge is like fully loaded. 
+
+So there's only like four levels of tile knowledge, just stepping into one shouldn't increase the neighbours beyond a certain threshold. I could see going from like 0 to 1 (tile exists) and then 1 to 2 (like, simple recognizance) but to know a tile you need to go to the tile. right? 
+
+right. 
+

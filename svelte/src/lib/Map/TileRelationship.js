@@ -1,5 +1,6 @@
 import Attributes from '$lib/Attributes'
 import Deck from '$lib/Deck'
+import Hex from '$lib/Map/Hex.js'
 import Tile from '$lib/Map/Tile'
 
 const INCREASE = 1.1;
@@ -10,7 +11,10 @@ export default class TileRelationship {
 		// Characters are big objects and store relationships, so taking just the bits I need
 		this.characterId = character.id
 		this.backpack = character.backpack
+
+		// character's current tile, used for distance calculations. not the best naming. 
 		this.currentTile = character.currentTile
+
 		// RMD TODO compare against mannequin in some cases, paperdoll in others
 		this.paperdoll = character.paperdoll		
 		this.resources = character.resources
@@ -21,6 +25,7 @@ export default class TileRelationship {
 
 		this.scores = {
 			capacity: 1,
+			distance: 1,
 			energy: 1,
 			gear: 1,
 			health: 1,
@@ -38,6 +43,7 @@ export default class TileRelationship {
 		this.resources = character.resources
 
 		this.scores.capacity = this.calculateCapacityScore()
+		this.scores.distance = this.calculateDistanceScore()
 		this.scores.energy = this.calculateEnergyScore()
 		this.scores.gear = this.calculateGearScore()
 		this.scores.health = this.calculateHealthScore()
@@ -150,6 +156,13 @@ export default class TileRelationship {
 		return capacityScore;
 	}
 
+	calculateDistanceScore() {
+		const score = Hex.distance(this.tile.hex, this.currentTile.hex)
+
+		// never completely eliminate a tile just because of distance
+		return (score === 0) ? 0.01 : score
+	}
+
 	calculateEnergyScore() {
 		const tileToConsider = this.tile;
 		// console.log("calculateEnergyScore - tileToConsider, currentTile", tileToConsider, currentTile)
@@ -157,12 +170,13 @@ export default class TileRelationship {
 		const energy = this.resources.get(Attributes.RESOURCES_ENERGY)
 		const percentAvailable = energy.current / energy.base;
 
-		// rmd todo energetic threshold should be derived from stats
+		// rmd todo energetic threshold should be modified by stats. not sure which ones 
+		// endurance has a direct impact. 
+		// highly neurotic people might have less energy because they burn a lot thinking.
+		// more? 
 		const characterIsEnergetic = percentAvailable > 0.4;
 
 		let multiplier = 1;
-		let distanceScore = 1; // RMD TODO HexUtils.distance(tileToConsider, currentTile)
-
 		if (tileToConsider) {
 			if (characterIsEnergetic) {
 				if (tileToConsider.hasAdventuringAvailable()) {
@@ -177,17 +191,10 @@ export default class TileRelationship {
 					multiplier *= DECREASE;
 				}
 			}
-
-			// RMD TODO I'm hardcoding 6 because that's how many tiles there are in the stem but
-			// is that progammaticably determined anywhere?
-			const distanceFromCharacterToTile = this.currentTile.distanceFromTile(tileToConsider)
-			distanceScore = 1 - distanceFromCharacterToTile / 6;
-
-			if (distanceScore === 0) distanceScore = 0.1;
 			// console.log("dFCTT", distanceFromCharacterToTile)
 		}
 
-		const energyScore = multiplier * distanceScore;
+		const energyScore = multiplier * this.scores.distance;
 
 		// console.log("calculated [energy score] for [currenttile] with [multiplier] dampened by [distanceScore]",
 		//   energyScore,

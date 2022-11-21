@@ -25,11 +25,12 @@
             {#if visible}
             <div>
                 <ul>
-                    <li>cap: {relationship[1].scores.capacity}</li>
-                    <li>nrg: {relationship[1].scores.energy}</li>
-                    <li>ger: {relationship[1].scores.gear}</li>
-                    <li>hth: {relationship[1].scores.health}</li>
-                    <li>sat: {relationship[1].scores.satiety}</li>
+                    <li><div>capacity</div> <div>{relationship[1].scores.capacity}</div></li>
+                    <li><div>distance</div> <div>{relationship[1].scores.distance}</div></li>
+                    <li><div>nrg</div> <div>{relationship[1].scores.energy}</div></li>
+                    <li><div>ger</div> <div>{relationship[1].scores.gear}</div></li>
+                    <li><div>hth</div> <div>{relationship[1].scores.health}</div></li>
+                    <li><div>sat</div> <div>{relationship[1].scores.satiety}</div></li>
                 </ul>
             </div>
             {/if}
@@ -74,3 +75,11 @@
     </div>
     {/each}
 </div>
+
+<style>
+
+li {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+</style>
