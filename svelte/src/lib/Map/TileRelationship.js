@@ -154,10 +154,15 @@ export default class TileRelationship {
 	}
 
 	calculateDistanceScore() {
-		const score = Hex.distance(this.tile.hex, this.currentTile.hex)
+		const distance = Hex.distance(this.tile.hex, this.currentTile.hex)
 
-		// never completely eliminate a tile just because of distance
-		return (score === 0) ? 0.01 : score
+		console.log("distance", this.tile.hex, this.currentTile.hex, distance)
+
+		// rmd todo the tile the character on is always best from a distance perspective
+		// maybe some character personality attributes alter that, but for now simple is good
+		return (distance === 0) ? 1 : 1 / (distance + 1)
+
+		// simple fall off. 1/2, 1/3, 1/4 etc.
 	}
 
 	calculateEnergyScore() {

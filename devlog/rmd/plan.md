@@ -523,3 +523,11 @@ any who! distance might be wrong. it's showing 0.01 for -101 which means the fac
 
 distance from origin might be compelling for a character with high openness for example, or something along those lines might make a distant tile more enticing but that's a nuance that will not be implemented soon.
 
+1122 yeah distance bug makes them always want to go elsewhere, just thrashing back and forth.
+
+1124 so the lower a distance is, the better. 0 tiles away is the best possible distance score, which is 1. 1 tile away is less good, so by half? 
+
+1128 okay so the stats really are confusing. I am seeing the current tile, like -101 say, but for the tile relationships that's all the values that led to the character being in that tile. So I need to think about these stats in relation to the previous tile
+
+1132 nice! Good behavioural change! Party now goes to -101, adventures and rests as much as they are able, then proceeds in a clockwise circle around 000 because they are always able to rest and health and such, they never need to return to town. well they do eventually but like a lot of turns later - moves.length 67ish when all characters are completely full. so capacity calculations need tweaking but there's still a lot of real good change here, yay!
+
