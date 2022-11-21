@@ -124,10 +124,15 @@
 			// #endregion start game
 		}
 
-		// #region progress parties
-		let updatedCharacters = [];
-		const updatedParties = [];
+		// #region progress characters
+		let updatedCharacters = [...$characters]
+		updatedCharacters.forEach((character, index) => {
+			character.progress()
+		})
+		$characters = [...updatedCharacters]
 		
+		// #region progress parties
+		const updatedParties = [];
 		$parties.forEach((party, index) => {
 			const {
 				progressedBoard,

@@ -89,9 +89,32 @@ export default class Character {
 			originRelationship.knowledgeLevel = Tile.KNOWLEDGE_EXPERIENCED;
 			this.tileRelationships.set(originTile.id, originRelationship);
 		}
-
-		// console.log("constructed with relationships", this.tileRelationships)
 	}
+
+	// #region progress
+	progressStats() {
+		
+	}
+	
+	progress() {
+		console.log(`progressing ${this.name}`, this)
+		
+		// update current and apparent stats based on gear
+		this.progressStats()
+		
+		// update tile relationships
+		this.progressTileRelationships()
+	}
+	
+	progressTileRelationships() {
+		this.tileRelationships.forEach( (tileRelationship) => {
+			console.log("tR", tileRelationship)
+
+			tileRelationship.progress(this)
+		})
+	}
+
+	// #endregion progress
 
 	// #region Attribute generators
 	// 8d8 = starting values in range 8 - 64 which feels like a good place to aim for now
@@ -669,7 +692,7 @@ export default class Character {
 
 			// Get base the tile relationship score, dampened by distance
 			const tileRelationshipScore =
-				tileRelationship.calculateTileRelationshipScore(this) * distanceDampener
+				tileRelationship.scores.overall * distanceDampener
 // console.log("distanceDampener", distanceDampener, tileRelationshipScore)			
 			const tileKnowledge = tileUnderConsideration.getKnowledgeForLevel(
 				tileRelationship.knowledgeLevel
@@ -740,7 +763,7 @@ export default class Character {
 		// console.log("updateRelationshipWithTile with tile", tile, this)
 
 		// Get the existing relationship or create a new one with barebones details.
-		const relationship = this.tileRelationships.get(tile.id) ?? new TileRelationship(this.id, tile);
+		const relationship = this.tileRelationships.get(tile.id) ?? new TileRelationship(this, tile);
 
 		if (relationship.knowledgeLevel === Tile.KNOWLEDGE_MEMOIR) {
 			relationship.knowledgeLevel = Tile.KNOWLEDGE_EXPERIENCED;

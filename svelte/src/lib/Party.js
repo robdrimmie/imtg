@@ -44,7 +44,7 @@ export default class Party {
 			this.membersInCharacters(characters)
 		);
 
-		// console.log("Party progress - scoredActionsAndTiles", scoredActionsAndTiles)
+		console.log("Party progress - scoredActionsAndTiles", scoredActionsAndTiles)
 
 		// Figure out the best tile for that action
 		const { selectedAction, selectedTile } = this.chooseActionAndTile(scoredActionsAndTiles);
@@ -133,7 +133,7 @@ export default class Party {
 			partyMemberVotes[memberIndex] = member.scoreActionsAndTiles();
 		}
 
-		console.log("scoreActionsAndTiles partyMemberVotes", partyMemberVotes)
+		// console.log("scoreActionsAndTiles partyMemberVotes", partyMemberVotes)
 
 		const tally = {
 			adventure: {

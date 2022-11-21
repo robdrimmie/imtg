@@ -25,16 +25,14 @@
             {#if visible}
             <div>
                 <ul>
-                    <li>cap: {relationship[1].calculateCapacityScore(member)}</li>
-                    <li>nrg: {relationship[1].calculateEnergyScore(member)}</li>
-                    <li>ger: {relationship[1].calculateGearScore(member)}</li>
-                    <li>hth: {relationship[1].calculateHealthScore(member)}</li>
-                    <li>sat: {relationship[1].calculateSatietyScore(member)}</li>
+                    <li>cap: {relationship[1].scores.capacity}</li>
+                    <li>nrg: {relationship[1].scores.energy}</li>
+                    <li>ger: {relationship[1].scores.gear}</li>
+                    <li>hth: {relationship[1].scores.health}</li>
+                    <li>sat: {relationship[1].scores.satiety}</li>
                 </ul>
             </div>
             {/if}
-
-
         </div>
 
         <div>

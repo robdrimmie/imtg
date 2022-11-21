@@ -5,27 +5,31 @@ flowchart TD
     B1[B start game.md];
     B2[autoplay turns];
 
-    C[progress party.md];
+    CHAR[progress characters];
 
-    D[update stores];
+    PART[progress party.md];
 
-    E[progress vendors];
+    STOR[update stores];
+
+    VEND[progress vendors];
 
     F{all win conditions returned?}
 
     G((game is won))
 
     A -- NO --> B1;
-    A -- YES --> C;
+    A -- YES --> CHAR;
 
     B1 --> B2;
-    B2 --> C;
+    B2 --> CHAR;
 
-    C --> D;
+    CHAR --> PART;
 
-    D --> E;
+    PART --> VEND;
 
-    E --> F;
+    VEND --> STOR;
+
+    STOR --> F;
 
     F -- NO --> A;
     F -- YES --> G;

@@ -1,6 +1,7 @@
 <script>
     export let member
 
+    import ActionsAndTiles from '$lib/Sheet/ActionsAndTiles.svelte'
     import SheetMemberResources from '$lib/Sheet/SheetMemberResources.svelte'
     import TileRelationships from '$lib/Sheet/TileRelationships.svelte'
 
@@ -41,6 +42,8 @@
         </div>
 
     </div>
+
+    <ActionsAndTiles {member} />
 
     <TileRelationships {member} />
     {/if}

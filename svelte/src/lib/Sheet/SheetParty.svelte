@@ -6,7 +6,7 @@
 
     import { characters, moves } from '$lib/stores.js'
 
-    const members = party.membersInCharacters($characters)
+    $: members = party.membersInCharacters($characters)
 </script>
 
 <div>

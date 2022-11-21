@@ -315,3 +315,166 @@ So that's game initialization right?
 
 I'm confusing myself a little bit I think, because the scores visible in the sheet are anticipating the next move not the one they just took.
 
+1532 okay, small flurry of activity 
+
+1536 can I learn anything about the calculations and state of the game through this yet?
+
+1550 so, everything is started and we are about to decide what to do. every character wants to go to -101
+
+1552 and so, next turn. moves.length = 3. everyone wants to adventure still, but 0-11 is the preferred tile to do that.
+
+1553 adventure value of 000 should not be 3.125
+
+okay I just refreshed and like it never is again. so... what?
+
+oh shit not all the numbers are reactive. ah god damn how do I see which ones are and aren't
+
+well, adv value for all the tile relatinoships, we can start there. member getting passed down maybe doesn't update?
+
+1556 okay, found a couple of spots. I keep doing like, const foo = blah instead of $: foo = blah. I'll get there eventually maybe.
+
+1557 almost time to do some dishes.
+
+1559 small vision of: select a character, tiles that character knows about get some indication about their adv/rest/vend scores. their raw scores as a start maybe. 
+
+then click on the party, and see what the party's next action and tile will be
+
+make a change in gear and see how that changes the character's goals and understanding of the world, and the party's. that's probably an interesting thing to explore soon. 
+
+1601 dishes and poke a child about laundry.
+
+20221120 0939 alright. so still working to sort out why the party chooses to move to 0-11 instead of staying on -101 and drawing a card, which is the action I want them to be taking.
+
+0941 best tile for adventuring comes up as 0-11
+
+0-11
+adv val: 1.5625
+    cap: 1.5625
+    nrg: 0.9166666666666667
+    ger: 1.25
+    hth: 1.5625
+    sat: 1
+
+-101
+
+adv val: 1.25
+    cap: 1.25
+    nrg: 0.9166666666666667
+    ger: 1.25
+    hth: 1.25
+    sat: 1
+
+So capacity score differs why is that? 
+Energy score doesn't differ, why is that? 
+gear is the same, that makes sense
+health score differs why is that
+sat is the same.. that probably makes sense? Or should distance impact satiety as well? Distance to known food perhaps should? For now the same is fine though, the other factors are having more impact at this point
+
+so I guess some flowcharts might help here a bit? 
+
+0946 And adventure value for 000 is 3.125, that's super wrong. It gets dropped to 0 at some point but perhaps that happens later in the process. 
+
+0947 oh hello Past Rob:
+
+```
+		const percentAvailable = 0.7; // RMD TODO restore calculations this.backpack().availableCapacity() / this.backpack().capacity
+```
+
+0949 when the game stars - backup. I just added `console.log("TR calcCap", this);` to the TileRelationship CalculateCapacity method. It gets output like dozens of times just when the game starts. That whole time, this.backpack is undefined so like, all this super fragile massive function chain for calculations might be just like..... poor. It does stuff, but not the right stuff anymore and is definitely in need of something. 
+
+0951 I have a note somewhere perhaps. like this is an architecture problem fundamentally and I have a note somewhere about calculating all the scores every turn instead of doing it as things are called. 
+
+It would have to be refreshed every time an item changes but that can be done. SO like a method to setup character.. uhh.. state sort of?
+
+What happens with that. So state might be all the current and apparent and whatever stats, all the desire calculation stuff and tile relationships.
+
+Okay this is maybe interesting. Can I get there? 
+
+Right now characters are only impacted by progress in scoring tiles and stuff but what if there is a character.progress method as well? All the characters get progressed (in order of some stats based thing eventually maybe) and then all these values for everything are fixed in place. 
+
+I think I thought about this and maybe chose not to. Like, I thought about caching stuff but also maybe having characters get progressed. I am not going to look into what I was thinking then, I'm guessing it was probably like, effort-based mostly. I want characters to have a lot of independence and this is the way to get them there I think. 
+
+So this is a big refactor probably. Ooof. Okay but it can start relatively small probably? Start with simple stuff.
+
+0956 Maybe I can minimize these wild bulky state objects I pass everywhere. Maybe. 
+
+So I'm going to add a node to the progress game thing that is progress characters, then I'll add it to the code and maybe I'll write tests along the way for a while. Maybe.
+
+1120 shovelled. groceries in like 20ish minutes or so? 25. 
+
+So progressing character. Gear needs to be checked and stats updated, that's one major step, and tile relationship stuff needs to be updated, that's another. 
+
+I think stats will be a little more straight-forward? Perhaps. 
+
+1123 so I'm doing tiles. In part too because I don't remember much details of tile relationships right now. 
+
+1125 So what is a tile relationship? It is the relationship between a character and a tile. 
+
+There is knowledge that a character can have about a tile, and that is generally:
+- how many cards of each type remain
+
+```
+class DeckKnowledge {
+	constructor() {
+		this.available = null;
+		this.cardsRemaining = null;
+		this.deckSize = null;
+	}
+}```
+
+that's specifically knowledge about each of the decks. 
+
+and then it's the collection of scores:
+ - `calculateCapacityScore(character)`
+ - `calculateEnergyScore(character)`
+ - `calculateGearScore(character)`
+ - `calculateHealthScore(character)`
+ - `calculateSatietyScore(character)`
+
+All of those combine together to make a tile score
+
+If the tile score > 1, the character wants to go towards it. If the tile score < 1, the character wants to avoid it. 
+
+Perhaps if the score is 2+ the character _must_ go towards it and if the party doesn't they will part ways. And similarly, if 0-, the party will never go there. But that is not necessarily the thing to worry about right now.
+
+So the score for each tile changes every turn and the state of the world and the character's knowledge of it changes, so for each tile we update those values. 
+
+1141 so I was only passing the character id to tile knowledge. Now that I am progressing it, I'll pass in the character and have it store what it needs, then calculate and write out all the values
+
+1145 okay, time to get other stuff done. I'm leaving off while updating how tile relationship details are calculated. Structure is going well, but it is a big refactor. 
+
+The next step is finding the places where the scores are used outside of the progress flow, so specifically what's going on is: calc capacity score fails because one of the times it is called there isn't a backpack. 
+
+So find usages of it, and find if there is a better way to get this information/make sure it is present. I might need to not set all that stuff as null, or get more than just id or something. 
+
+So yeah, keep going on that. Enjoy getting groceries!
+
+1609 so it is occuring sometime after the character is progressed, when I am working on presenting all the stats. So, the read state, which means that this stuff should be available anyway.
+
+And yes it appears to be. All the scores are set to 1 because this relationship is completely brand new I guess? It got constructed somehow but never given a character to work with. So instead of id I probably should construct tilerelationships with full characters and let the constructor do its thing? 
+
+1612 okay, constructing with character did resolve that error and the sheet layout renders again
+
+1617 capacity and health differ and don't differ in the problematic ways described above still. 
+
+1621 time to roll out pizza dough. When I get back, look into capacity calculations more. I definitely saw stuff that needed changing. But also, these values should be coming from the stored results, not being recalculated.
+
+20221121 0926 so work on pulling things from memory not calculating them. Maybe I can just comment out the calculate methods? Probably not because I use them internally. But I can search for some of them perhaps? 
+
+I'm really only using them in the class itself or in the sheet layout stuff probably but anyway I'm definitely using them as part of the decision-making flow so start working out which are and aren't pulling from the right spot. mornings aren't always high clarity
+
+0930 oh I think most external stuff is done via calculateTileRelationshipScore, all that stuff just cares about the outcome. And then the sheet, TileRelationship.svelte stuff. So updating that class and calls to that method will remove most of the repeated calculations stuff. performance isn't anyclose to an issue at this point and this is mostly being done now because it simplifies a lot of things I think but it will be nice not to have to do it later when like, 50 characters (will there ever be that many? who knows!) are being polled constantly. 
+
+anyway, so on with it then.
+
+0935 perhaps done
+
+0935 and there is a slight behaviour change! Previously the party went M-101, M0-11, M000, M-101, A-101
+
+[(M)ove and (A)dventure deck]
+
+Now they go M-101, M0-11, A0-11 which is better! but it still seems like they should want to adventure right away. Something about energy and probably still distance calculations and such such? Also energy and satiety still go really high, no upper threshold apparently. But it is nice to see this improved things a bit because I'm getting more of the character-specific stuff involved. they still don't really seem to differ much in opinion about where to go but that will come in time as more and more of these things stabilize and improve.
+
+0938 It would probably be beneficial to build a combat debugging screen or something. I'm not sure what that would look like but figure out a way to put a lot more detail of the combat into the log and then a big log screen, or something like that. 
+
+one of my earlier designs was like an overview and ways to make certain parts - especially the log - overlap other parts and maybe a 'full-screen' mode for each of the panes might be an interesting way to have specific interactions easier to get to. there'es something ruminating in there. but ultimately I need to have a better understanding of what interactions I want to support. 
