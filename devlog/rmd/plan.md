@@ -505,3 +505,21 @@ So there's only like four levels of tile knowledge, just stepping into one shoul
 
 right. 
 
+so character knowledge gets updated when the party moves... 
+
+1108 so now there's like a different kind of bug. not a bad math bug but a bad flow bug. because according to the details on the sheet, the party wants to adventure on -101 but in the game they still move. so now what is up? revisit that flow find out where something is weird? maybe something is using a calculate function somewhere, etc?
+
+1112 party pgroress scored actions and tiles have 1-10 so somewhere upstream from that
+
+1115 I guess I am seeing values after the turn, so .. I'm not sure whether or not these values are predicting the next choice or explaining the previous one. 
+
+1116 distance modifier might be out of whack. I think the sheet explains the previous one right because it's after all the progress has been done and character has been updated. 
+
+it might be interesting to see what the next value (and previous value?) will be as well. hrm hrm. Some day.
+
+or just flip through the state of the game. oohhhhhh snap that would be neat. I really am interested in seeing all this stuff. puzzling it out _might_ be interesting to other people? all depends on how it is presented. some of these numbers should be opaque, hidden in vague terms like the tile knoweldge tiers (though those are really bad names from a utility perspective)
+
+any who! distance might be wrong. it's showing 0.01 for -101 which means the fact that distance is 0 is working against it which should never be the case. I guess in real terms distance is always going to be a scale of 0.01 to 1. either the distance makes a tile worse or there is no impact. there is no distance which is better than here, basically. 
+
+distance from origin might be compelling for a character with high openness for example, or something along those lines might make a distant tile more enticing but that's a nuance that will not be implemented soon.
+

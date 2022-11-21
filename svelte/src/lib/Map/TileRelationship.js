@@ -129,11 +129,8 @@ export default class TileRelationship {
 
 	// #region Calculate Motivator Scores
 	calculateCapacityScore() {
-		console.log("TR calcCap", this);
-
 		const tileKnowledge = this.tile.getKnowledgeForLevel(this.knowledgeLevel);
 		const percentAvailable = this.backpack().availableCapacity() / this.backpack().capacity
-
 
 		const adventuringValue = this.calculateAdventuringValue(tileKnowledge);
 		const vendingValue = this.calculateVendingValue(tileKnowledge);

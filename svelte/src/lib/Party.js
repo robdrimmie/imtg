@@ -181,14 +181,14 @@ export default class Party {
 		tally.rest.score /= partyMemberVotes.length;
 		tally.vend.score /= partyMemberVotes.length;
 
-		// console.log(
-		// 	"tally preprune", 
-		// 	tally, 
-		//  	tally.adventure,
-		//  	tally.adventure.tiles, 
-		//  	tally.adventure.tiles[0], 
-		//  	tally.adventure.tiles.length
-		// )
+		console.log(
+			"tally preprune", 
+			tally, 
+		 	tally.adventure,
+		 	tally.adventure.tiles, 
+		 	tally.adventure.tiles[0], 
+		 	tally.adventure.tiles.length
+		)
 
 		// If there are no tiles suitable for the action, we don't actually want to do it!
 		if (tally.adventure.tiles.length === 0) {

@@ -108,8 +108,6 @@ export default class Character {
 	
 	progressTileRelationships() {
 		this.tileRelationships.forEach( (tileRelationship) => {
-			console.log("tR", tileRelationship)
-
 			tileRelationship.progress(this)
 		})
 	}
@@ -742,20 +740,42 @@ export default class Character {
 	// #endregion score methods
 
 	// #region Tile Relationship, movement, knowledge
+	scoutTile(tile) {
+		let relationship = this.tileRelationships.get(tile.id)
+		
+		if (relationship === undefined) {
+			// when a tile is discovered it is still unknown
+			relationship = new TileRelationship(this, tile);
+		} else {
+			// if the tile has been discovered seeing it again can add more knowledge
+			// but only to a max of tombstone level
+			if(relationship.knowledgeLevel == Tile.KNOWLEDGE_UNKNOWN) {
+				relationship.knowledgeLevel = Tile.KNOWLEDGE_TOMBSTONE
+			}
+		}
+
+		// write out relationship and return it
+		this.tileRelationships.set(tile.id, relationship);
+		return relationship;
+	}
+
 	movedIntoTile(tile, neighbours) {
+		// learn a tiny bit about neighbouring tiles
 		neighbours.forEach((neighbour) => {
-			this.tileRelationships.set(neighbour.id, this.updateRelationshipWithTile(neighbour));
+			this.tileRelationships.set(neighbour.id, this.scoutTile(neighbour));
 		});
 
+		// expend energy to move
+		const energy = this.resources.get(Attributes.RESOURCES_ENERGY);
+		energy.current--;
+		if (energy.current < 0) energy.current = 0;
+		this.resources.set(Attributes.RESOURCES_ENERGY, energy);
+
+		// move into tile
 		this.currentTile = tile;
 
-		const energy = this.resources.get(Attributes.RESOURCES_ENERGY);
-
-		energy.current--;
-
-		if (energy.current < 0) energy.current = 0;
-
-		this.resources.set(Attributes.RESOURCES_ENERGY, energy);
+		// learn more about tile
+		this.updateRelationshipWithTile(tile)
 	}
 
 	updateRelationshipWithTile(tile) {
