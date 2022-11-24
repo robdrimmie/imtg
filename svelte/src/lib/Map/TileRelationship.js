@@ -49,6 +49,10 @@ export default class TileRelationship {
 		this.currentTile = character.currentTile
 		this.paperdoll = character.paperdoll
 		this.resources = character.resources
+		
+		this.values.adventuring = this.calculateAdventuringValue()
+		this.values.resting = this.calculateRestingValue()
+		this.values.vending = this.calculateVendingValue()
 
 		this.scores.capacity = this.calculateCapacityScore()
 		this.scores.distance = this.calculateDistanceScore()
@@ -57,16 +61,13 @@ export default class TileRelationship {
 		this.scores.health = this.calculateHealthScore()
 		this.scores.satiety = this.calculateSatietyScore()
 		this.scores.overall = this.calculateOverallScore()
-
-		this.values.adventuring = this.calculateAdventuringValue()
-		this.values.resting = this.calculateRestingValue()
-		this.values.vending = this.calculateVendingValue()
 	}
 
 	score() {}
 
 	// #region Calculate Tile Values
 	calculateValue(knowledge) {
+		console.log("calculating value for knowledge and tile.id", knowledge, this.tile.id)
 		let value = 1
 
 		if (knowledge.deckSize) {
@@ -104,29 +105,36 @@ export default class TileRelationship {
 					value *= 2 * (knowledge.cardsRemaining / denominator)
 				}
 			}
+
+			console.log("after cards remaining", value)
 		}
 
 		// rmd todo I don't recall the reasoning behind this blanket increase
 		if (knowledge.available) {
 			value *= 1.25
+			console.log("knowledge is available??????", value)
 		}
 
+		console.log("returning value", value)
 		return value
 	}
 
 	calculateAdventuringValue() {
+		console.log("calculating adventuring value")
 		return this.calculateValue(
 			this.tile.getKnowledgeForLevel(this.knowledgeLevel).adventuring
 		)
 	}
 
-	calculateRestingValue(tileKnowledge) {
+	calculateRestingValue() {
+		console.log("calculate resting value")
 		return this.calculateValue(
 			this.tile.getKnowledgeForLevel(this.knowledgeLevel).resting
 		)
 	}
 
-	calculateVendingValue(tileKnowledge) {
+	calculateVendingValue() {
+		console.log("calculate vending value")
 		return this.calculateValue(
 			this.tile.getKnowledgeForLevel(this.knowledgeLevel).vending
 		)
@@ -141,8 +149,8 @@ export default class TileRelationship {
 		const tileKnowledge = this.tile.getKnowledgeForLevel(this.knowledgeLevel)
 		const percentAvailable = this.backpack().availableCapacity() / this.backpack().capacity
 
-		const adventuringValue = this.calculateAdventuringValue(tileKnowledge)
-		const vendingValue = this.calculateVendingValue(tileKnowledge)
+		const adventuringValue = this.values.adventuring
+		const vendingValue = this.values.vending
 
 		// console.log("tile and knowledge", this.tile.id, this.knowledgeLevel, tileKnowledge)
 
@@ -151,6 +159,7 @@ export default class TileRelationship {
 		// use the adventuring value. If I want to vend, just use the vending value.
 
 		const capacityScore = 2 * percentAvailable > 0.5 ? adventuringValue : vendingValue
+console.log("capacityScore, percentAvailable, adventuringValue, vendingValue", capacityScore, percentAvailable, adventuringValue, vendingValue)
 		// console.log(
 		//   "calculateCapacityScore values",
 		//   tileKnowledge,
@@ -265,8 +274,8 @@ export default class TileRelationship {
 		const characterHealth = this.resources.get(Attributes.RESOURCES_HEALTH)
 		const percentAvailable = characterHealth.current / characterHealth.base
 
-		const adventuringValue = this.calculateAdventuringValue(tileKnowledge)
-		const restingValue = this.calculateRestingValue(tileKnowledge)
+		const adventuringValue = this.values.adventuring
+		const restingValue = this.values.resting
 
 		// This is pretty heavy handed still, but basically, if I have a lot of health available
 		// adventure is good, otherwise resting is good.
@@ -331,42 +340,12 @@ export default class TileRelationship {
 	// #endregion Calculate Motivator Scores
 
 	calculateOverallScore() {
+		console.log("overall", this.tile.id, this.scores)
 		return 1 * 
 			this.scores.capacity * 
 			this.scores.energy * 
 			this.scores.gear * 
 			this.scores.health * 
 			this.scores.satiety
-	}
-
-	calculateTileRelationshipScore() {
-		// console.log("calculateTileRelationshipScore")
-
-		// const score = 1 *
-		//   this.calculateCapacityScore() *
-		//   this.calculateEnergyScore() *
-		//   this.calculateGearScore() *
-		//   this.calculateHealthScore() *
-		//   this.calculateSatietyScore()
-
-		const score =
-			(this.calculateCapacityScore() +
-				this.calculateEnergyScore() +
-				this.calculateGearScore() +
-				this.calculateHealthScore() +
-				this.calculateSatietyScore()) /
-			5
-
-		// console.log("calculateTileRelationshipScore - calculate method results",
-		//   this.tile,
-		//   this.calculateCapacityScore(),
-		//   this.calculateEnergyScore(),
-		//   this.calculateGearScore(),
-		//   this.calculateHealthScore(),
-		//   this.calculateSatietyScore(),
-		//   score
-		// )
-
-		return score
 	}
 }

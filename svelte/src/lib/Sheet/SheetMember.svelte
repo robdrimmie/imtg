@@ -26,19 +26,19 @@
     <div class="best">
         <div class="action">
             <div>adv</div>
-            <div>score {member.bestTilesForActions().adventure.score}</div>
-            <div>tile {member.bestTilesForActions().adventure.tile.id}</div>
+            <div>score {member.tiles.adventure.score}</div>
+            <div>tile {member.tiles.adventure.tile.id}</div>
         </div>
         <div class="action">
             <div>rest</div>
-            <div>score {member.bestTilesForActions().rest.score}</div>
-            <div>tile {member.bestTilesForActions().rest.tile.id}</div>                        
+            <div>score {member.tiles.rest.score}</div>
+            <div>tile {member.tiles.rest.tile.id}</div>                        
         </div>
 
         <div class="action">
             <div>vend</div>
-            <div>score {member.bestTilesForActions().vend.score}</div>
-            <div>tile {member.bestTilesForActions().vend.tile.id}</div>
+            <div>score {member.tiles.vend.score}</div>
+            <div>tile {member.tiles.vend.tile.id}</div>
         </div>
 
     </div>

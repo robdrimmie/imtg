@@ -771,4 +771,88 @@ so this needs to go in character still.
 
 1135 so the tile relationship has the "values". the value of each relationship for the different actions. So deciding the best action is a matter of seeking through the relationships and identiying the best one. that is what the best tiles stuff does, right?
 
+1142 I probably need to update the SheetLayout stuff and perhaps other places not to use those calculate methods? I guess I can see if I can find calls to them.
+
+1147 okay, searched for like, `.calculate` and such and tried replacing all those calls with the previously calculated values and yeah stuff is pretty broken right now so I need to work through the various party calculations and member votes and things and trace what I've broken. Tests would be helpful for this Rob.
+
+1150 looks like the characters' best tiles aren't getting populated properly, either the either the thing is bad or the other thing is bad. either they aren't getting written properly to begin with, or the thing that preps it for consumption isn't setting it up right so let's work up the flow.
+
+1155 hmm. tile score goes to 0 if _any_ score goes to zero - because they're all multiplied. 
+
+capacity and health are zero for the first tile beingn looked at
+
+1157 oh okay, this is very first turn, game just started. all these scores being 0 here is correct, they don't get calculated until later on. right? 
+
+then why are some of them not zero?
+
+1158 there's a _lot_ of log statements. Maybe some of it is for the sheet stuff though I wouldn't think a different route would render so probably not. Anyway, can't figure out what next turn looks like because something craps out on the way.
+
+1159 party is progressing. should it be?
+
+oh because I'm autoplaying. Interesting? yes that was it. I just needed to turn it off for things to behave the way I thought they were supposed to.
+
+So yes, the party is progressing on the second turn. it is behaving correctly in that sense. 
+
+1201 which also, I think, means that .. something something something. 
+
+1202 those things shouldn't be zero. that's what that means. probably?
+
+1202 capacity score is zero. Makes some sense since there's not really value in coming here but that means then that it should be one, shouldn't it? Because in the great back and forth of confusion in my calculations, these scores are modifiers, fundamentally. 
+
+1206 so there is absolutely zero value for adventuring because the adventuring deck is 0. That is right but I'm really going to fuck something up here probably? 
+
+I am using values as scores as well? This UGH. If I ever multiply by something it has to be that 1 is neutral. 
+
+But adventuring value should be zero here. but should that tank capacity score? Well, there isn't anything in the bags so there is no value from a capacity standpoint either. 
+
+1209 so if there is no value for an action... can there be a best tile? 
+
+1209 back up a little bit again and try again. Get rid of some of these log statements because those calculations are correct. 
+
+Party line 55 is crapping out because the party decided to do something for which there is no best tile. So why did they pick it? Why is there no good tile? 
+
+1211 Okay, the party chose to rest. That's, uh, _weird_ for the first action? But its best tiles is `[ null, null ]` so um, that's kind of the real problem right now, why are the tiles chose for _rest_ null when the score for rest is not null.  And why two of them?
+
+1214 something is off in the tallying
+
+1216 because there is no best tile for adventuring the tallying drops its score to 0. no tile, no desire.
+
+So there should be a tile for adventuring, back in with this best tile issue. Adventuring shouldn't be zero , I am only seeing it as 0 earlier because the first tile it looks at is 000 for which yes, adventuring is bad. but the partymembervotes has non-zero value for adventuring, it is 1.33 or whatever and the other two are < 1 so adventuring wins but oops there's no tile picked! 
+
+1231 stepped away to chop some shallot. 
+
+1234 okay, it doesn't break now but that is just because at least one tile will get picked now because the starting score is -1, so even if a score is 0 null won't get returned. But this is still not right I think because the party is staying still, it's not picking the best tile correctly. Maybe there isn't enough knowledge at this point? 
+
+nope, it looks at all the neighbours. so, check in on Jon then try to come back to this again. 
+
+1255 so it is looking at all the tiles and none of them are good enough. what are the values that I'm comparing? 
+
+1301 title relationship scores overall is always 0
+
+because capacity or one of those others is 0?
+
+1304 capacity is like always 0, so maybe I broke something here. 
+
+So anyway, what does capacity do? 
+
+		const capacityScore = 2 * percentAvailable > 0.5 ? adventuringValue : vendingValue
+
+1306 000 has 0 for adventuringValue and vendingValue, so no matter what capacity will be 0. 
+
+1315 okay. Capacity score relies on vending value. 
+
+1315 so maybe just an order thing. Need to do values before scores. 
+
+1318 I think that was of value, but it wasn't the only thing. It is possible I might need to progress the tile relationships on the 0th turn or something? 
+
+1318 adventure value is 0 for all tiles on the first turn. same with knowledge level.
+
+but all the scores are 1 so basically all the neighbours should be equal and have value for adventuring. but none. 
+
+
+1321 hmmmmmmmmmmmmmmmmm something has stabilized but I am not sure what. I just updated the sheet component to use the correct best tiles but that's only interface not .. like... more than that.
+
+game engine level I guess. shouldn't affect choices.
+
+1324 okay I thinkk...... things are stable? ish? 
 

@@ -42,25 +42,19 @@
 
         <div>
             adv val: {
-                relationship[1].calculateAdventuringValue(
-                    member.currentTile.getKnowledgeForLevel(relationship[1].knowledgeLevel)
-                )
+                relationship[1].values.adventuring
             }
         </div>
 
         <div>
             rest val: {
-                relationship[1].calculateRestingValue(
-                    member.currentTile.getKnowledgeForLevel(relationship[1].knowledgeLevel)
-                )
+                relationship[1].values.resting
             }
         </div>
 
         <div>
             vend val: {
-                relationship[1].calculateVendingValue(
-                    member.currentTile.getKnowledgeForLevel(relationship[1].knowledgeLevel)
-                )
+                relationship[1].values.vending
             }
         </div>
 

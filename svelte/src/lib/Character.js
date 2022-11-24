@@ -725,7 +725,7 @@ export default class Character {
 	// #region score methods
 	scoreActionsAndTiles() {
 		const actionScores = new Map();
-
+console.log("scoreA.., this.desires, this.tiles", this.desires, this.tiles)
 		actionScores.set('adventure', {
 			score: this.desires.adventuring,
 			tile: this.tiles.adventure.tile
@@ -745,26 +745,27 @@ export default class Character {
 	}
 
 	bestTilesForActions() {
+		console.log(`finding best tiles for ${this.name}`)
 		let bestTiles = {
 			adventure: {
-				score: 0,
+				score: -1,
 				tile: null
 			},
 
 			rest: {
-				score: 0,
+				score: -1,
 				tile: null
 			},
 
 			vend: {
-				score: 0,
+				score: -1,
 				tile: null
 			}
 		};
 
 		// find the best tiles for each type of action based on this character's knowledge
 		this.tileRelationships.forEach((tileRelationship, key, map) => {
-			Logger.info(`Finding best tile for ${tileRelationship.tile.id}`)
+			console.debug(`Considering tile with ID ${tileRelationship.tile.id}`)
 			const tileUnderConsideration = tileRelationship.tile
 
 			// Dampen the score based on the distance
@@ -773,14 +774,12 @@ export default class Character {
 
 			// Get base the tile relationship score, dampened by distance
 			const tileRelationshipScore = tileRelationship.scores.overall * distanceDampener
-	
-			// const tileKnowledge = tileUnderConsideration.getKnowledgeForLevel(
-			// 	tileRelationship.knowledgeLevel
-			// )
-
+console.log("scores", tileRelationshipScore, tileRelationship.scores.overall, distanceDampener)
 			const tileScoreForAdventuring = tileRelationshipScore * tileRelationship.values.adventuring
 			const tileScoreForResting = tileRelationshipScore * tileRelationship.values.resting
 			const tileScoreForVending = tileRelationshipScore * tileRelationship.values.vending;
+
+console.log("here", tileScoreForAdventuring, tileRelationshipScore, tileRelationship.values, bestTiles.adventure.score, bestTiles.adventure.tile, tileScoreForAdventuring > bestTiles.adventure.score)
 
 			// update best tiles
 			if (tileScoreForAdventuring > bestTiles.adventure.score) {

@@ -133,7 +133,7 @@ export default class Party {
 			partyMemberVotes[memberIndex] = member.scoreActionsAndTiles();
 		}
 
-		// console.log("scoreActionsAndTiles partyMemberVotes", partyMemberVotes)
+		console.log("scoreActionsAndTiles partyMemberVotes", partyMemberVotes)
 
 		const tally = {
 			adventure: {
@@ -194,15 +194,15 @@ export default class Party {
 		if (tally.adventure.tiles.length === 0) {
 			tally.adventure.score = 0;
 		}
-
+		
 		if (tally.rest.tiles.length === 0) {
 			tally.rest.score = 0;
 		}
-
+		
 		if (tally.vend.tiles.length === 0) {
 			tally.vend.score = 0;
 		}
-
+			console.log ("after tally", tally.adventure.score, tally.rest.score, tally.vend.score)
 		return tally;
 	}
 	// #endregion Action and Tile Selection
