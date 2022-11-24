@@ -714,3 +714,45 @@ build an array of some sort.
 0911 lol right now they are too bad at fights to win and have depleted any close tiles and still each have 2 open inventory slots so right now will never drop stuff off. 
 
 0917 so the interface isn't reactive right now and I'm pretty sure it is because the flitting does not force the update of the underlying stats. I'm not 100% sure that's the thing but I think so. 
+
+0925 I think that might be progressAttributes done. Next is having that reflected. I guess it's just getATtribute that needs updating? 
+
+0929 I do think that was it. The party now is good enough to beat some enemies and get some items but with 0 capacity they aren't really getting far. 
+
+0930 or rather, they are going _too_ far. they aren't droppingn things off. that's around turn 96 at present. 
+
+0933 vend value for 000 is 0. That definitely is not right. 
+
+0934 might be too far away? tile relationship score 
+
+```
+tileid: 000
+
+    capacity
+    4.375
+    distance
+    0.2
+    nrg
+    0.18000000000000002
+    ger
+    1
+    hth
+    0
+    sat
+    8
+
+knowledge level: 4
+adv val: 3.125
+rest val: 3.125
+vend val: 0
+```
+
+these values are messed up. Not the values - capacity etc - but the adventure value? for 000 should never not be 0, that's a terrible place for adventures. And vend value for 000 especially should never happen too
+
+those values aren't written out are they? 
+
+0940 that should be part of updating the relationship, writing out a `values` object with adventuring, resting and vending vlaues. 
+
+that happens in scoreactionsandtiles. So should score actions and tiles be part of updating tile relationships? I mean, probably?
+
+0951 yeah that happens. also should update best tiles when doing the values. 

@@ -94,27 +94,6 @@ export default class Character {
 
 	// #region progress
 	progressAttributes() {
-
-
-		// this.personality
-		// this.physicality
-		// this.resources
-
-		// reset all attributes
-		// this.personality.forEach(attr => {
-		// 	attr.current = attr.base
-		// 	attr.apparent = attr.base
-		// })
-		// this.physicality.forEach(attr => {
-		// 	attr.current = attr.base
-		// 	attr.apparent = attr.base
-		// })
-		// this.resources.forEach(attr => {
-		// 	attr.current = attr.base
-		// 	attr.apparent = attr.base
-		// })
-
-		// probably delete the comments above this
 		Logger.debug('Progressing attributes')
 
 		const slots = [
@@ -166,7 +145,7 @@ export default class Character {
 			Logger.info('Items modified ${attribute.name}.')
 			Logger.info(`  ${attribute.base} * ${modifier} = ${attribute.apparent}`)
 			Logger.info(`  ${attribute.apparent} - ${woundTotal} = ${attribute.current}`)
-			 
+
 			trait.set(
 				attributeConstant,
 				attribute
@@ -302,7 +281,7 @@ export default class Character {
 		}
 
 		// console.log("INSIDE GETATTRIBUTE")
-		const modifier = this.getItemModifierForAttribute(attributeToGet)
+		// const modifier = this.getItemModifierForAttribute(attributeToGet)
 
 		// console.log("getAttribute - modifier", 
 		// 	modifier,
@@ -311,18 +290,18 @@ export default class Character {
 		// 	(attribute.base * modifier) - attribute.base
 		// )
 
-		const attributeDelta = Math.round((attribute.base * modifier) - attribute.base)
+		// const attributeDelta = Math.round((attribute.base * modifier) - attribute.base)
 
-		const apparentAttribute = new Attributes(attribute.name, attribute.base, attribute.label)
+		// const apparentAttribute = new Attributes(attribute.name, attribute.base, attribute.label)
 	// console.log(" ---- ", attribute.current, attributeDelta)
 		// maybe add as a third property, attribute.apparent
-		apparentAttribute.current = attribute.current + attributeDelta
+		// apparentAttribute.current = attribute.current + attributeDelta
 
 		// console.log("getAttribute - returning attribute", attribute, attributeDelta, apparentAttribute)
 		// Today I think that the base value should not be modified. 12/10 health looks good and reveals the value of the modifier
 		// attribute.base *= modifier
 
-		return apparentAttribute;
+		return attribute;
 	}
 
 	getTrait(traitToGet) {
@@ -758,30 +737,26 @@ export default class Character {
 			}
 		};
 
-		let tileScores = [];
-
 		// find the best tiles for each type of action based on this character's knowledge
 		this.tileRelationships.forEach((tileRelationship, key, map) => {
+			Logger.info(`Finding best tile for ${tileRelationship.tile.id}`)
 			const tileUnderConsideration = tileRelationship.tile
-// console.log(`${this.name} considering ${tileUnderConsideration.id}`)
+
 			// Dampen the score based on the distance
 			const tileDistance = this.currentTile.distanceFromTile(tileUnderConsideration)
 			const distanceDampener = 1 - tileDistance * 0.1
 
 			// Get base the tile relationship score, dampened by distance
 			const tileRelationshipScore = tileRelationship.scores.overall * distanceDampener
-// console.log("distanceDampener", distanceDampener, tileRelationshipScore)			
+	
 			const tileKnowledge = tileUnderConsideration.getKnowledgeForLevel(
 				tileRelationship.knowledgeLevel
 			)
 
-			const tileScoreForAdventuring =
-				tileRelationshipScore * tileRelationship.calculateAdventuringValue(tileKnowledge);
-			const tileScoreForResting =
-				tileRelationshipScore * tileRelationship.calculateRestingValue(tileKnowledge);
-			const tileScoreForVending =
-				tileRelationshipScore * tileRelationship.calculateVendingValue(tileKnowledge);
-// console.log("tileScoreForAdventuring, tileScoreForResting, tileScoreForVending", tileScoreForAdventuring, tileScoreForResting, tileScoreForVending)
+			const tileScoreForAdventuring = tileRelationshipScore * tileRelationship.values.adventuring
+			const tileScoreForResting = tileRelationshipScore * tileRelationship.values.resting
+			const tileScoreForVending = tileRelationshipScore * tileRelationship.values.vending;
+
 			// update best tiles
 			if (tileScoreForAdventuring > bestTiles.adventure.score) {
 				bestTiles.adventure = {
@@ -803,16 +778,6 @@ export default class Character {
 					tile: tileUnderConsideration
 				};
 			}
-
-			// add to collection of all scores, which isn't used but might be useful
-			const tileActionScores = {
-				tile: tileUnderConsideration,
-				adventure: tileScoreForAdventuring,
-				rest: tileScoreForResting,
-				vend: tileScoreForVending
-			};
-
-			tileScores.push(tileActionScores);
 		});
 
 		return bestTiles;

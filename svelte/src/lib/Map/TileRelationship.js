@@ -23,6 +23,7 @@ export default class TileRelationship {
 
 		this.knowledgeLevel = Tile.KNOWLEDGE_UNKNOWN
 
+		// Scores are modifiers, so 1 is neutral
 		this.scores = {
 			capacity: 1,
 			distance: 1,
@@ -32,6 +33,13 @@ export default class TileRelationship {
 			satiety: 1,
 
 			overall: 1
+		}
+
+		// Values are absolute, so 0 is a baseline
+		this.values = {
+			adventuring: 0,
+			resting: 0,
+			vending: 0
 		}
 	}
 
@@ -49,6 +57,10 @@ export default class TileRelationship {
 		this.scores.health = this.calculateHealthScore()
 		this.scores.satiety = this.calculateSatietyScore()
 		this.scores.overall = this.calculateOverallScore()
+
+		this.values.adventuring = this.calculateAdventuringValue()
+		this.values.resting = this.calculateRestingValue()
+		this.values.vending = this.calculateVendingValue()
 	}
 
 	score() {}
@@ -102,21 +114,22 @@ export default class TileRelationship {
 		return value
 	}
 
-	calculateAdventuringValue(tileKnowledge) {
-		return this.calculateValue(tileKnowledge.adventuring)
-	}
-
-	calculateForagingValue(tileKnowledge) {
-		return this.calculateValue(tileKnowledge.foraging)
+	calculateAdventuringValue() {
+		return this.calculateValue(
+			this.tile.getKnowledgeForLevel(this.knowledgeLevel).adventuring
+		)
 	}
 
 	calculateRestingValue(tileKnowledge) {
-		return this.calculateValue(tileKnowledge.resting)
+		return this.calculateValue(
+			this.tile.getKnowledgeForLevel(this.knowledgeLevel).resting
+		)
 	}
 
 	calculateVendingValue(tileKnowledge) {
-		// console.log("CALCULATE VENDING")
-		return this.calculateValue(tileKnowledge.vending)
+		return this.calculateValue(
+			this.tile.getKnowledgeForLevel(this.knowledgeLevel).vending
+		)
 	}
 	// #endregion Calculate Tile Values
 
