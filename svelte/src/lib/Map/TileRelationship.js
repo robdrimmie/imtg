@@ -67,7 +67,7 @@ export default class TileRelationship {
 
 	// #region Calculate Tile Values
 	calculateValue(knowledge) {
-		console.log("calculating value for knowledge and tile.id", knowledge, this.tile.id)
+		// console.log("calculating value for knowledge and tile.id", knowledge, this.tile.id)
 		let value = 1
 
 		if (knowledge.deckSize) {
@@ -105,36 +105,29 @@ export default class TileRelationship {
 					value *= 2 * (knowledge.cardsRemaining / denominator)
 				}
 			}
-
-			console.log("after cards remaining", value)
 		}
 
 		// rmd todo I don't recall the reasoning behind this blanket increase
 		if (knowledge.available) {
 			value *= 1.25
-			console.log("knowledge is available??????", value)
 		}
 
-		console.log("returning value", value)
 		return value
 	}
 
 	calculateAdventuringValue() {
-		console.log("calculating adventuring value")
 		return this.calculateValue(
 			this.tile.getKnowledgeForLevel(this.knowledgeLevel).adventuring
 		)
 	}
 
 	calculateRestingValue() {
-		console.log("calculate resting value")
 		return this.calculateValue(
 			this.tile.getKnowledgeForLevel(this.knowledgeLevel).resting
 		)
 	}
 
 	calculateVendingValue() {
-		console.log("calculate vending value")
 		return this.calculateValue(
 			this.tile.getKnowledgeForLevel(this.knowledgeLevel).vending
 		)
@@ -146,28 +139,16 @@ export default class TileRelationship {
 
 	// #region Calculate Motivator Scores
 	calculateCapacityScore() {
-		const tileKnowledge = this.tile.getKnowledgeForLevel(this.knowledgeLevel)
 		const percentAvailable = this.backpack().availableCapacity() / this.backpack().capacity
-
 		const adventuringValue = this.values.adventuring
 		const vendingValue = this.values.vending
-
-		// console.log("tile and knowledge", this.tile.id, this.knowledgeLevel, tileKnowledge)
 
 		// rmd todo improved capacity calcuation
 		// This is pretty heavy handed still, but basically, if I want to adventure just
 		// use the adventuring value. If I want to vend, just use the vending value.
 
 		const capacityScore = 2 * percentAvailable > 0.5 ? adventuringValue : vendingValue
-console.log("capacityScore, percentAvailable, adventuringValue, vendingValue", capacityScore, percentAvailable, adventuringValue, vendingValue)
-		// console.log(
-		//   "calculateCapacityScore values",
-		//   tileKnowledge,
-		//   percentAvailable,
-		//   adventuringValue,
-		//   vendingValue,
-		//   capacityScore
-		// )
+		// console.log("capacityScore, percentAvailable, adventuringValue, vendingValue", capacityScore, percentAvailable, adventuringValue, vendingValue)
 
 		return capacityScore
 	}
@@ -340,7 +321,6 @@ console.log("capacityScore, percentAvailable, adventuringValue, vendingValue", c
 	// #endregion Calculate Motivator Scores
 
 	calculateOverallScore() {
-		console.log("overall", this.tile.id, this.scores)
 		return 1 * 
 			this.scores.capacity * 
 			this.scores.energy * 

@@ -309,27 +309,6 @@ export default class Character {
 			attribute = this.resources.get(attributeToGet)
 		}
 
-		// console.log("INSIDE GETATTRIBUTE")
-		// const modifier = this.getItemModifierForAttribute(attributeToGet)
-
-		// console.log("getAttribute - modifier", 
-		// 	modifier,
-		// 	attribute, 
-		// 	attribute.base - (attribute.base * modifier),
-		// 	(attribute.base * modifier) - attribute.base
-		// )
-
-		// const attributeDelta = Math.round((attribute.base * modifier) - attribute.base)
-
-		// const apparentAttribute = new Attributes(attribute.name, attribute.base, attribute.label)
-	// console.log(" ---- ", attribute.current, attributeDelta)
-		// maybe add as a third property, attribute.apparent
-		// apparentAttribute.current = attribute.current + attributeDelta
-
-		// console.log("getAttribute - returning attribute", attribute, attributeDelta, apparentAttribute)
-		// Today I think that the base value should not be modified. 12/10 health looks good and reveals the value of the modifier
-		// attribute.base *= modifier
-
 		return attribute;
 	}
 
@@ -356,7 +335,6 @@ export default class Character {
 	}
 
 	getHealth() {
-		// console.log("CHARACTER GETHEALTH CALLED", this.getAttribute(Attributes.RESOURCES_HEALTH))
 		return this.getAttribute(Attributes.RESOURCES_HEALTH)
 	}
 
@@ -498,17 +476,6 @@ export default class Character {
 		// an a * b * c type thing
 		const accumulatedModifier = items.reduce(
 			(accumulatingModifier, currentItem) => {
-				// console.log("accumulatingModifer, currentItem, passiveModifier, existance", 
-				// 	accumulatingModifier, 
-				// 	currentItem, 
-				// 	currentItem.passiveModifier, 
-				// 	(
-				// 		currentItem.passiveModifier
-				// 		? "IT EXISTS"
-				// 		: "IT DOES NOT EXIST"
-				// 	)
-				// )
-
 				return accumulatingModifier * (
 					currentItem.passiveModifier
 					? currentItem.passiveModifier()
@@ -725,7 +692,7 @@ export default class Character {
 	// #region score methods
 	scoreActionsAndTiles() {
 		const actionScores = new Map();
-console.log("scoreA.., this.desires, this.tiles", this.desires, this.tiles)
+
 		actionScores.set('adventure', {
 			score: this.desires.adventuring,
 			tile: this.tiles.adventure.tile
@@ -745,7 +712,6 @@ console.log("scoreA.., this.desires, this.tiles", this.desires, this.tiles)
 	}
 
 	bestTilesForActions() {
-		console.log(`finding best tiles for ${this.name}`)
 		let bestTiles = {
 			adventure: {
 				score: -1,
@@ -765,8 +731,8 @@ console.log("scoreA.., this.desires, this.tiles", this.desires, this.tiles)
 
 		// find the best tiles for each type of action based on this character's knowledge
 		this.tileRelationships.forEach((tileRelationship, key, map) => {
-			console.debug(`Considering tile with ID ${tileRelationship.tile.id}`)
 			const tileUnderConsideration = tileRelationship.tile
+			// console.log(`Considering tile with ID ${tileUnderConsideration.id}`)
 
 			// Dampen the score based on the distance
 			const tileDistance = this.currentTile.distanceFromTile(tileUnderConsideration)
@@ -774,12 +740,13 @@ console.log("scoreA.., this.desires, this.tiles", this.desires, this.tiles)
 
 			// Get base the tile relationship score, dampened by distance
 			const tileRelationshipScore = tileRelationship.scores.overall * distanceDampener
-console.log("scores", tileRelationshipScore, tileRelationship.scores.overall, distanceDampener)
+			// console.log("scores", tileRelationshipScore, tileRelationship.scores.overall, distanceDampener)
+
 			const tileScoreForAdventuring = tileRelationshipScore * tileRelationship.values.adventuring
 			const tileScoreForResting = tileRelationshipScore * tileRelationship.values.resting
 			const tileScoreForVending = tileRelationshipScore * tileRelationship.values.vending;
 
-console.log("here", tileScoreForAdventuring, tileRelationshipScore, tileRelationship.values, bestTiles.adventure.score, bestTiles.adventure.tile, tileScoreForAdventuring > bestTiles.adventure.score)
+			// console.log("here", tileScoreForAdventuring, tileRelationshipScore, tileRelationship.values, bestTiles.adventure.score, bestTiles.adventure.tile, tileScoreForAdventuring > bestTiles.adventure.score)
 
 			// update best tiles
 			if (tileScoreForAdventuring > bestTiles.adventure.score) {
@@ -886,10 +853,10 @@ console.log("here", tileScoreForAdventuring, tileRelationshipScore, tileRelation
 	}
 
 	testAttributes(attributesToTest, roll = Dice.d100()) {
-		console.log("Character testAttributes", attributesToTest, roll)
+		// console.log("Character testAttributes", attributesToTest, roll)
 		const attributesSum = attributesToTest.reduce(
 			(prev, curr) => {
-				console.log("test attributes sum", prev, curr, this.getCurrentAttribute(curr))
+				// console.log("test attributes sum", prev, curr, this.getCurrentAttribute(curr))
 
 
 				return prev + this.getCurrentAttribute(curr)

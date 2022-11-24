@@ -44,12 +44,8 @@ export default class Party {
 			this.membersInCharacters(characters)
 		);
 
-		console.log("Party progress - scoredActionsAndTiles", scoredActionsAndTiles)
-
 		// Figure out the best tile for that action
 		const { selectedAction, selectedTile } = this.chooseActionAndTile(scoredActionsAndTiles);
-
-		console.log("Party progress scoredActionsAndTiles, selectedAction, selectedTile", scoredActionsAndTiles, selectedAction, selectedTile)
 
 		// If there already, do it!
 		if (this.tile.id === selectedTile.id) {
@@ -133,7 +129,7 @@ export default class Party {
 			partyMemberVotes[memberIndex] = member.scoreActionsAndTiles();
 		}
 
-		console.log("scoreActionsAndTiles partyMemberVotes", partyMemberVotes)
+		// console.log("scoreActionsAndTiles partyMemberVotes", partyMemberVotes)
 
 		const tally = {
 			adventure: {
@@ -181,14 +177,14 @@ export default class Party {
 		tally.rest.score /= partyMemberVotes.length;
 		tally.vend.score /= partyMemberVotes.length;
 
-		console.log(
-			"tally preprune", 
-			tally, 
-		 	tally.adventure,
-		 	tally.adventure.tiles, 
-		 	tally.adventure.tiles[0], 
-		 	tally.adventure.tiles.length
-		)
+		// console.log(
+		// 	"tally preprune", 
+		// 	tally, 
+		//  	tally.adventure,
+		//  	tally.adventure.tiles, 
+		//  	tally.adventure.tiles[0], 
+		//  	tally.adventure.tiles.length
+		// )
 
 		// If there are no tiles suitable for the action, we don't actually want to do it!
 		if (tally.adventure.tiles.length === 0) {
@@ -202,7 +198,8 @@ export default class Party {
 		if (tally.vend.tiles.length === 0) {
 			tally.vend.score = 0;
 		}
-			console.log ("after tally", tally.adventure.score, tally.rest.score, tally.vend.score)
+
+		// console.log ("tally postprune", tally.adventure.score, tally.rest.score, tally.vend.score)
 		return tally;
 	}
 	// #endregion Action and Tile Selection
@@ -228,12 +225,10 @@ export default class Party {
 				// xor with 1 to toggle: https://stackoverflow.com/questions/2411023/most-elegant-way-to-change-0-to-1-and-vice-versa
 				chosenDirectionIndex ^= 1;
 				chosenDirection = directions[chosenDirectionIndex];
-				console.log('using other direction');
 			} else {
 				// only one preferred direction was discovered but it is blocked
 				// try going to one of the neighbours in basically the same direction
 				directions = chosenDirection.forks();
-				console.log('found forks directions', directions);
 
 				// pick one of the forks
 				chosenDirectionIndex = Dice.roll(directions.length) - 1;
@@ -244,8 +239,6 @@ export default class Party {
 			}
 
 			destinationTile = Tile.findTileForHex(Hex.add(chosenDirection, this.tile.hex), board.tiles);
-
-			console.log(directions, destinationTile);
 		}
 
 		const move = new Move(
