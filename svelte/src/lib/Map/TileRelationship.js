@@ -249,9 +249,8 @@ export default class TileRelationship {
 
 	// RMD TODO improve calculate health score
 	// can get a lot more nuanced here, get a bit of a curve that plateaus around 90 or something.
-	// but anyway
+	// but anyway.
 	calculateHealthScore() {
-		const tileKnowledge = this.tile.getKnowledgeForLevel(this.knowledgeLevel)
 		const characterHealth = this.resources.get(Attributes.RESOURCES_HEALTH)
 		const percentAvailable = characterHealth.current / characterHealth.base
 
@@ -259,9 +258,9 @@ export default class TileRelationship {
 		const restingValue = this.values.resting
 
 		// This is pretty heavy handed still, but basically, if I have a lot of health available
-		// adventure is good, otherwise resting is good.
+		// then do whatever (neutral multiplier), otherwise rest.
 
-		const healthScore = percentAvailable > 0.5 ? adventuringValue : restingValue
+		const healthScore = percentAvailable > 0.5 ? 1 : restingValue
 
 		// console.log(
 		//   "calculateCapacityScore values",

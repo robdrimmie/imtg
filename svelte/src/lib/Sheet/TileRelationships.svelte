@@ -31,6 +31,7 @@
                     <li><div>ger</div> <div>{relationship[1].scores.gear}</div></li>
                     <li><div>hth</div> <div>{relationship[1].scores.health}</div></li>
                     <li><div>sat</div> <div>{relationship[1].scores.satiety}</div></li>
+                    <li><div>overall</div> <div>{relationship[1].scores.overall}</div></li>
                 </ul>
             </div>
             {/if}

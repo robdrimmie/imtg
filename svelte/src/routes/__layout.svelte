@@ -117,8 +117,8 @@
 			let turn = 0;
 			// autopilot setting here
 			// CHANGE THIS VALUE TO AUTOPLAY
-			// > 220 - 230ish - game is won
-			const autoplayToTurn = 0;
+			// > 220 - 230ish - game is won last I tried
+			const autoplayToTurn = 85;
 			
 			Logger.info(`auto playing to turn ${autoplayToTurn}...`)
 			while (turn < autoplayToTurn) {

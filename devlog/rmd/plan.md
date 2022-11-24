@@ -856,3 +856,42 @@ game engine level I guess. shouldn't affect choices.
 
 1324 okay I thinkk...... things are stable? ish? 
 
+1330 the party still does not want to drop off their gear though
+
+1330 there should never be a best tile for vend that _isn't_ 000 at this opint. That's the _only_ tile for vend.
+
+Am I putting cards into other tiles? 
+
+1332 so the characters may not know the tiles well enough to know that there are no cards. 
+Also the characters should _really_ want to vend. 
+
+1341
+```
+venture: 1.3310000000000004 -413
+rest: 0.7290000000000001 -413
+vend: 2 -413
+```
+
+and they do. but they pick a crappy tile for it. 
+
+404 distance is like .5 where 000 is .2 
+
+1407 got dressed. need to take Harvey to eye appointment at like 2:40. 
+
+1415 okay, so I don't need to autoplay to see weird vend values. Vend should be 0 for any other tile and I see it as 1 in some places.
+
+because it is not known that they're no good for vending. That's the big factor probably. Any new tile could be _fine_ for vending, but then as they get explored over time their thing drops from 1 to 0. Which is fine. 
+
+1417 so maybe I do need to autoplay but it is so hard to wrap my head around all the values and properties of everything. 
+
+so -404 or -413 and such they 
+
+1419 they what? they get a score of 1 and then the distance dampener affects it? 
+
+Vending is important. If one doesn't _know_ vending is available ... I don't know. I don't want to do exceptions but at some point the tile choice for vending is higher than 000 and I guess I keep poking at that situation. 
+
+1426 health score for 000 is 0 at turn 85 or wherever I am.
+
+1429 `const healthScore = percentAvailable > 0.5 ? adventuringValue : restingValue`
+
+so if the character is health they adventure but 000 is no good for adventuring so it gets a health score of 0. But really it shouldn't matter. If the character is healthy do whatever - should be 1. Otherwise, rest. 
