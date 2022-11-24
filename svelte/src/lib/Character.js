@@ -154,21 +154,23 @@ export default class Character {
 			const attribute = trait.get(attributeConstant)
 
 			// > apparent might be base modified by passives and current is apparent modified by wounds.
-			let apparent = attribute.base * modifier
-			let current = apparent - attribute.wounds.reduce( (prev, cur) => {
+			const apparent = attribute.base * modifier
+			const woundTotal = attribute.wounds.reduce( (prev, cur) => {
 				return prev + cur
 			}, 0)
+			const current = apparent - woundTotal
 
 			attribute.apparent = apparent
 			attribute.current = current
-			
-			console.log(attribute, apparent, current)
+
+			Logger.info('Items modified ${attribute.name}.')
+			Logger.info(`  ${attribute.base} * ${modifier} = ${attribute.apparent}`)
+			Logger.info(`  ${attribute.apparent} - ${woundTotal} = ${attribute.current}`)
+			 
 			trait.set(
 				attributeConstant,
 				attribute
 			)
-
-			console.log("trait", trait)
 		})
 	}
 	
