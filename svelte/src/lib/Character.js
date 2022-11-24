@@ -108,13 +108,19 @@ export default class Character {
 	// #region progress
 	progressAttributes() {
 		Logger.debug('Progressing attributes')
-console.log("this.physicality", this.physicality)
+
 		// reset all traits to baseline
 		this.physicality.forEach( attribute => {
 			attribute.apparent = attribute.base
 			attribute.current = attribute.apparent
-
-			// this.physicality
+		})
+		this.personality.forEach( attribute => {
+			attribute.apparent = attribute.base
+			attribute.current = attribute.apparent
+		})
+		this.resources.forEach( attribute => {
+			attribute.apparent = attribute.base
+			attribute.current = attribute.apparent
 		})
 
 		const slots = [
@@ -316,7 +322,7 @@ console.log("this.physicality", this.physicality)
 		if(traitConstant == Attributes.TRAIT_RESOURCES) {
 			attribute = this.resources.get(attributeToGet)
 		}
-
+console.log("got attribute", attribute)
 		return attribute;
 	}
 

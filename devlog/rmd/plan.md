@@ -920,3 +920,10 @@ wounds and buffs might be the same thing. It's an interesting model.
 
 
 ah, was assigned `base` to current, instaed of attribute.base
+
+1559 okay, equiping and unequipping items has a visual impact. good stuff so far. 
+
+1607 so what is up with energy and satiety scores? 
+
+1611 okay, so reseting resources to base appaears to have cleared that up a bit. I wasn't properly doing that so the calculations weren't going to show up and resting just like, kept going over the top however it was that worked.
+
