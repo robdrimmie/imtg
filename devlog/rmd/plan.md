@@ -756,3 +756,19 @@ those values aren't written out are they?
 that happens in scoreactionsandtiles. So should score actions and tiles be part of updating tile relationships? I mean, probably?
 
 0951 yeah that happens. also should update best tiles when doing the values. 
+
+0956 about to go put a hook in the bathroom. What comes next, I think, is caching the best tile values in the tile relationship's `values` object. I'm not sure exactly what that looks like but bringing the whole thing over into the relationship triggered by progress is the right start. 
+
+after that, update charater's decision making to come from the cached values. This is a big overhaul but I think it is going to simplify so very much. this feels like a really strong architectural change. Sure hope that isn't ironic forshadowing for whichever future entity is reading this!
+
+1125 some hooks have been installed. Not digital ones, physical ones, from which hang plants. 
+
+1125 so a big overhaul to.. best tile values. 
+
+1127 ohhhhhh wait. the best tile should _not_ be part of the tile relationship. Hmm. Yes, because there's a good chance it won't be that tilerelationship.
+
+so this needs to go in character still.
+
+1135 so the tile relationship has the "values". the value of each relationship for the different actions. So deciding the best action is a matter of seeking through the relationships and identiying the best one. that is what the best tiles stuff does, right?
+
+

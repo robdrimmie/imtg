@@ -78,7 +78,13 @@ export default class Character {
 		this.resources = props.resources ? props.resources : this.startingResources();
 
 		this.currentTile = props.currentTile ? props.currentTile : originTile;
-	
+
+		this.tiles = props.tiles ? props.tiles :  {
+			adventuring: this.currentTile,
+			resting: this.currentTile,
+			vending: this.currentTile
+		}
+			
 		if (props.tileRelationships) {
 			this.tileRelationships = props.tileRelationships;
 		} else {
@@ -89,6 +95,13 @@ export default class Character {
 
 			originRelationship.knowledgeLevel = Tile.KNOWLEDGE_EXPERIENCED;
 			this.tileRelationships.set(originTile.id, originRelationship);
+		}
+
+		// desires are absolute, so 0 is a baseline
+		this.desires = {
+			adventuring: 0,
+			resting: 0,
+			vending: 0
 		}
 	}
 
@@ -153,6 +166,16 @@ export default class Character {
 		})
 	}
 	
+	progressBestTiles() {
+		this.tiles = this.bestTilesForActions()
+	}
+
+	progressDesires() {
+		this.desires.adventuring = this.calculateAdventuringDesire()
+		this.desires.resting = this.calculateRestingDesire()
+		this.desires.vending = this.calculateVendingDesire()
+	}
+
 	progress() {
 		Logger.debug(`Progressing ${this.name}...`)
 		
@@ -162,6 +185,12 @@ export default class Character {
 		// update tile relationships
 		this.progressTileRelationships()
 
+		// pick the best tiles for each action
+		this.progressBestTiles()
+
+		this.progressDesires()
+
+		// choose the character's preferred action
 		Logger.debug(`Finished progressing ${this.name}.`)
 	}
 	
@@ -695,25 +724,21 @@ export default class Character {
 
 	// #region score methods
 	scoreActionsAndTiles() {
-		// how much does this character want to choose adventuring?
-		// if they know adventuring is not available, then 0 much.
 		const actionScores = new Map();
 
-		const bestTiles = this.bestTilesForActions();
-
 		actionScores.set('adventure', {
-			score: this.calculateAdventuringDesire(),
-			tile: bestTiles.adventure.tile
+			score: this.desires.adventuring,
+			tile: this.tiles.adventure.tile
 		});
 
 		actionScores.set('rest', {
-			score: this.calculateRestingDesire(),
-			tile: bestTiles.rest.tile
+			score: this.desires.resting,
+			tile: this.tiles.rest.tile
 		});
 
 		actionScores.set('vend', {
-			score: this.calculateVendingDesire(),
-			tile: bestTiles.vend.tile
+			score: this.desires.vending,
+			tile: this.tiles.vend.tile
 		});
 
 		return actionScores;
@@ -749,9 +774,9 @@ export default class Character {
 			// Get base the tile relationship score, dampened by distance
 			const tileRelationshipScore = tileRelationship.scores.overall * distanceDampener
 	
-			const tileKnowledge = tileUnderConsideration.getKnowledgeForLevel(
-				tileRelationship.knowledgeLevel
-			)
+			// const tileKnowledge = tileUnderConsideration.getKnowledgeForLevel(
+			// 	tileRelationship.knowledgeLevel
+			// )
 
 			const tileScoreForAdventuring = tileRelationshipScore * tileRelationship.values.adventuring
 			const tileScoreForResting = tileRelationshipScore * tileRelationship.values.resting
