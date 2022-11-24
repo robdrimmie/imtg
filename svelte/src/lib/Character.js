@@ -108,6 +108,14 @@ export default class Character {
 	// #region progress
 	progressAttributes() {
 		Logger.debug('Progressing attributes')
+console.log("this.physicality", this.physicality)
+		// reset all traits to baseline
+		this.physicality.forEach( attribute => {
+			attribute.apparent = attribute.base
+			attribute.current = attribute.apparent
+
+			// this.physicality
+		})
 
 		const slots = [
 			Paperdoll.DOLL_SLOT_HEAD,
@@ -155,7 +163,7 @@ export default class Character {
 			attribute.apparent = apparent
 			attribute.current = current
 
-			Logger.info('Items modified ${attribute.name}.')
+			Logger.info(`Items modified ${attribute.name}.`)
 			Logger.info(`  ${attribute.base} * ${modifier} = ${attribute.apparent}`)
 			Logger.info(`  ${attribute.apparent} - ${woundTotal} = ${attribute.current}`)
 
@@ -732,7 +740,7 @@ export default class Character {
 		// find the best tiles for each type of action based on this character's knowledge
 		this.tileRelationships.forEach((tileRelationship, key, map) => {
 			const tileUnderConsideration = tileRelationship.tile
-			console.log(`Considering tile with ID ${tileUnderConsideration.id}`)
+			// console.log(`Considering tile with ID ${tileUnderConsideration.id}`)
 
 			// Dampen the score based on the distance
 			const tileDistance = this.currentTile.distanceFromTile(tileUnderConsideration)
@@ -746,18 +754,18 @@ export default class Character {
 			const tileScoreForResting = tileRelationshipScore * tileRelationship.values.resting
 			const tileScoreForVending = tileRelationshipScore * tileRelationship.values.vending;
 
-			console.log("here", 
-			tileScoreForVending, bestTiles, tileRelationshipScore, tileRelationship.scores.overall, distanceDampener)
-			if (tileScoreForVending > 0) {
-				console.log("here", 
-					tileScoreForVending, 
-					tileRelationshipScore, 
-					tileRelationship.values, 
-					bestTiles.vend.score, 
-					bestTiles.vend.tile, 
-				tileScoreForVending > bestTiles.vend.score
-				)
-			}
+			// console.log("here", 
+			// tileScoreForVending, bestTiles, tileRelationshipScore, tileRelationship.scores.overall, distanceDampener)
+			// if (tileScoreForVending > 0) {
+			// 	console.log("here", 
+			// 		tileScoreForVending, 
+			// 		tileRelationshipScore, 
+			// 		tileRelationship.values, 
+			// 		bestTiles.vend.score, 
+			// 		bestTiles.vend.tile, 
+			// 	tileScoreForVending > bestTiles.vend.score
+			// 	)
+			// }
 
 			// update best tiles
 			if (tileScoreForAdventuring > bestTiles.adventure.score) {

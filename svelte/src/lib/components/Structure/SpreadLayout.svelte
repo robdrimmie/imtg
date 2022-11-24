@@ -290,6 +290,9 @@
 			source.array.splice(source.index, 1, itemFromTarget)
 		}
 
+		// Update character with new item's effects
+		$characters[$selected.character].progress()
+
 		//  update appropriate stores
 		$characters = [...$characters]
 		$chests = [...$chests]

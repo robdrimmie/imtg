@@ -899,3 +899,24 @@ so if the character is health they adventure but 000 is no good for adventuring 
 1431 that gets them coming home now. turn off autoplay again and smell test behaviour. 
 
 1534 Waiting on Harvey's appointment. Behaviour smelled fine initially. 
+
+1535 it would be good to make some of these bits and bobs testable. Given a particular character with particular items, does the expected outcome arise? 
+
+1536 but I'll do that another time. the future!
+
+1538 so flitting items should trigger character progression right? Because character progression doesn't really have permanent changes.
+
+1548 am I displaying the wrong value? It doesn't seem like, probably. because it changes when the 
+
+1550 okay. So, it doesn't change when we take the equipment off because there is no modifer for that attribute set so nothing happens. So I need to set things up so that every thing is recalculated regardless of whether or not there is equipment for it. 
+
+So this gets me back to that baseline thought, reset every attribute to baseline and then apply item modifications. Current gets calculated as necessary because wounds to that attribute are captured. 
+
+wounds and buffs might be the same thing. It's an interesting model. 
+
+1553 wounds never get removed but that's okay, that will be rest mechanics to heal wounds to some extent or another.
+
+1557 I'm not sure what changed but now the party doesn't dump equipment. they don't get enough to. die too much?
+
+
+ah, was assigned `base` to current, instaed of attribute.base

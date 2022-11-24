@@ -108,18 +108,18 @@
 	}
 
 	function progress(key) {
+		// #region start game			
 		if (!$started) {
-			// #region start game			
 			// fixed seed for debugging, milliseconds since epoch for prod, since easy.
 			const seed = isDev ? 20 : Date.now();
 			start(seed, key);
-			
+
 			let turn = 0;
 			// autopilot setting here
 			// CHANGE THIS VALUE TO AUTOPLAY
 			// > 220 - 230ish - game is won last I tried
-			const autoplayToTurn = 0;
-			
+			const autoplayToTurn = 100;
+
 			Logger.info(`auto playing to turn ${autoplayToTurn}...`)
 			while (turn < autoplayToTurn) {
 				Logger.info(`auto playing turn ${turn}`);
@@ -127,9 +127,8 @@
 				progress(key);
 			}
 			Logger.info(`auto play complete`)
-			
-			// #endregion start game
 		}
+		// #endregion start game
 
 		// #region progress characters
 		let updatedCharacters = [...$characters]
@@ -201,6 +200,7 @@
 	}
 
 </script>
+
 
 <svelte:head>
 	<title>Inventory Management: The Game</title>

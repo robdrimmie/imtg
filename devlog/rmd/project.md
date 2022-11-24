@@ -24,7 +24,8 @@
 - pretty sure traps are misbehaving now, result of item modifiers?
 - then try with 6 win condition items and 6 destination tiles?
   - no longer convinced this is a priority for launch
-- * spreadsheet-type view at /sheet to help understand the variables in play
+- ✅ spreadsheet-type view at /sheet to help understand the variables in play
+- ✅ cache attribute and other values affected by gear
 
 ### scope creep - this are future current targets
 - add more encounters
@@ -90,7 +91,6 @@
 - display - a full index of all regions, creatures, etc. stats, blah blah blah. the sort of thing that can be saved as a pdf
 - customization form that lets all the tier 1 mob for region a be named. a mad libs thing to skin the world
  - this might be worth creating to help me flesh out my own content anyway, although a json file is kind of easy enough. I guess the who thing could be a json config file basically, people can put one in or see the one generated for whatever seed
-
 
 ### make contributing easier
 #### structure
