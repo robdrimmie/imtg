@@ -210,16 +210,23 @@ export default class Attributes {
 	}
 
     constructor(name, base, label) {
-		this.name = name;
+		this.name = name
 
-		this.base = base;
-		this.current = base;
+		this.base = base
+		this.current = base
+		this.apparent = this.current
 
 		this.label = label
+
+		this.wounds = []
 	}
 
 	modified() {
 		return this.current;
+	}
+
+	addWound(wound) {
+		this.wounds.push(wound)
 	}
 }
 

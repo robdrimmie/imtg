@@ -20,6 +20,7 @@
 	import ConsumablesVendor from '$lib/Entities/ConsumablesVendor.js'
 	import Dice from '$lib/Dice'
 	import EquipablesVendor from '$lib/Entities/EquipablesVendor.js'
+	import Logger from '$lib/Logger'
 	import Move from '$lib/Move'
 	import Paperdoll from '$lib/Items/Paperdoll'
 	import Party from '$lib/Party'
@@ -29,7 +30,8 @@
 	const isDev = true
 
 	// setup initial game state.
-	function start(key, seed) {
+	function start(seed, key) {
+		Logger.info(`Game starting...`)
 		Dice.primeWithSeed(seed);
 
 		// Create the board
@@ -43,6 +45,7 @@
 			new Character({ startingGear: true }),
 			new Character({ startingGear: true }),
 		];
+		$characters.forEach( char => Logger.info(`Created character [${char.id}] ${char.name}`))
 
 		// Allocate Win Condition Items
 		// just one for now
@@ -81,6 +84,7 @@
 		// The game has begun!
 		$started = true;
 
+		Logger.info(`Game started`)
 		// console.log(
 		//   '__layout.start(): board, characters, chests, moves, parties, started, won',
 		//   $board,
@@ -96,6 +100,7 @@
 	function handleKeydown(event) {
 		// on keypress filter meta keys and such.
 		// progress game for all others
+		Logger.info(`Key pressed: ${event.key}`)
 
 		const ignore = ['Alt', 'Control', 'Meta', 'Shift'];
 
@@ -104,22 +109,24 @@
 
 	function progress(key) {
 		if (!$started) {
-			// #region start game
-			
+			// #region start game			
 			// fixed seed for debugging, milliseconds since epoch for prod, since easy.
 			const seed = isDev ? 20 : Date.now();
-			start(key, seed);
+			start(seed, key);
 			
 			let turn = 0;
 			// autopilot setting here
 			// CHANGE THIS VALUE TO AUTOPLAY
 			// > 220 - 230ish - game is won
 			const autoplayToTurn = 0;
+			
+			Logger.info(`auto playing to turn ${autoplayToTurn}...`)
 			while (turn < autoplayToTurn) {
-				console.log(`autoplay turn ${turn}`);
+				Logger.info(`auto playing turn ${turn}`);
 				turn++;
 				progress(key);
 			}
+			Logger.info(`auto play complete`)
 			
 			// #endregion start game
 		}
@@ -127,6 +134,7 @@
 		// #region progress characters
 		let updatedCharacters = [...$characters]
 		updatedCharacters.forEach((character, index) => {
+			Logger.info(`Progressing character [${character.id}] ${character.name}`)
 			character.progress()
 		})
 		$characters = [...updatedCharacters]
@@ -134,6 +142,8 @@
 		// #region progress parties
 		const updatedParties = [];
 		$parties.forEach((party, index) => {
+			Logger.info(`Progressing party [${party.id}] ${party.name}`)
+
 			const {
 				progressedBoard,
 				progressedCharacters,
@@ -156,10 +166,12 @@
 		// #endregion progress parties
 
 		// #region progress vendors
+		Logger.info(`Progressing Equipables Vendor`)
 		$equipablesVendors.forEach( (ev, idx) => {
 			$equipablesVendors[idx] = ev.progress()
 		})
 		
+		Logger.info(`Progressing Consumables Vendor`)
 		$consumablesVendors.forEach( (cv, idx) => {
 			$consumablesVendors[idx] = cv.progress()
 		})
@@ -169,12 +181,12 @@
 		// #endregion progress vendors
 
 		if ($board.allWinConditionsReturned() ) {
-			console.error("GAME HAS BEEN WON")
+			Logger.info(`Game has been won!`)
 			$won = true;
 		}
 
 		console.log(
-			'__layout.progress(): board, characters, chests, moves, parties, started, won, equipablesVendors, consumablesVendors',
+			'__layout.progress(): board, characters, chests, moves, parties, started, won, equipablesVendors, consumablesVendors, Logger',
 			$board,
 			$characters,
 			$chests,
@@ -183,7 +195,8 @@
 			$started,
 			$won, 
 			$equipablesVendors, 
-			$consumablesVendors
+			$consumablesVendors,
+			Logger.getLog()
 		);
 	}
 

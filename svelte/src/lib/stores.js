@@ -10,6 +10,7 @@ export const consumablesVendors = writable([])
 
 export const equipablesVendors = writable([])
 
+export const logger = writable({})
 export const moves = writable([])
 
 export const parties = writable([])

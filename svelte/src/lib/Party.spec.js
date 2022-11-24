@@ -8,7 +8,7 @@ it('it works', async () => {
 
 	const party = new Party(props)
 	
-    console.log("party", party)
+    // console.log("party", party)
 
 	expect(party.name).toBe('Group of Friends to All')
 });

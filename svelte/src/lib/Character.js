@@ -1,11 +1,12 @@
 import Attributes from '$lib/Attributes'
-import Dice from '$lib/Dice';
-import Jobs from '$lib/Decks/Jobs';
-import Modifiers from '$lib/Modifiers';
-import Names from '$lib/Decks/Names';
-import Paperdoll from '$lib/Items/Paperdoll';
-import Tile from '$lib/Map/Tile';
-import TileRelationship from '$lib/Map/TileRelationship';
+import Dice from '$lib/Dice'
+import Jobs from '$lib/Decks/Jobs'
+import Logger from '$lib/Logger'
+import Modifiers from '$lib/Modifiers'
+import Names from '$lib/Decks/Names'
+import Paperdoll from '$lib/Items/Paperdoll'
+import Tile from '$lib/Map/Tile'
+import TileRelationship from '$lib/Map/TileRelationship'
 
 export default class Character {
 	static forTesting() {
@@ -92,18 +93,75 @@ export default class Character {
 	}
 
 	// #region progress
-	progressStats() {
+	progressAttributes() {
+
+
+		// this.personality
+		// this.physicality
+		// this.resources
+
+		// reset all attributes
+		// this.personality.forEach(attr => {
+		// 	attr.current = attr.base
+		// 	attr.apparent = attr.base
+		// })
+		// this.physicality.forEach(attr => {
+		// 	attr.current = attr.base
+		// 	attr.apparent = attr.base
+		// })
+		// this.resources.forEach(attr => {
+		// 	attr.current = attr.base
+		// 	attr.apparent = attr.base
+		// })
+
+		// probably delete the comments above this
+		Logger.debug('Progressing attributes')
+
+		const slots = [
+			Paperdoll.DOLL_SLOT_HEAD,
+			Paperdoll.DOLL_SLOT_TORSO,
+			Paperdoll.DOLL_SLOT_LEGS,
+			// 20220908 2019 just not letting stuff held in hands have a passive effect on the character holding them
+			// Paperdoll.DOLL_SLOT_HAND_LEFT,
+			// Paperdoll.DOLL_SLOT_HAND_RIGHT,
+			Paperdoll.DOLL_SLOT_WAIST,
+		]
+
+		slots.forEach( slotIndex => {
+			// console.log("looking at ", slotIndex, this.paperdoll, this.paperdoll.slots[slotIndex])
+			const item = this.paperdoll.slots[slotIndex]
+
+			if (item === null) return
+			if (item.isWinConditionItem) return
 		
+			const attribute = this.getAttribute(item.attribute)
+
+			attribute.current = attribute.wounds.reduce( (accumulator, wound) => {
+					return accumulator - wound
+				}, 
+				attribute.base
+			)
+
+			console.log("new current", attribute.current)
+
+			
+
+
+
+			console.log("attr", attribute, item.passiveModifier())
+		})
 	}
 	
 	progress() {
-		console.log(`progressing ${this.name}`, this)
+		Logger.debug(`Progressing ${this.name}...`)
 		
 		// update current and apparent stats based on gear
-		this.progressStats()
+		this.progressAttributes()
 		
 		// update tile relationships
 		this.progressTileRelationships()
+
+		Logger.debug(`Finished progressing ${this.name}.`)
 	}
 	
 	progressTileRelationships() {
@@ -111,7 +169,7 @@ export default class Character {
 			tileRelationship.progress(this)
 		})
 	}
-
+	
 	// #endregion progress
 
 	// #region Attribute generators

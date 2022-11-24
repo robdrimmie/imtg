@@ -534,3 +534,165 @@ distance from origin might be compelling for a character with high openness for 
 1139 so I think that is kind of perhaps most of it for this branch of progression? writing out and modifying all the stats is probably going to be a longer grind though it is probably not as buggy since it was touched not terribly long ago versus this stuff which was probably like a year old or something, it's been a while since I got into those systems.
 
 1155 just read http://www.ericharshbarger.org/dice/go_first_dice.html that is pretty nifty. 
+
+1209 so what is progressStats.
+
+1210 so get Attribute does modifer calculations. What I want to have happen is for it just to return the existing thing. 
+
+So on creation Attributes are created. 
+
+1213 an attribute has a name, a label, a base value and the current value.
+
+Before item modifers come in to play it is very straightforward, the base value is the capacity, the current value is just that. 
+
+so health 10 base 7 current is 7/10. 
+
+items modify things. they modify the base and by virtue of that the current.
+
+Now I wondering what happens if current is a percentile. Items modify base. 
+
+So we need true base - starts as the role of the die, fixed (for the time being at least, permanent attribute change is a possible mechanic but not implemented yet and not going to be as part of this current effort)
+
+then apparent base, which is the modified value. so an item of increase health by 10% (not sure if that's a real possible value but for demo easy math purposes I'm going with it) 
+
+true base: 10
+apparent base: true base * 110% = 11
+current: apparent base * 100% = 11
+current: apparent base * 70% = 7.7 (rounded up to 8)
+
+1220 it would be nice to visualize all the modifiers at play in sheet but I'm not sure I will be able to do that quickly. 
+
+it does sort of feels like it should be logged out though, like
+
+torso of increased health low_effectiveness increases health by 10% from 10 [previous apparent] to 11 [new apparent]
+
+1221 logging systems. how do they even work? 
+
+I guess there has to be tooling around this, is there anything in svelte (or sveltekit?) I don't want that interface dependancy on game logic if I can avoid it but if there's a fairly generic log object I can implement in the game engine then that's fine to tie into svelte loggin stuff
+
+1225 nothing so obvious I feel obligated, though there is an interface defined in sveltekit 
+
+1226 I can't even find it again. anyway, it was just levels and messages, very typical thing so fine. 
+
+1232 okay I have a basic log implementation with debug and info levels. I am thinking about two things:
+1) just make static methods that get the instance (I made it a singleton) and log shit to it. all static. 
+2) something else. oh, granularity. if everything is a log then there is no granularity but that's okay for now it will just be a raw stream and maybe I can refine it over time 
+
+1234 tell me that you love me more
+
+there doesn't even need to be an instance. just _log outside the class. This is probably grossly inefficient but I'll let that problem arise when it does.
+
+20221122 1523 it's lo-og it's lo-og it's big it's heavy it's wood
+
+(I googled, "it's" is the correct one)
+
+1526 so logging. I'm going to do dishes and dinner prep pretty soon so this is a bit of a dip in and out but maybe I can catch up on what I was doing to be ready for next time. The logger works, really quite nicely. 
+
+It is destined to be problematic because it is a lot of content getting generated each turn and I'm just about to do more but well, maybe that will force persistence to dump some of it out or something. Or I can determine what is and isn't worth logging or disable info. Ah, set a log level. 
+
+20221123 1531 hello again. did not do much yesterday nor today. 
+
+1532 So I have this logger and it is okay. Noisy, very noisy. Probably not super great for the in game log? But perhaps it will be. I want to over load it and then figure out how to dial it back. A log level of "interface" might be interesting to consider. 
+
+So I wanted this logging for a specific purpose I think? Oh right I wanted to log all the modifiers being calculated and such as well. Yes just a floooooood of data. But that is okay I think. A web worker to process the logs into presentable data or something maybe so that it never gets super full and doesn't have to be massaged real time. There are options for managing the scale issue is what I'm saying here. Create the issue then resolve it though, I don't know enough about this one to solve the problem in advance.
+
+1536 So logging out character stats caching is what got me to this point, and I think I am able to go back and start doing things with it. 
+
+1539 So I started calling it progressSTats and have just changed it to progressAttributes but that's also wrong-ish. I am sort of progressing the attributes so it is right enough for now but what I am doing is applying the effects of equipped gear. 
+
+My inclination was to like "update awarenss then update brawn then blah blah blah and eventually update health" because resources should be impacted by personality and physicality changes. 
+
+1541 but I think the way to do it is just go through all the equipped gear and apply its changes? But maybe not! Bother, this brain of mine.
+
+All attributes need to be updated? Do they? Probably not. Only the ones that are affected by gear. So base attributes don't change on a turn-by-turn basis/as part of progression. They might be changed as the result of something happening during a turn but that change happens either before stats are calc'd (which really should be the first phase of any character's turn) which means they will have an impact on what happens this turn, or the change happens after that, in which case it does not have an impact on this turn. If it is either the very first or very last phase.
+
+Which means maybe it should be the very last phase. But for now I will make it first. It's easy enough to move it to the end. 
+
+1549 hmm. I was thinking I should reset all the attributes to base but that would require me to track specifically how much damage has been taken. So this isn't right. Although I would like to explore that current-as-percentage situation
+
+1855 I should do current as percentage .. either later or concurrently or just fuck it pull the bandaid. 
+
+1857 Okay so walk through what I'm trying to do. Context: Health. 
+
+base: 10
+current: 10  or 1.0 (100%)
+apparent: 10
+
+so the thought of looping through attributes and doing anything is no good, just work through the paperdoll applying the passive effect of the items. (mechanically there is no distinction but I think I need to keep that one for a later refactor)
+
+there is already a place where that logic exists. when getting attributes. 
+
+1900 hmm. So that one gets modifier for the attribute being retrieved. It seeks through the array seeing if the item modifies the sought after attribute. 
+
+that's not what I want to do though. I want to go through the passive-impact slots in the doll, but keep the commented out hands and stuff because they should be able to do passive things as well. A different refactor, though.
+
+1916 I'm really not sure what to do about current? I might have to track the negatives? 
+
+For most of the stats it is fine I think. 
+
+say brawn is base 50 and a torso of increase brawn by 1.1% is equipped.
+
+current is 1.0. so should current become current * modifier = 1.1% so then apparent brawn is 50 * 1.1 = 55.
+
+That works well but this model does not work for resources because.... 
+
+there is an affect, their health is being reduced by 1.1% by the active modifier of the weapon.
+
+1919 Well, the weapon leaves a cut of 1.1%. 
+
+hmm that's an interesting thought. so there would be tracking of the negative/decrement/find a word in a bit? 
+
+charA hits charB with sword of decrease health by 1.1%. It adds a wound.
+
+health: {
+    base: 10,
+    current: base * every wound
+    apparent: base * current
+    wounds: [1.1, 2.3]
+}
+
+10 * 1.1 * 2.3 = 25.3
+
+so that's already not great.
+
+1922 a wound is a constant thing and resting takes out wounds. or maybe gradually reduces them based on endurance? lightly impacted by awareness and coordination and conscientousness and neuroticism?
+
+I am interested in this system. But how do I do the math for wounds here. what does _decrease_ by 1.1& mean? 
+
+10 - (10 * 1.1)
+
+oh wait that's not what 1.1% looks like as a float. 0.011!
+
+10 * 0.011 * 0.023 = 0.00253
+
+so that is also not right. 
+
+10 - (10 * 0.011) - (10 * 0.023) = 9.66
+
+now we're tlaking!
+
+Modifying health by 1.1% really not enough, I'll probably need to do something about that scale at some point. 
+
+this also doesn't scale well does it? like if a tier 1 weapon does 10% damage
+
+
+hrrrrngh. yeah this isn't good. The wounds idea is good but doing a percentage is not good. All those ones with 10, the same number of wounds would be required to kill regardless of health. 
+
+5 - (5 * 0.011) - (5 * 0.023) = 4.83
+
+exactly half
+
+1933 no great ideas yet but I do like keeping track of the wounds. I can move forward with this janky system for now and figure out how to improve the behaviour of the wounds. 
+
+there _is_ something here, even with the percentages. But it doesn't scale right because a tier 6 weapon would still take just as many hits to take down an enemy regardless of tier. Fewer than a tier 1 item because it's like 6% or whatever it is, not 1%. But enemy tiers don't matter in this scenario then because the damage scales with the base. 
+
+So a wound could be on a 1-100 scale like the other attributes? I guess it's not explicitly 100 any more is it? 
+
+then it is just doing 1.1 damage, and a tier 1 thing is going to have only 3 or whatever health so 3 solid hits and it is done. 
+
+in theory something could modify the wound. it could be critical 2x or glancing .5x. good thoughts for a future day. 
+
+so fine, fixed rate of damage in a wound. The items will apply a wound to an attribute and then when the 
+
+1940 don't know where I was going with that. but anyway, effectiveness becomes a fixed number, gets * 100, however it ends up working. 
+

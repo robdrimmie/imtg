@@ -1,5 +1,6 @@
 // https://npm.io/package/prando
-import Prando from 'prando';
+import Logger from '$lib/Logger.js'
+import Prando from 'prando'
 
 /*
 the Dice class is where all randomization stuff must take place 
@@ -17,6 +18,8 @@ export default class Dice {
 		// RMD TODO should this be in Dice?
 		// I mean, no. But it is convenient since Dice is already in a lot of places. So for now, yes.
 		this.nextId = 1;
+
+		Logger.info(`Dice constructed with seed: ${seed}`)
 	}
 
 	getNextId() {
