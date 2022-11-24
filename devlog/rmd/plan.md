@@ -895,3 +895,7 @@ Vending is important. If one doesn't _know_ vending is available ... I don't kno
 1429 `const healthScore = percentAvailable > 0.5 ? adventuringValue : restingValue`
 
 so if the character is health they adventure but 000 is no good for adventuring so it gets a health score of 0. But really it shouldn't matter. If the character is healthy do whatever - should be 1. Otherwise, rest. 
+
+1431 that gets them coming home now. turn off autoplay again and smell test behaviour. 
+
+1534 Waiting on Harvey's appointment. Behaviour smelled fine initially. 
