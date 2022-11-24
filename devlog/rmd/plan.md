@@ -696,3 +696,21 @@ so fine, fixed rate of damage in a wound. The items will apply a wound to an att
 
 1940 don't know where I was going with that. but anyway, effectiveness becomes a fixed number, gets * 100, however it ends up working. 
 
+1950 this makes current not a percentage again. which means there is no need for apparent right now, because current isn't base * wounds, it is base - wounds. 
+
+hooooowever. how do boons apply and when? they modify base. So apparent might be base modified by passives and current is apparent modified by wounds.
+
+1952 but this doesn't stack. if each item is working from base then nothing accumulates past items and oh no it might be the case that I have to 
+
+okay. I can accumulate all the item modifiers first and then apply them to any affected attributes. 
+
+build an array of some sort.
+
+20221124 0854 
+
+0856
+> apparent might be base modified by passives and current is apparent modified by wounds.
+
+0911 lol right now they are too bad at fights to win and have depleted any close tiles and still each have 2 open inventory slots so right now will never drop stuff off. 
+
+0917 so the interface isn't reactive right now and I'm pretty sure it is because the flitting does not force the update of the underlying stats. I'm not 100% sure that's the thing but I think so. 

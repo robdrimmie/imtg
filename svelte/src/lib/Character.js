@@ -127,6 +127,8 @@ export default class Character {
 			Paperdoll.DOLL_SLOT_WAIST,
 		]
 
+		// accumulate all passive modifiers
+		const modifications = new Map()
 		slots.forEach( slotIndex => {
 			// console.log("looking at ", slotIndex, this.paperdoll, this.paperdoll.slots[slotIndex])
 			const item = this.paperdoll.slots[slotIndex]
@@ -134,21 +136,39 @@ export default class Character {
 			if (item === null) return
 			if (item.isWinConditionItem) return
 		
-			const attribute = this.getAttribute(item.attribute)
+			if (modifications.get(item.attribute) === undefined) {
+				modifications.set(item.attribute, 1)
+			}
 
-			attribute.current = attribute.wounds.reduce( (accumulator, wound) => {
-					return accumulator - wound
-				}, 
-				attribute.base
+			modifications.set(
+				item.attribute, 
+				modifications.get(item.attribute) * item.passiveModifier()
+			)
+		})
+
+		// apply passive modifiers
+		modifications.forEach( (modifier, attributeConstant) => {
+			const traitConstant = Attributes.getTraitConstantForAttribute(attributeConstant)
+
+			const trait = this.getTrait(traitConstant)
+			const attribute = trait.get(attributeConstant)
+
+			// > apparent might be base modified by passives and current is apparent modified by wounds.
+			let apparent = attribute.base * modifier
+			let current = apparent - attribute.wounds.reduce( (prev, cur) => {
+				return prev + cur
+			}, 0)
+
+			attribute.apparent = apparent
+			attribute.current = current
+			
+			console.log(attribute, apparent, current)
+			trait.set(
+				attributeConstant,
+				attribute
 			)
 
-			console.log("new current", attribute.current)
-
-			
-
-
-
-			console.log("attr", attribute, item.passiveModifier())
+			console.log("trait", trait)
 		})
 	}
 	
