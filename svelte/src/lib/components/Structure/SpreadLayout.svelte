@@ -19,8 +19,8 @@
 	const SOURCE_BACKPACK = 'SOURCE_BACKPACK'
 	const SOURCE_CHEST = 'SOURCE_CHEST'
 	const SOURCE_MANNEQUIN = 'SOURCE_MANNEQUIN'
-	const SOURCE_VENDOR_EQUIPMENT = 'SOURCE_VENDOR_EQUIPMENT'
-	const SOURCE_VENDOR_RESOURCE = 'SOURCE_VENDOR_RESOURCE'
+	const SOURCE_VENDOR_EQUIPABLES = 'SOURCE_VENDOR_EQUIPABLES'
+	const SOURCE_VENDOR_CONSUMABLES = 'SOURCE_VENDOR_CONSUMABLES'
 
 	// When screen is Adventure, map and things show. Vendors show otherwise.
 	let screenIsAdventure = true
@@ -112,18 +112,82 @@
 					source: SOURCE_MANNEQUIN
 				}
 
-			case VENDOR_EQUIPMENT: 
+			case Positions.VENDOR_EQUIPABLES_HEAD:			
 				return {
-					array: [],
-					index: details.index,
-					source: SOURCE_VENDOR_EQUIPMENT
+					array: $equipablesVendors[$selected.equipablesVendor].paperdoll.slots,
+					index: Paperdoll.DOLL_SLOT_HEAD,
+					source: SOURCE_VENDOR_EQUIPABLES
 				}
 
-			case VENDOR_RESOURCES: 
+			case Positions.VENDOR_EQUIPABLES_TORSO:			
+				return {
+					array: $equipablesVendors[$selected.equipablesVendor].paperdoll.slots,
+					index: Paperdoll.DOLL_SLOT_TORSO,
+					source: SOURCE_VENDOR_EQUIPABLES
+				}
+
+			case Positions.VENDOR_EQUIPABLES_LEGS:			
+				return {
+					array: $equipablesVendors[$selected.equipablesVendor].paperdoll.slots,
+					index: Paperdoll.DOLL_SLOT_LEGS,
+					source: SOURCE_VENDOR_EQUIPABLES
+				}
+
+			case Positions.VENDOR_EQUIPABLES_HAND_LEFT:			
+				return {
+					array: $equipablesVendors[$selected.equipablesVendor].paperdoll.slots,
+					index: Paperdoll.DOLL_SLOT_HAND_LEFT,
+					source: SOURCE_VENDOR_EQUIPABLES
+				}
+
+			case Positions.VENDOR_EQUIPABLES_HAND_RIGHT:			
+				return {
+					array: $equipablesVendors[$selected.equipablesVendor].paperdoll.slots,
+					index: Paperdoll.DOLL_SLOT_HAND_RIGHT,
+					source: SOURCE_VENDOR_EQUIPABLES
+				}
+
+			case Positions.VENDOR_EQUIPABLES_BACK:			
+				return {
+					array: $equipablesVendors[$selected.equipablesVendor].paperdoll.slots,
+					index: Paperdoll.DOLL_SLOT_BACK,
+					source: SOURCE_VENDOR_EQUIPABLES
+				}
+
+			case Positions.VENDOR_EQUIPABLES_WAIST:			
+				return {
+					array: $equipablesVendors[$selected.equipablesVendor].paperdoll.slots,
+					index: Paperdoll.DOLL_SLOT_WAIST,
+					source: SOURCE_VENDOR_EQUIPABLES
+				}
+
+			case Positions.VENDOR_CONSUMABLES_FOOD:			
+				return {
+					array: $consumablesVendors[$selected.consumablesVendor].paperdoll.slots,
+					index: Paperdoll.PAPERDOLL_FOOD,
+					source: SOURCE_VENDOR_CONSUMABLES
+				}
+
+			case Positions.VENDOR_CONSUMABLES_POTION:			
+				return {
+					array: $consumablesVendors[$selected.consumablesVendor].paperdoll.slots,
+					index: Paperdoll.PAPERDOLL_POTION,
+					source: SOURCE_VENDOR_CONSUMABLES
+				}
+
+
+			case Positions.VENDOR_EQUIPABLES: 
 				return {
 					array: [],
 					index: details.index,
-					source: SOURCE_VENDOR_RESOURCE
+					source: SOURCE_VENDOR_EQUIPABLES
+				}
+
+			case Positions.VENDOR_CONSUMABLES: 
+				return {
+					array: [],
+					index: details.index,
+					source: SOURCE_VENDOR_CONSUMABLES
 				}
 
 			default: 
@@ -175,9 +239,9 @@
 		console.log("targetForVendorAndItemType", itemType)
 
 		return {
-			array: [],
-			index: 0,
-			target: 'source_whatever is not valid?'
+			array: $chests[$selected.chest].backpack().slots,
+			index: $chests[$selected.chest].backpack().slots.findIndex( (element) => element === null),
+			target: 'character backpack'
 		}
 	}
 
@@ -226,10 +290,10 @@
 					target: 'source_whatever is not valid?'
 				}
 
-			case SOURCE_VENDOR_EQUIPMENT: 
+			case SOURCE_VENDOR_EQUIPABLES: 
 				return targetForVendorAndItemType(itemType)
 				
-			case SOURCE_VENDOR_RESOURCE: 
+			case SOURCE_VENDOR_CONSUMABLES: 
 				return targetForVendorAndItemType(itemType)
 
 			case SOURCE_BACKPACK: 
@@ -274,20 +338,23 @@
 			console.log("is it equippable", item)
 			// Vendors need to get mats
 			if(itemTypeIsEquippable(item.type)) {
-				$equipablesVendors[$selected.equipablesVendor].equipablesMaterials += 1
+				$equipablesVendors[$selected.equipablesVendor].equipablesMaterials += ItemType.matsForType(item.type)
 			} else {
 				console.log("selling consumable?")
-				$consumablesVendors[$selected.consumablesVendor].consumablesMaterials += 1
+				$consumablesVendors[$selected.consumablesVendor].consumablesMaterials += ItemType.matsForType(item.type)
 			}
 		} else {
 			// going into a container of some sort 
-			
 			// replace the item in the target array at the index with the item from the source array
+
 			const itemFromTarget = target.array.splice(target.index, 1, item)[0]
 			// console.log("flit removed itemFromTarget and replaced with item", itemFromTarget, item)
 
 			// put the item from the target into the empty spot in the source source to complete the swap
 			source.array.splice(source.index, 1, itemFromTarget)
+
+			// decrease currency by the item's value
+			$characters[$selected.character].currency -= item.value
 		}
 
 		// Update character with new item's effects

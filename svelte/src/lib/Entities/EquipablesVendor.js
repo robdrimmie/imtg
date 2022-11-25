@@ -7,6 +7,7 @@ import Waists from '$lib/Items/Waists.js'
 import Weapons from '$lib/Items/Weapons.js'
 
 import Paperdoll from '$lib/Items/Paperdoll'
+import Logger from '$lib/Logger'
 
 export default class EquipablesVendor {
     constructor(options) {
@@ -16,7 +17,7 @@ export default class EquipablesVendor {
 
         this.paperdoll = options.paperdoll ? options.paperdoll : Paperdoll.forEquipablesVendor();
 
-        this.equipablesMaterials = 0
+        this.equipablesMaterials = 3
     }
 
     /*
@@ -65,9 +66,13 @@ export default class EquipablesVendor {
         // this probably shouldn't happen? but it might and if does, don't break just exit.
         if(item === null) return this
 
+        item.value = ItemType.matsForType(item.type)
+        this.equipablesMaterials -= item.value
+
         // add the thing to the vendor's inventory
         this.paperdoll.slots[slotIndex] = item
 
+        Logger.info(`The Equipables Vendor crafted a new ${item.name} worth ${item.value} currency.`)
         return this
     }
 }

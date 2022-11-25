@@ -24,7 +24,7 @@
 			<Receptacle 
 				{flit}
 				items={[paperdoll.slots[Paperdoll.DOLL_SLOT_HEAD]]}
-				position={Positions.PAPERDOLL_HEAD}
+				position={Positions.VENDOR_EQUIPABLES_HEAD}
 			/>
 		</div>
 
@@ -32,7 +32,7 @@
 			<Receptacle 
 				{flit}
 				items={[paperdoll.slots[Paperdoll.DOLL_SLOT_HAND_RIGHT]]}
-				position={Positions.PAPERDOLL_HAND_RIGHT}
+				position={Positions.VENDOR_EQUIPABLES__HAND_RIGHT}
 			/>
 		</div>
 
@@ -40,7 +40,7 @@
 			<Receptacle 
 				{flit}
 				items={[paperdoll.slots[Paperdoll.DOLL_SLOT_TORSO]]}
-				position={Positions.PAPERDOLL_TORSO}
+				position={Positions.VENDOR_EQUIPABLES__TORSO}
 			/>
 		</div>
 
@@ -48,7 +48,7 @@
 			<Receptacle 
 				{flit}
 				items={[paperdoll.slots[Paperdoll.DOLL_SLOT_WAIST]]}
-				position={Positions.PAPERDOLL_WAIST}
+				position={Positions.VENDOR_EQUIPABLES__WAIST}
 			/>
 		</div>
 
@@ -56,7 +56,7 @@
 			<Receptacle 
 				{flit}
 				items={[paperdoll.slots[Paperdoll.DOLL_SLOT_LEGS]]}
-				position={Positions.PAPERDOLL_LEGS}
+				position={Positions.VENDOR_EQUIPABLES__LEGS}
 			/>
 		</div>
 

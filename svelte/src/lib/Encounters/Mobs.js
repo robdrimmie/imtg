@@ -44,36 +44,37 @@ export default class Mobs {
 		return Dice.d2() ? Food.ofRandomEffect() : Potions.ofRandomEffect()
 	}
 
-	static lootForSlot(slot) {
+	static lootForSlot(slot, effectiveness = Modifiers.EFFECTIVENESS_VERY_LOW) {
+		// 80%-ish chance the loot will increase the stat
+		let increase = Dice.d100() < 80
 		let thing;
 		switch(slot) {
 			case Paperdoll.DOLL_SLOT_HEAD:
-				thing = Hats.ofRandomEffect()
+				thing = Hats.ofRandomEffect(increase, effectiveness)
 				break;
 				
 			case Paperdoll.DOLL_SLOT_BACK:
-				thing = Mobs.lootForBackpack()
+				thing = Mobs.lootForBackpack(effectiveness)
 				break;
 
 			case Paperdoll.DOLL_SLOT_TORSO:
-				thing = Torsos.ofRandomEffect()
+				thing = Torsos.ofRandomEffect(increase, effectiveness)
 				break;
 
 			case Paperdoll.DOLL_SLOT_HAND_LEFT:
-
-				thing =  Weapons.ofRandomEffect()
+				thing =  Weapons.ofRandomEffect(increase, effectiveness)
 				break;
 
 			case Paperdoll.DOLL_SLOT_HAND_RIGHT:
-				thing =  Weapons.ofRandomEffect()
+				thing =  Weapons.ofRandomEffect(increase, effectiveness)
 				break;
 
 				case Paperdoll.DOLL_SLOT_WAIST:
-					thing =  Waists.ofRandomEffect()
+					thing =  Waists.ofRandomEffect(increase, effectiveness)
 					break;
 
 			case Paperdoll.DOLL_SLOT_LEGS:
-				thing = Boots.ofRandomEffect()
+				thing = Boots.ofRandomEffect(increase, effectiveness)
 				break;
 
 			default:
@@ -92,16 +93,14 @@ export default class Mobs {
 			'Tier 1 Mob'
 		)
 
-		// 10% chance of loot drop
-		if(Dice.d100() < 11) {
+		// 60% chance of loot drop
+		if(Dice.d100() < 61) {
 			// which slot should the loot be for?
 			const slot = Paperdoll.randomSlot()
-			const loot = this.lootForSlot(slot)
+			const loot = this.lootForSlot(slot, Modifiers.EFFECTIVENESS_VERY_LOW)
 
 			mob.paperdoll.slots[slot] = loot;
 		}
-
-		mob.currency = 1
 
 		// 50% chance of some extra currency
 		if(Dice.d100() < 50) {

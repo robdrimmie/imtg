@@ -1039,3 +1039,29 @@ boulder trap (doesn't exist yet" is "avoid one very big thing")
 
 1041 so I do think drop rate needs to be a bit higher. Also the items need to be more consistent in quality and utility. Right now first combat reward was a tier 5 weapon, that is a bit too much for a tier 1 opponent to have. 
 
+1045 that gets complicated. I generate items via Mobs class but there's nothing in there to support limiting effectiveness. what calls that, I could perhaps pass an effectiveness through I think that's going to be best for now.
+
+1046 oh I do it inside the Mob creation statics and then in the tests but this is fine. this is good, even.
+
+1049 at some point I hope to induce the party off whichever first tile it found to go deep on. it doesn't need to resolve all 100 encounters. I guess as the deck size drops other tiles might be more attractive?
+
+1050 drop rate does need to be higher
+
+1128 okay so it's at something like 60% and this feels in the right neighbourhood. On this particular seed I got a lot of food and potions which is too bad. I did get the equip vendor to make a hat and when I tried to buy it the game crapped out a bit
+
+1130 oh because the equip vendor has a standard paperdoll that it fills in the source detection doesn't work properly since it just looks for Paperdoll.DOLL_SLOT_HAND_LEFT or whatever. Now the visible screen will indicate if this is vend or mannequin typically, at least in the way I am doing things now. 
+
+1130 so I need to make the vendor able to generate an item quick so I can reproduce this bug reliably.
+
+1131 okay I have that going now. 
+
+1203 items can be transferred from vendor to chest, but no charge occurs. items need to have their value set so it can be deducted?
+
+1540 items should have their value set by the vendor, not at construction. And then it should drop by some percent or the character pays some amount over that based on some combination of attributes especially magnetism. but like, that level of economy can come later. simple value, used in either direction is fine. 
+
+1707 cost is not deducted from character's inventory
+
+1707 maybe hovering over a card that can go multiple places gets a destination overlay. not good for tap-based devices. I guess if I can determine if click is supported? but it would be anyway so there's not really a good way to determine that. I guess if it can hover it can just display the pane
+
+1712 but cost should be deducted from the inventory. 
+
