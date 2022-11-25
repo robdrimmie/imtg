@@ -1017,3 +1017,25 @@ But the vend score is only .2. So
 1 - 0 * .2 so yeah it will never be very high. 
 
 When capacity.current is 0, it should be quite high. like, 2?
+
+1034 okay so I'm 
+1035 so I'm at a point where the party goes to drop off the equipment and then literally cannot win another fight after that. The early tiles are completely tapped out and the character is not strong enough to beat others. Building up currency is useless when not getting loot. So more easier combat or more loot. STarting with more encounters, the tiles should have like.... a lot of encounters. 
+
+Where do I allocate encounters? In regions?
+
+Tile.js
+```
+this.decks = this.environment.decksForTile(this);
+```
+
+1037 100 cards, 4:1 combat:trap ratio at present. 
+
+Traps are broken don't forget. Probably. Maybe just not enough are happening.
+
+arrow trap is "avoid many small things"
+boulder trap (doesn't exist yet" is "avoid one very big thing")
+
+1040 decomposing an item only generates one mat, it doesn't do the scale thing.
+
+1041 so I do think drop rate needs to be a bit higher. Also the items need to be more consistent in quality and utility. Right now first combat reward was a tier 5 weapon, that is a bit too much for a tier 1 opponent to have. 
+

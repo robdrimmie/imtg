@@ -2,7 +2,13 @@ import Attributes from '$lib/Attributes'
 import Dice from '$lib/Dice'
 import Weapons from '$lib/Items/Weapons'
 import Move from '$lib/Move'
+/*
+traps test awareness and coordination most of the time
 
+arrow traps are dodge many small things
+boulder traps - do not exist yet - dodge many big things
+
+*/
 export default class Trap {
 	static DEFAULT_DESCRIPTION = 'No description supplied to constructor';
 	static DEFAULT_NAME = 'No name supplied to constructor';
