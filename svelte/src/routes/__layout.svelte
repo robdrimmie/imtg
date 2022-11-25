@@ -42,8 +42,6 @@
 		// Create starting characters
 		$characters = [
 			new Character({ startingGear: true }),
-			new Character({ startingGear: true }),
-			new Character({ startingGear: true }),
 		];
 		$characters.forEach( char => Logger.info(`Created character [${char.id}] ${char.name}`))
 
@@ -117,8 +115,8 @@
 			let turn = 0;
 			// autopilot setting here
 			// CHANGE THIS VALUE TO AUTOPLAY
-			// > 220 - 230ish - game is won last I tried
-			const autoplayToTurn = 100;
+			// > 120 - 130ish - game is won last I tried
+			const autoplayToTurn = 0;
 
 			Logger.info(`auto playing to turn ${autoplayToTurn}...`)
 			while (turn < autoplayToTurn) {

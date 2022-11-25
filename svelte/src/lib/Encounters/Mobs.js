@@ -87,23 +87,31 @@ export default class Mobs {
 
 	static tier1() {
 		const mob = Mobs.template(
-			() => Dice.d6(),
+			() => Dice.d4(),
 			() => 10 + Dice.d10(),
 			'Tier 1 Mob'
 		)
 
-		// which slot should the loot be for?
-		const slot = Paperdoll.randomSlot()
-		const loot = this.lootForSlot(slot)
+		// 10% chance of loot drop
+		if(Dice.d100() < 11) {
+			// which slot should the loot be for?
+			const slot = Paperdoll.randomSlot()
+			const loot = this.lootForSlot(slot)
 
-		mob.paperdoll.slots[slot] = loot;
+			mob.paperdoll.slots[slot] = loot;
+		}
+
+		// 50% chance of some currency
+		if(Dice.d100() < 50) {
+			mob.currency = Dice.d4()
+		}
 
 		return mob
 	}
 
 	static tier2() {
 		const mob = Mobs.template(
-			() => Dice.d6(2),
+			() => Dice.d4(2),
 			() => 20 + Dice.d10(),
 			'Tier 2 Mob'
 		)
@@ -117,7 +125,7 @@ export default class Mobs {
 
 	static tier3() {
 		const mob = Mobs.template(
-			() => Dice.d6(3),
+			() => Dice.d8(2),
 			() => 35 + Dice.d10(),
 			'Tier 3 Mob'
 		)
@@ -131,7 +139,7 @@ export default class Mobs {
 
 	static tier4() {
 		const mob = Mobs.template(
-			() => Dice.d6(4),
+			() => Dice.d10(2),
 			() => 55 + Dice.d20(),
 			'Tier 4 Mob'
 		)
@@ -145,7 +153,7 @@ export default class Mobs {
 
 	static tier5() {
 		const mob = Mobs.template(
-			() => Dice.d6(5),
+			() => Dice.d10(3),
 			() => 75 + Dice.d20(),
 			'Tier 5 Mob'
 		)
@@ -159,7 +167,7 @@ export default class Mobs {
 
 	static tier6() {
 		const mob = Mobs.template(
-			() => Dice.d6(6),
+			() => Dice.d20(3),
 			() => 95 + Dice.d4(),
 			'Tier 6 Mob'
 		)

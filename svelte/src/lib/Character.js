@@ -322,7 +322,7 @@ export default class Character {
 		if(traitConstant == Attributes.TRAIT_RESOURCES) {
 			attribute = this.resources.get(attributeToGet)
 		}
-console.log("got attribute", attribute)
+
 		return attribute;
 	}
 

@@ -302,11 +302,12 @@ export default class Party {
 
 	// #region Party Actions
 	action(moveMessage, deck, board, characters, chests, moves) {
-		// console.log("Party.action moveMessage, deck, board, characters, chests, moves", moveMessage, deck, board, characters, chests, moves)
+		console.log("Party.action moveMessage, deck, board, characters, chests, moves", moveMessage, deck, board, characters, chests, moves)
 
 		const move = new Move(Move.TYPE_OTHER_MESSAGES, {}, moveMessage);
 
 		const card = deck.draw()[0];
+
 		const results = card.modifyCharacters({
 			charactersToModify: this.membersInCharacters(characters),
 			chests

@@ -927,3 +927,36 @@ ah, was assigned `base` to current, instaed of attribute.base
 
 1611 okay, so reseting resources to base appaears to have cleared that up a bit. I wasn't properly doing that so the calculations weren't going to show up and resting just like, kept going over the top however it was that worked.
 
+1613 so like, what to do next? 
+
+1614 first fight is lost and takes like 60 events. That's not _that_ much really? 6 combatants, a total of 10 tries each that's.... too much probably?
+
+wounds are not being applied, right? I'm actually deducting from current during combat still?
+
+1617 so yeah, time to get into combat-y stuff.
+
+1927 time for some homework combat is .. rough.
+
+2027 so, combat. how's that working for ya? 
+
+2028 I was like "I should make a Combat class that manages everyting" and then I was like "oh yeah I have one of those"
+
+2029 so that's how that's going. 
+
+It's not _terrible_ terrible, it's just not good. 
+
+2029 so the problem is just that everyone sucks, really. they just miss each other a lot and don't hurt each other a lot because that's what happens with normal people, really. punching the shit out of each other is hard and even killing someone with a sword is hard. 
+
+2031 so one thing to try is to add the rest of the party. if three people die maybe six people won't. but there will be sooooo many rounds. Do we want combat that is 60 rounds even? 
+
+2034 they all have two things in their inventory.
+
+I think I need to .. geez. I was about to say I think I need to get it working without the win condition in the boot slot and without the backpack to start. and the character starts with nothing they go out as a group and wallop something and maybe someonen gets a piece of something and like, they're holding it in their hand. and so then after just a couple of fights perhaps they want to come to town? 
+
+I guess vending desire should take currency into consideration and eventually knowledge of purchasing things? that's a far afield sort of place we've gotten to. 
+
+2037 and start with one character and accumulate others over time. 
+
+shit I really do think that's the right thing to do. and that makes the inventory management more interesting. Down to one character, dial down the intensity of the mobs and the drop rate, build up from there. 
+
+2046 so budget is 6. I guess that might be something that differs based on the card maybe? but for now I'm doing math to get it.

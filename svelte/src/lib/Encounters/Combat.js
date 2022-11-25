@@ -1,5 +1,4 @@
 import Move from '$lib/Move';
-import Mobs from './Mobs';
 
 const modifyCharacters = ({}) => {
 	return { passed: false, loot: [] };
@@ -147,6 +146,7 @@ const runInitiative = (
 	opponentsToModify,
 	moveToModify	
 ) => {
+
 	let characters = [...charactersToModify]
 	let opponents = [...opponentsToModify]
 	let move = Object.assign({}, moveToModify)
@@ -255,9 +255,9 @@ export default class Combat {
 	}
 
 	/*
-    A boilerplate combat encounter is straight-forward. Two groups of beings meet and 
-    perform their normal combat actions in initiative order. 
-  */
+      A boilerplate combat encounter is straight-forward. Two groups of beings meet and 
+      perform their normal combat actions in initiative order. 
+    */
 	static boilerplate(tile) {
 		const tileOpponents = () => {
 			return tile.generateOpponents()

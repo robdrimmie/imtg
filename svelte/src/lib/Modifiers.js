@@ -25,7 +25,7 @@ export default class Modifiers {
 	static INCREASE_ICON = '✖️'
 	static DECREASE_ICON = '➗'
 
-	static OPPONENT_DIFFICULT_MODIFIER = 6;
+	static OPPONENT_DIFFICULT_MODIFIER = 1;
 
 	static labelForModifer(modifier) {
 		switch (modifier) {

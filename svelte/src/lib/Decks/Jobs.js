@@ -66,10 +66,10 @@ class Job {
 	}
 
 	combatAction(actor, partyMembers, opponentMembers) {
-		// console.log(
-		// 	"Jobs combatAction called with actor, partyMembers, opponentMembers", 
-		// 	actor, partyMembers, opponentMembers
-		// )
+		console.log(
+			"Jobs combatAction called with actor, partyMembers, opponentMembers", 
+			actor, partyMembers, opponentMembers
+		)
 
 		const allies = [...partyMembers];
 		const opponents = [...opponentMembers];
