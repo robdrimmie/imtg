@@ -5,27 +5,25 @@
 *NOTE:* This list is not a commitment to you, it is a reference for me. There is no guarantee that any of these items will be implemented.
 
 ## big tasks (not prioritized, but a little bit preference-ized)
-- 🟠 improve item generation
-  - flitting from vendors to characters should work
-  - ✅ vendors should craft their shit
-  - ✅ icon changes color or something based on attribute modified, as well as increase or decrease? 
+- interface
   - images need to exist for all item types
     - 🟠 missing Win Condition and Food
-- 🟠 improve inventory management interface
-  - all panes should have a purpose and content
-    - 🟠 Currency has no purpose. Party has content
-    - ✅ Navigation pane should be more interesting
-- when win condition is flitted from chest to mannequin, something breaks
-  - is there a better way to store the win condition? There must be. it is weird to take up the boot slot
-  - backpack too  
-- then try 6 party members?
-  - working with 3 for now
-- rebalance combat rewards when entire party is in place
+- flitting
+  - flitting from vendors to characters should work
+  - when win condition is flitted from chest to mannequin, something breaks
+- convert win condition to equippable item
+  - make it impossible to sell to vendor
+  - add hint to log about needing to restore the item
+  - update character to desire going to the region the win condition tile is in
 - pretty sure traps are misbehaving now, result of item modifiers?
-- then try with 6 win condition items and 6 destination tiles?
-  - no longer convinced this is a priority for launch
-- ✅ spreadsheet-type view at /sheet to help understand the variables in play
-- ✅ cache attribute and other values affected by gear
+- * give player something to do (perhaps something that is fun?)
+ - single character starts with no gear
+ - early fights acquire gear but can only equip or hold in hands
+ - when hands full, unload in town
+ - the above should happen pretty quickly
+ - working towards a good loop of adventure a few rounds, manage items, adventure a few rounds, manage items
+ - probably need a lot more encounter cards in early tiles to make it of interest. 
+
 
 ### scope creep - this are future current targets
 - add more encounters
@@ -107,3 +105,28 @@ that is interesting.
 
 ## notes and such (reverse chrono)
 As work in the sections above gets completed, I archive it down here. This is not a _good_ system, but it is _a_ system. Eventually this should all be migrated into issues or the project tooling or whatever. 
+
+### 20221125 - new repo and stabilization
+0942
+- taking out a big chunk of work that is largely done or no longer really necessary due to changes in direction
+- got the new repo setup and source of truth
+
+- ✅ improve item generation
+  - flitting from vendors to characters should work
+  - ✅ vendors should craft their shit
+  - ✅ icon changes color or something based on attribute modified, as well as increase or decrease? 
+  - images need to exist for all item types
+    - 🟠 missing Win Condition and Food
+- ✅ rebalance combat rewards when entire party is in place
+  - rebalanced for one character
+- ✅ [NOT DOING] then try with 6 win condition items and 6 destination tiles?
+  - no longer convinced this is a priority for launch
+  - I don't know how the win condition stuff will work with multiple party members, but at this time this won't be necessary because I'm starting with one character
+- ✅ improve inventory management interface
+  - almost all panes have a purpose and content
+    - 🟠 Currency has no purpose or content
+    - ✅ Navigation pane should be more interesting
+- ✅ then try 6 party members?
+  - mechanically works fine but the game is likely to be more fun starting with just one
+- ✅ spreadsheet-type view at /sheet to help understand the variables in play
+- ✅ cache attribute and other values affected by gear

@@ -960,3 +960,34 @@ I guess vending desire should take currency into consideration and eventually kn
 shit I really do think that's the right thing to do. and that makes the inventory management more interesting. Down to one character, dial down the intensity of the mobs and the drop rate, build up from there. 
 
 2046 so budget is 6. I guess that might be something that differs based on the card maybe? but for now I'm doing math to get it.
+
+2050 there's only something for the player to do if the character is like pretty crappy. they .. maybe they should get enough to fill their hands in the first fight? Should loot be that plentiful? 
+
+somewhere along the way I need for them to remember getting their ass kicked on a particular tile and not wanting to go there and stuff, and then some what of mitigating that aversion
+
+that's a really improtant mechanic. 
+
+kd\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+2054 getting dozy.
+
+20221125 0910 that was me falling asleep at the keyboard at 8:50 on a thursday night. wild parties, I tell you.
+
+0910 so what I was thinking last night - and still think is probably a good path this morning - is that there needs to be something for the player to do quickly. And for that to happen, there can be only one character who should win the first fight but has to be able to do that with their bare hands and no equipment. then they are able to purchase a piece of equipment - either a weapon or a piece of armour is probably best. Or they acquire something and automatically equip it, etc. They should probably start with food and not the win condition item but 
+
+0912 or, okay, here's maybe a thing. The win condition item _is_ a piece of equipment "Ceremonial Boots" or something like that for now. And it is not worth much of anything but when the player tries to sell it the equipment vendor refuses and there's a message (in the log probably?) that is like "The vendor refuses to purchase this item and insists that it should be returned to its original land" and then now the character has a region bias. 
+
+hmm hmm hmm this is an okay premise. 
+
+it feels like too high detail to be focusing on early on but also this is what is preventing the game from feeling like a game. There's no hook for a player to latch onto. 
+
+So yes. The character should acquire the item after winning the first (or some other early) fight. it's the top card in the first tile in _one_ of the regions, and it needs to be returned to a tile deep in some different region but nothing about that tile is known other than the region it is in.
+
+once again, mpiling up a ton of work for myself, but it's a bunch of things that have been waiting on being fixed anyway. Transfering the win item around should be possible, and 
+
+perhaps the win condition item is like, cursed or otherwise bound to the character? I'm not sure which is better but that mechanic doesn't need to be implemented any time soon. it's worth considering though, to make sure the player doesn't lose track of it and right now since the character's pack is inaccessible to the player the only way for them to make sure the character has it is to equip it. 
+
+0917 There's a lot that can be done around that, perhaps an icon that shows beside their name in the party pane or something like that.
+
+0936 so how to make progress on this. I guess remove all starting equipment except the win condition and then figure out how to loot into a hand/include hands as carrying capacity and such. That will have a lot of impact.
+
