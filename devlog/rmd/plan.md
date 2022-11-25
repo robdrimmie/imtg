@@ -991,3 +991,29 @@ perhaps the win condition item is like, cursed or otherwise bound to the charact
 
 0936 so how to make progress on this. I guess remove all starting equipment except the win condition and then figure out how to loot into a hand/include hands as carrying capacity and such. That will have a lot of impact.
 
+0951 alright, so now that is a target. Yay targets. easiest first step is no starting gear.
+
+0953 okay took away backpack. Likely to find a lot of problems. So one option that I do have here is just to start with a small container. a 1-lot backpack. The mechanics of using hands as carrying capacity are going to be complex and I might not want to deal with them. 
+
+0954 Or maybe just the back itself is a one-slot carrying thing. And either it has a container or it has a magic 1-slot container. I like that notion.
+
+0955 so yeah a lot breaks without the backpack so I think I will go for the 1-slot default carrying thing and no automatic equipping of gear. That means the player can tweak gear as soon as it gets dumped in the city. And carrying capacity becomes a more meaningful mechanic in the early game. even a 2-slot bag is a big step could do fibonacci-like, 1, 3, 5, etc or just 1 3 6 12 21 30. That is possibly a good sequence as well. 
+
+0958 so this.backpack, if there isn't a pack, should return a magic 1-slot container or something. 
+
+1000 or do I just start with like... a sack. holds one item. eventually new bags come. Yes I think that is what I will do. If the backpack doesn't exist a sack magically appears. sacks have zero value and don't get broken into mats and if someone tries to equip a backpack while a sack is there, the sack magically disappears. Maybe if a backpack is removed a sack magically appears too. 
+
+1016 so currency doesn't get looted I guess.
+
+1029 so right now with seed 20 there are two fights each which get currency then one that gets a weapon and fills the sack but the character still prefers adventuring which isn't the choice I think that should be happening. Especially this close to 000, they should want to unload fast. 0 carrying capacity is a bad place for a character to be. 
+
+But the vend score is only .2. So 
+
+1031 vend score is pretty naive. that's what's happening. 
+```
+		vendingDesireScore = (capacity.base - capacity.current) * .2
+```
+
+1 - 0 * .2 so yeah it will never be very high. 
+
+When capacity.current is 0, it should be quite high. like, 2?

@@ -37,9 +37,6 @@ export default class Paperdoll {
 			value: 0
 		});
 
-		// rmd todo backpack should probably be created via Job.startingBackpack or somesuch
-		paperdoll.slots[Paperdoll.DOLL_SLOT_BACK] = Backpack.ofTenSlots();
-
 		return paperdoll;
 	}
 

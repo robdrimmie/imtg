@@ -1,4 +1,5 @@
 import Attributes from '$lib/Attributes'
+import Backpacks from '$lib/Decks/Backpacks'
 import Dice from '$lib/Dice'
 import Jobs from '$lib/Decks/Jobs'
 import Logger from '$lib/Logger'
@@ -63,12 +64,16 @@ export default class Character {
 		this.paperdoll = props.paperdoll ? props.paperdoll : Paperdoll.forCharacter();
 
 		if (props.startingGear) {
-			this.paperdoll.slots[Paperdoll.DOLL_SLOT_TORSO] = this.job.startingArmour();
-			this.paperdoll.slots[Paperdoll.DOLL_SLOT_HAND_RIGHT] = this.job.startingWeapon();
-			this.backpack().slots[0] = this.job.startingArmour();
+
+			// rmd todo backpack should probably be created via Job.startingBackpack or somesuch
+			// paperdoll.slots[Paperdoll.DOLL_SLOT_BACK] = Backpack.ofTenSlots();
+
+			// this.paperdoll.slots[Paperdoll.DOLL_SLOT_TORSO] = this.job.startingArmour();
+			// this.paperdoll.slots[Paperdoll.DOLL_SLOT_HAND_RIGHT] = this.job.startingWeapon();
+			// this.backpack().slots[0] = this.job.startingArmour();
 
 			// RMD TODO this should be put in slot 1, it's here while I sort out svelte-dnd-action stuff
-			this.backpack().slots[7] = this.job.startingWeapon();
+			// this.backpack().slots[7] = this.job.startingWeapon();
 		}
 
 		this.personality = props.personality ? props.personality : this.startingPersonality();
@@ -620,47 +625,56 @@ export default class Character {
 
 	// A character wants to vend (dump gear at minimum) if they have low capacity
 	calculateVendingDesire() {
-		let vendingDesireScore = 1;
+		let vendingDesireScore = 1
 
-		const threshold =
-			0.01 * this.getCurrentConscientousness() * (0.01 * this.getCurrentNeuroticism());
+		const threshold = 0.01 * this.getCurrentConscientousness() * (0.01 * this.getCurrentNeuroticism())
 
 		const capacity = {
 			base: this.backpack().capacity,
 			current: this.backpack().availableCapacity()
-		};
+		}
 
 		const modifier = capacity.base - capacity.current
 
-		vendingDesireScore = (capacity.base - capacity.current) * .2
+		if(capacity.current === 0) {
+			vendingDesireScore = 2
+		} else {
+			vendingDesireScore = (capacity.base - capacity.current) * .2
+		}
 
-		return vendingDesireScore;
+		console.log("vending desire", vendingDesireScore, capacity.base, capacity.current)
+
+		return vendingDesireScore
 	}
 	// #endregion calculate Desire methods
 
 	// #region inventory management
 	backpack() {
-		return this.paperdoll.slots[Paperdoll.DOLL_SLOT_BACK];
+		if (this.paperdoll.slots[Paperdoll.DOLL_SLOT_BACK] === null) {
+			this.paperdoll.slots[Paperdoll.DOLL_SLOT_BACK] = Backpacks.sack()
+		}
+
+		return this.paperdoll.slots[Paperdoll.DOLL_SLOT_BACK]
 	}
 
 	loot() {
-		let loot = [];
+		let items = []
 
 		this.paperdoll.slots.forEach((paperdollSlot, index) => {
 			if (paperdollSlot && paperdollSlot.isContainer) {
 				const newLoot = paperdollSlot.loot();
 				if (newLoot) {
-					loot = [...loot, ...newLoot];
+					items = [...items, ...newLoot];
 				}
 			}
 
 			if (paperdollSlot && !paperdollSlot.isContainer) {
-				loot.push(paperdollSlot);
+				items.push(paperdollSlot);
 			}
 		});
 
 		// return the array of items
-		return loot;
+		return { items, currency: this.currency };
 	}
 
 	// loop through paperdoll and any containers looking for the win condition

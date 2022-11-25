@@ -22,4 +22,8 @@ export default class Backpack {
 	static ofFifteenSlots() {
 		return Backpack.ofXSlots(15);
 	}
+
+	static sack() {
+		return Container.Backpack(1, `Holds 1 item`, `Sack`, 0);
+	}
 }

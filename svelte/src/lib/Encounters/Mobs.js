@@ -101,9 +101,11 @@ export default class Mobs {
 			mob.paperdoll.slots[slot] = loot;
 		}
 
-		// 50% chance of some currency
+		mob.currency = 1
+
+		// 50% chance of some extra currency
 		if(Dice.d100() < 50) {
-			mob.currency = Dice.d4()
+			mob.currency += Dice.d4()
 		}
 
 		return mob

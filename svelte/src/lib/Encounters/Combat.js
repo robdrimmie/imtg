@@ -5,8 +5,11 @@ const modifyCharacters = ({}) => {
 };
 
 const distributeLoot = (charactersToModify, lootToDistribute, moveToModify) => {
+	console.log("distributeLoot", lootToDistribute)
 	let characters = [...charactersToModify]
-	let loot = [...lootToDistribute]
+
+	let items = [...lootToDistribute.items]
+
 	let move = Object.assign({}, moveToModify)
 
 	// RMD TODO refactor allocate loot
@@ -19,20 +22,11 @@ const distributeLoot = (charactersToModify, lootToDistribute, moveToModify) => {
 	// there are cleaner ways to do this I'm sure but it works okay for now.
 	let capacityCharacterIds = [];
 	while (
-		loot.length > 0 
+		items.length > 0 
 		&& capacityCharacterIds.length < characters.length 
 	) {
-
-		// console.log(
-		// 	"modified and index and length", 
-		// 	characters, 
-		// 	modCharIndex
-		// 	, characters.length
-		// )
-
-
 		if (characters[modCharIndex].backpack().capacity > 0) {
-			const looted = loot.pop();
+			const looted = items.pop();
 
 			characters[modCharIndex].backpack().contain(looted);
 
@@ -53,6 +47,12 @@ const distributeLoot = (charactersToModify, lootToDistribute, moveToModify) => {
 			modCharIndex = 0;
 		}
 	}
+
+	const currencyShare = Math.floor(lootToDistribute.currency / (characters.length + 1))
+	const remainder = lootToDistribute.currency % (characters.length + 1)
+	characters.forEach( char => char.currency += currencyShare)
+	characters[0].currency += remainder
+	// rmd todo first character in party always gets the remainder currency. that's unfair... once there are more than one characters
 
 	return {characters, move}
 }
@@ -131,13 +131,19 @@ const initiativeForParties = (parties = []) => {
 };
 
 const lootOpponents = (opponents) => {
-	let loot = []
+	let items = []
+	let currency = 0
 
 	opponents.forEach((opponent) => {
-		loot = [...loot, ...opponent.loot()];
+		const loot = opponent.loot()
+
+		items = [...items, ...loot.items]
+		currency += loot.currency
 	});
 
-	return loot
+
+	
+	return {items, currency}
 }
 
 const runInitiative = (
