@@ -1065,3 +1065,4 @@ boulder trap (doesn't exist yet" is "avoid one very big thing")
 
 1712 but cost should be deducted from the inventory. 
 
+1723 it is now. 

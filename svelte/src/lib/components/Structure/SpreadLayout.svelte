@@ -308,17 +308,17 @@
 	}
 
 	const flit = (e, details) => {
-		console.log("SpreadLayout - flit - e, details", e, details)
+		// console.log("SpreadLayout - flit - e, details", e, details)
 
 		const source = sourceForDetails(details)
 
-		console.log("flit found source", source)
+		// console.log("flit found source", source)
 		
 		const item = source.array[source.index]
-		console.log("flit found item", item)
+		// console.log("flit found item", item)
 
 		const target = targetForSourceAndItemType(source.source, item.type)
-		console.log("flit found target", target)
+		// console.log("flit found target", target)
 
 		// is target empty
 		if(target.index < 0) {
@@ -335,12 +335,10 @@
 			// increase currency by the item's value
 			$characters[$selected.character].currency += item.value
 
-			console.log("is it equippable", item)
 			// Vendors need to get mats
 			if(itemTypeIsEquippable(item.type)) {
 				$equipablesVendors[$selected.equipablesVendor].equipablesMaterials += ItemType.matsForType(item.type)
 			} else {
-				console.log("selling consumable?")
 				$consumablesVendors[$selected.consumablesVendor].consumablesMaterials += ItemType.matsForType(item.type)
 			}
 		} else {
