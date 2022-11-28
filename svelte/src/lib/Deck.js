@@ -7,6 +7,12 @@ export default class Deck {
 	static SIZE_LARGE = 'SIZE_LARGE';
 	static SIZE_UNLIMITED = 'SIZE_UNLIMITED';
 
+	// given an array, pick one element randomly
+	static pickOneCard(cards) {
+		const deck = new Deck(cards) 
+		return deck.drawOne()
+	}
+
 	constructor(cards) {
 		// console.log("Deck constructing with cards", cards)
 		this.cards = [...cards] ?? [];

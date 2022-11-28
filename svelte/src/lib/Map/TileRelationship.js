@@ -77,19 +77,23 @@ export default class TileRelationship {
 					break
 
 				case Deck.SIZE_SMALL:
-					value *= 1.25
+					// value *= 1.25
+					value *= 1.1
 					break
 
 				case Deck.SIZE_MEDIUM:
-					value *= 1.5
+					// value *= 1.5
+					value *= 1.2
 					break
 
 				case Deck.SIZE_LARGE:
-					value *= 1.75
+					// value *= 1.75
+					value *= 1.3
 					break
 
 				case Deck.SIZE_UNLIMITED:
-					value *= 2
+					// value *= 2
+					value *= 1.4
 					break
 			}
 

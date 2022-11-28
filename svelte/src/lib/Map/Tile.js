@@ -14,10 +14,10 @@ class DeckKnowledge {
 
 export default class Tile {
 	static KNOWLEDGE_UNKNOWN = 0;
-	static KNOWLEDGE_TOMBSTONE = 1;
-	static KNOWLEDGE_OBITUARY = 2;
-	static KNOWLEDGE_MEMOIR = 3;
-	static KNOWLEDGE_EXPERIENCED = 4;
+	static KNOWLEDGE_TOMBSTONE = 10;
+	static KNOWLEDGE_OBITUARY = 25;
+	static KNOWLEDGE_MEMOIR = 50;
+	static KNOWLEDGE_EXPERIENCED = 85;
 
 	static findTileForHex(hex, allTiles) {
 		return allTiles.find((tile) => {

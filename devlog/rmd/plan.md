@@ -1066,3 +1066,105 @@ boulder trap (doesn't exist yet" is "avoid one very big thing")
 1712 but cost should be deducted from the inventory. 
 
 1723 it is now. 
+
+2117 so right now the character goes to -101 until they get loot then back to 000 then back to -101 etc etc. there is no desire to roam to explore. 
+
+there is no progression. 
+
+2118 one of the possible types of vendors was trainers. it's long been the notion of increasing attributes by way of lkjdflkjadf by way of trainers?
+
+the resources just kind of come out of nowhere right now. I guess that's mostly okay? I keep entertaining the notion that health should be derived from endurance and energy can be derived from brawn but neither fit as closely as I would like. and I'd rather they be the result of interactions from the stats?
+
+The stats need to do something, right? There is some value in them for exploring and different desire and value and suchlike tile relationship scoring logic but there isn't like a reliable structure and there are a lot that go untested.
+
+like a helm of increase conscientousness... what good is that? 
+
+I guess conscientousness would be a good contributor to health. conscientousness and endurance contributing to health seems like it could make sense.
+
+|            |agreeableness|awareness|conscientousness|brawn|neuroticism|
+|coordination|             |         |                |     |           |
+|extraversion|             |         |                |     |           |
+|magnetism   |             |         |                |     |           |
+|openness    |             |         |                |     |           |
+|endurance50 |             |         |                |     |           |
+
+agreeableness    coordination = easily coachable athlete        = 
+agreeableness    extraversion = gregarious, friendly, outgoing  = 
+agreeableness    magnetism    = beautiful/handsome and charming = 
+agreeableness    openness     = kind                            = 
+agreeableness    endurance    = always along for anything       = 
+awareness        coordination = very agile                      = 
+awareness        extraversion = event organizer                 = 
+awareness        magnetism    = leadership                      = 
+awareness        openness     = attuned to others needs         = 
+awareness        endurance    = stalker?                        = 
+conscientousness coordination = close-up magic                  = melee dps - knife rogue?
+conscientousness extraversion = party host                      = 
+conscientousness magnetism    = leadership                      = 
+conscientousness openness     = honest                          = 
+conscientousness endurance    = marathon runner                 = 
+brawn            coordination = linebacker                      = melee dps - fighter
+brawn            extraversion = circus strong man               = 
+brawn            magnetism    = lumberjack                      = 
+brawn            openness     = the tick                        = 
+brawn            endurance    = slow moving hard hitter         = 
+neuroticism      coordination = bomb diffuser                   = 
+neuroticism      extraversion = larry david/george costanza     = 
+neuroticism      magnetism    = manic pixie dream girl          = 
+neuroticism      openness     = hypochondriac                   = 
+neuroticism      endurance    = complains but gets it done      = 
+
+coordination
+extraversion
+magnetism
+openness
+endurance
+
+2152 I'm not sure what all those combinations do for me. It certainly doesn't get me deriving health and energy but that's okay. I might put that in Character as well. There's an aspect of job influence in there I might still add like possible jobs
+
+2156 huh. I added it, I thought there would be way more jobs i nthat list. 
+
+20221127 1037 so I'm not sure what to do about the above. It will ruminate. 
+
+The current mechanism for choosing tiles is what forces the party to go to -101 entirely and deplete it. the scoring mechanism picks the first one with a good score and nothing that is equal can knock it off. 
+
+I could either build an array of contenders and then pick one - building a deck is conceptually consistant with the mechanics in this system. Or I could shuffle the deck of all tiles in advance and then whichever one comes out first is fine. 
+
+1040 or how would like... real-ish people make a choice here? Curiosity is a factor, right? Curious characters are going to be inclined to go to new tiles, explore new regions, do new stuff right? Openness would be that factor? Neuroticism might play into it? 
+
+1041 I just realized that my split of attributes above is not personality vs physical, they're all mixed together which makes for invalid personality combinations. Anyway that's all fine. It's percolating! I don't think that's spelled right but anyway. 
+
+1042 But what's their motiviation I ask myself, feeling a bit corny. But that's the point of all this really. Broadly the goal of the character is to return the win condition object to its home. 
+
+But even before that, the goal of the character is to explore, right? They go out and find the object? But that's kind of a vote in favour for starting them with it. They are instantiated with the goal of returning that particular object, and the player believes that to be their goal as well.
+
+I mean kind of correctly, but there are _secrets_ that have not been exposed here yet. We don't know why the character got the item and why they feel compelled to return it. Just that they do and by default a character in a game we start playing is our avatar and therefore their goals are our goals.
+
+The character wants to return this item to some place but it is too dangerous for them at this point. As the player I want to help the character increase in ability and equipment so they/we can achieve their/our goal.
+
+1319 okay so what do I want to do here. I guess I want to break ties with randomness. 
+
+1329 okay, picks a random starting direction now but they keep going to that tile. tile knowledge ranking it higher than the others? 
+
+1333 yep, tile knowledge jacks the adventure value up to 4.something something whereas all the others stay at 1. 
+
+So the neighbours should be able to go up a bit higher I think, to 2 instead of just one. 
+
+1335 changed the value of the decksize but haven't changed the neighbours thing I had to trace through to that again I don't remember exactly where it is. 
+
+1336 same behaviour but now the adv value of the tile they keep going to is 3.25 which is still much higher than 1 but tweakable. And maybe it should not scale up that quick or the scale of tile knowledge should be broader. like 1-100 and ..
+
+something I want is fuzzy thresholds. Like I don't want the tile to have to be visited 80 times but eventually more knolwedge will be gleaned. 
+
+I guess I can manage that through odds. Tile knowledge only increases by a bit. what do I use the knowledge levels for? 
+
+1339 so I have some Tile.KNOWLEDGE_foo constants. 0, 1, 2, 3, 4. If I change those constants to be.. something? 
+
+they would still be thresholds though. TileRelationship.knowledgeLEvel can increase at random times and the threshold can be fixed and that works okay. 
+
+So 
+
+1935 so I guess try that. 
+
+
+

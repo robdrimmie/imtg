@@ -8,6 +8,7 @@ import Names from '$lib/Decks/Names'
 import Paperdoll from '$lib/Items/Paperdoll'
 import Tile from '$lib/Map/Tile'
 import TileRelationship from '$lib/Map/TileRelationship'
+import Deck from './Deck'
 
 export default class Character {
 	static forTesting() {
@@ -787,28 +788,50 @@ export default class Character {
 			// 	)
 			// }
 
+
 			// update best tiles
 			if (tileScoreForAdventuring > bestTiles.adventure.score) {
+				// replace if score is higher
 				bestTiles.adventure = {
 					score: tileScoreForAdventuring,
-					tile: tileUnderConsideration
+					contenders: [tileUnderConsideration]
 				};
+			} else if (tileScoreForAdventuring == bestTiles.adventure.score) {
+				// combine if score is equal
+				bestTiles.adventure = {
+					score: tileScoreForAdventuring,
+					contenders: [...bestTiles.adventure.contenders, tileUnderConsideration]
+				}
 			}
 
 			if (tileScoreForResting > bestTiles.rest.score) {
 				bestTiles.rest = {
 					score: tileScoreForResting,
-					tile: tileUnderConsideration
+					contenders: [tileUnderConsideration]
+				};
+			} else if (tileScoreForResting == bestTiles.rest.score) {
+				bestTiles.rest = {
+					score: tileScoreForResting,
+					contenders: [...bestTiles.rest.contenders, tileUnderConsideration]
 				};
 			}
 
 			if (tileScoreForVending > bestTiles.vend.score) {
 				bestTiles.vend = {
 					score: tileScoreForVending,
-					tile: tileUnderConsideration
+					contenders: [tileUnderConsideration]
+				};
+			} else if (tileScoreForVending == bestTiles.vend.score) {
+				bestTiles.vend = {
+					score: tileScoreForVending,
+					contenders: [...bestTiles.vend.contenders, tileUnderConsideration]
 				};
 			}
 		});
+
+		bestTiles.adventure.tile = Deck.pickOneCard(bestTiles.adventure.contenders)
+		bestTiles.rest.tile = Deck.pickOneCard(bestTiles.rest.contenders)
+		bestTiles.vend.tile = Deck.pickOneCard(bestTiles.vend.contenders)
 
 		return bestTiles;
 	}
@@ -824,8 +847,11 @@ export default class Character {
 		} else {
 			// if the tile has been discovered seeing it again can add more knowledge
 			// but only to a max of tombstone level
-			if(relationship.knowledgeLevel == Tile.KNOWLEDGE_UNKNOWN) {
-				relationship.knowledgeLevel = Tile.KNOWLEDGE_TOMBSTONE
+			if(
+				relationship.knowledgeLevel < Tile.KNOWLEDGE_TOMBSTONE
+				&& this.shouldIncreaseKnowledgeLevel()
+			) {
+				relationship.knowledgeLevel++
 			}
 		}
 
@@ -853,23 +879,27 @@ export default class Character {
 		this.updateRelationshipWithTile(tile)
 	}
 
+	
+	shouldIncreaseKnowledgeLevel() {
+		// conscientiousness and awareness
+		return 50 < this.testAttributes([
+			Attributes.PERSONALITY_CONSCIENTIOUSNESS,
+			Attributes.PHYSICALITY_AWARENESS
+		])
+	}
+
 	updateRelationshipWithTile(tile) {
 		// console.log("updateRelationshipWithTile with tile", tile, this)
 
 		// Get the existing relationship or create a new one with barebones details.
 		const relationship = this.tileRelationships.get(tile.id) ?? new TileRelationship(this, tile);
 
-		if (relationship.knowledgeLevel === Tile.KNOWLEDGE_MEMOIR) {
-			relationship.knowledgeLevel = Tile.KNOWLEDGE_EXPERIENCED;
-		}
-
-		if (relationship.knowledgeLevel === Tile.KNOWLEDGE_OBITUARY) {
-			relationship.knowledgeLevel = Tile.KNOWLEDGE_MEMOIR;
-		}
-
-		// when the character moves into a tile they get a lot of information
-		if (relationship.knowledgeLevel < Tile.KNOWLEDGE_OBITUARY) {
-			relationship.knowledgeLevel = Tile.KNOWLEDGE_OBITUARY;
+		if (
+			relationship.knowledgeLevel < 100
+			&&  this.shouldIncreaseKnowledgeLevel()
+		) {
+			relationship.knowledgeLevel++
+			Logger.info(`${this.name} increases knowledge of ${relationship.tile.id} to ${relationship.knowledgeLevel}`)
 		}
 
 		// write out relationship and return it
