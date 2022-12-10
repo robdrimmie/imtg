@@ -8,6 +8,8 @@ traps test awareness and coordination most of the time
 arrow traps are dodge many small things
 boulder traps - do not exist yet - dodge many big things
 
+something that requires strength - a gate suddenly slamming shut and brawn is required to open it
+
 */
 export default class Trap {
 	static DEFAULT_DESCRIPTION = 'No description supplied to constructor';

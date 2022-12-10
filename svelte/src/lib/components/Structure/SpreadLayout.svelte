@@ -312,10 +312,10 @@
 
 		const source = sourceForDetails(details)
 
-		// console.log("flit found source", source)
+		console.log("flit found source", source)
 		
 		const item = source.array[source.index]
-		// console.log("flit found item", item)
+		console.log("flit found item", item)
 
 		const target = targetForSourceAndItemType(source.source, item.type)
 		// console.log("flit found target", target)

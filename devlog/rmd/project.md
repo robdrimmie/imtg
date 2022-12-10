@@ -5,6 +5,11 @@
 *NOTE:* This list is not a commitment to you, it is a reference for me. There is no guarantee that any of these items will be implemented.
 
 ## big tasks (not prioritized, but a little bit preference-ized)
+- * associate regions with attributes
+  - 20221210 entries hold detail
+  - mob generation and gear allocation is impacted
+- associate region attributes with tile relationships
+  - 20221210 entries touch on it but no specific implementation is described
 - interface
   - images need to exist for all item types
     - 🟠 missing Win Condition and Food
@@ -16,13 +21,13 @@
   - add hint to log about needing to restore the item
   - update character to desire going to the region the win condition tile is in
 - pretty sure traps are misbehaving now, result of item modifiers?
-- * give player something to do (perhaps something that is fun?)
- - single character starts with no gear
- - early fights acquire gear but can only equip or hold in hands
- - when hands full, unload in town
- - the above should happen pretty quickly
- - working towards a good loop of adventure a few rounds, manage items, adventure a few rounds, manage items
- - probably need a lot more encounter cards in early tiles to make it of interest. 
+- ✅ give player something to do (perhaps something that is fun?)
+ - ✅ single character starts with no gear
+ - ✅ early fights acquire gear but can only ~equip or hold in hands~ put in 1-slot sack
+ - ✅ when ~hands~ 1-slot sack full, unload in town
+ - ✅ the above should happen pretty quickly
+ - ✅ working towards a good loop of adventure a few rounds, manage items, adventure a few rounds, manage items
+ - ✅ probably need a lot more encounter cards in early tiles to make it of interest. 
 
 
 ### scope creep - this are future current targets

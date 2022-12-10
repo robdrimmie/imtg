@@ -1166,5 +1166,490 @@ So
 
 1935 so I guess try that. 
 
+1957 that looks like it is working? At least for quite a few many turns. it's hard to go through all however many cards in the deck. eventually something has to make the tier of loot on this tiles less interesting. difficulty right? the character wants tiles that are easy enough to beat but have rewards worthwhile enough to do whatever. 
+
+the shop made a tier 5 item on the first turn it could make something and it cost 2 currency to get so yeah, not much of much happening there. 
+
+There's no way for a new player to understand what is ahppening still, and there's not really anything they seem to be doing well......... I'm not sure what that means.
+
+feeling tired face droopy. 
+
+2002 trying to think of how to attract a character to a region. A character could have a 'preferred region' property, or score the regions and such. But it is about tile attraction 
+
+20221201 1944 unlikely to do much too soon, perhaps this weekend. there's some good smallish tasks, traps and things like that. Something perhaps about the regions to think about is aligning them to stats? There are 5 of each type of stat and 6 regions though. Maybe a region is all stats or something like that? 
+
+That's a relatively good system to think about and maybe the combination of stats is a good source of flavour. 
+
+Encounters should (perhaps) test stats. Combat is a test largely of awareness and brawn. so it doesn't even need to be one of each type and probably can't.
 
 
+PERSONALITY_AGREEABLENESS
+PERSONALITY_CONSCIENTIOUSNESS
+PERSONALITY_EXTRAVERSION
+PERSONALITY_NEUROTICISM
+PERSONALITY_OPENNESS
+PHYSICALITY_AWARENESS
+PHYSICALITY_BRAWN
+PHYSICALITY_COORDINATION
+PHYSICALITY_ENDURANCE
+PHYSICALITY_MAGNETISM
+
+1950 there's 945 possible pairings of 10 items
+ https://math.stackexchange.com/questions/532542/there-are-10-different-people-at-a-party-how-many-ways-are-there-to-pair-them-o
+
+and a lot of those don't make sense probably. what tests agreeableness/conscientiousness
+
+1951 So perhaps a different approach. 
+
+What if each region emphasized one physicality and one personality trait? There aren't opposites so it isn't as though things cancel out but if for example the enchanted forest is combined with conscientiousness and brawn then the combat and trap encounters would impact those attributes of the character? 
+
+what is the penalty for a character's conscientiousness going down? is lower always better or is it the case with personality that probably like the 60-80 range is probably ideal and the edges of both sides cause challenge
+
+but how does it matter. is it possible to make it matter that a character is too agreeable? Well immediately to mind perhaps a character that is overly agreeable is more likely to stay with a party even if their goal tile is not being approached or however a character's goals are represented. 
+
+A disagreeable character will be kicked out of a party quickly. An overly agreeable character will stay with a party even if their goals are not being prioritized.
+
+An ~disconcientious~ apathetic character will not train very much? An overly conscientious (meticulous? have words for the extremes) character is too interested in staying in one place like, hundred percenting it or something like that?
+
+An extreme introvert has troubles joining parties and an extreme extrovert has troubles when there are few party members maybe?
+
+A closed person hates new ideas I'm not sure how that is reflected. An extremly open person is flighty, changes their mind all the time. some expression about a weather vane 
+
+PERSONALITY_AGREEABLENESS
+PERSONALITY_CONSCIENTIOUSNESS
+PERSONALITY_EXTRAVERSION
+PERSONALITY_NEUROTICISM
+PERSONALITY_OPENNESS
+PHYSICALITY_AWARENESS
+PHYSICALITY_BRAWN
+PHYSICALITY_COORDINATION
+PHYSICALITY_ENDURANCE
+PHYSICALITY_MAGNETISM
+
+an unaware character gets hit a lot, an aware character dodges more readily, spots trap, an extremely aware person maybe has decision paralysis? ineffective because they can't prioritize what to be aware of maybe?
+a weak character doesn't do much physical damage a brawny character should have lower agility? consumes more food for sure
+an uncoordinated person triggers more traps? trips and hurts themselves more, misses attacks more often. an overly coordinated person... harder to find a downside to physical traits. 
+low endurance low energy. high endurance like... is there a downside? apparently heart health can be a problem for people who overtrain endurance
+unmagnetic people are repulsive. overly magnetic people are...
+
+2007 so yeah downsides to physicality sure seem hard to think up. There's also none of these attributes that would impact magical ability. I guess training is conscientiousness, some amount of neuroticism probably helps do such things accurately? like component mixing or just hte knowledge and practice and stuff.
+
+None of this seems to be important for characters who want to explore a region. So I'm back to swamp boots to protect against poison. 
+
+The win condition return region is the enchanted forest. The enchanted forest is biased in favour of element A which has a contradictory relationship with the element in whichever region is opposite it.
+
+So maybe there's some complimentary colour/zodiac combatibility type mechanism that can be explored with this. 
+
+        left-upwards            right-upwards
+    left                                    right
+        left-downwards          right-downwards
+
+left <-  opposes -> right
+left-downwards <-  opposes -> right-upwards
+
+left-upwards <-  opposes -> right-downwards
+left-upwards <- dislikes -> left
+left-upwards <- dislikes -> right-upwards
+left-upwards <- likes -> left-downwards
+left-upwards <- likes -> right-right
+
+so, dislike neighbour regions like 
+
+I'm trying to visualize it. So it's like
+  \ /
+-     -
+  / \
+
+  \ /
+-  \  -  opposition
+  / \
+
+  \ /
+-    -
+  / \
+
+no it isn't working. So complimentary colours are not immediately adjacent on a colour wheel to the current colour, so hexes which are immediately adjacent are not complimentary hexes is the thinking here. 
+
+but it might make more sense to like those close to you and hate those far from you. 
+
+left <- likes    -> left-upwards
+left <- dislikes -> right-upwards
+left <- opposes  -> right
+left <- dislikes -> right-downwards
+left <- likes    -> left-downwards
+
+"likes" and "dislikes" here being I'm not entirely sure actually. 
+
+So the idea is that left has element A and right has element B and they are in opposition. So they should be... ineffective against each other? 
+
+A roshambo type situation is a circle. A beats B beats C beats A. 
+
+2019 what I describe above is not a roshambo type situation. What type of situation is it? If elements oppose each other they should cancel each other out? what does that mean is that a usable mechanic? what would be good armour to wear while explore left?
+
+What I want is to find gear that has an attribute that makes it easier to explore one specific region. That's the best way I can think of for gear to influence character decision making because all the gear of attribute modified by whatever isn't going to do it. 
+
+OR maybe elements are defeated by attribute pairings? If we do all the combinations of one personality paired with one physicality that's like 25 "elements" . can I think of something that is the opposite of those combinations somehow?
+
+|  PERSONALITY_AGREEABLENESS      |  PHYSICALITY_AWARENESS     |  |
+|  PERSONALITY_AGREEABLENESS      |  PHYSICALITY_BRAWN         |  |
+|  PERSONALITY_AGREEABLENESS      |  PHYSICALITY_COORDINATION  |  |
+|  PERSONALITY_AGREEABLENESS      |  PHYSICALITY_ENDURANCE     |  |
+|  PERSONALITY_AGREEABLENESS      |  PHYSICALITY_MAGNETISM     |  |
+|  PERSONALITY_CONSCIENTIOUSNESS  |  PHYSICALITY_AWARENES      |  |
+|  PERSONALITY_CONSCIENTIOUSNESS  |  PHYSICALITY_BRAW          |  |
+|  PERSONALITY_CONSCIENTIOUSNESS  |  PHYSICALITY_COORDINATION  |  |
+|  PERSONALITY_CONSCIENTIOUSNESS  |  PHYSICALITY_ENDURANCE     |  |
+|  PERSONALITY_CONSCIENTIOUSNESS  |  PHYSICALITY_MAGNETISM     |  |
+|  PERSONALITY_EXTRAVERSION       |  PHYSICALITY_AWARENESS     |  |
+|  PERSONALITY_EXTRAVERSION       |  PHYSICALITY_BRAWN         |  |
+|  PERSONALITY_EXTRAVERSION       |  PHYSICALITY_COORDINATION  |  |
+|  PERSONALITY_EXTRAVERSION       |  PHYSICALITY_ENDURANCE     |  |
+|  PERSONALITY_EXTRAVERSION       |  PHYSICALITY_MAGNETISM     |  |
+|  PERSONALITY_NEUROTICISM        |  PHYSICALITY_AWARENESS     |  |
+|  PERSONALITY_NEUROTICISM        |  PHYSICALITY_BRAWN         |  |
+|  PERSONALITY_NEUROTICISM        |  PHYSICALITY_COORDINATION  |  |
+|  PERSONALITY_NEUROTICISM        |  PHYSICALITY_ENDURANCE     |  |
+|  PERSONALITY_NEUROTICISM        |  PHYSICALITY_MAGNETISM     |  |
+|  PERSONALITY_OPENNESS           |  PHYSICALITY_AWARENESS     |  |
+|  PERSONALITY_OPENNESS           |  PHYSICALITY_BRAWN         |  |
+|  PERSONALITY_OPENNESS           |  PHYSICALITY_COORDINATION  |  |
+|  PERSONALITY_OPENNESS           |  PHYSICALITY_ENDURANCE     |  |
+|  PERSONALITY_OPENNESS           |  PHYSICALITY_MAGNETISM     |  |
+
+2026 yogurt soon. one option could also just be having 6 elements and just picking pairs that oppose it. the discovery of what opposes what might be something that could be interesting?
+
+or like, all entities in the Enchanted Forest are linked somehow to extraversion/brawn so gear that boosts those attributes makes characters more effective in encounters? 
+
+mechanically that's pretty doable. gaminess I'm not too sure what it does other than be a way to influence characters. 
+
+and then gear discovered in left region would boost stats that make the character more effective in right region? Or is it a matter of acquiring gear slowly over time that eventually starts biasing characters into one specific region? 
+
+that is kind of interesting I think. the motivation behind doing all this stuff, the thing that makes it a game, is currently not known or apparently knowable by me but this mechanic is sort of interesting. The player will be able to know that the character never goes to the watery depths or whatever and somehow the player knows that the watery depths are biased/susceptible/linked to neuroticism/coordination. 
+
+So the player starts biasing towards gearing characters in gear that boosts those attributes. The character knows that tiles in this region like those attributes and so as those values get higher they are more likely to enter those regions and difficulty levels.
+
+difficulty levels could be gear quality checks based on attributes. 
+
+tier 1 watery depths attributes don't matter much. tier 2 a little more, etc. 
+
+before wanting to go into a tier 2 tile, the character needs to have neuroticism > 20 and coordination > 20 - specific thresholds to be determined still. 
+
+I'd like it to be less explicitly thresholded like that and more that to be able to beat tier 2 opponents, characters with high values for those attributes will be more effective and therefore be less likely to die. 
+
+2038 but implementing basic thresholds is a lot easier and is maybe a good step. 
+
+so I'm not going to get this implemented tonight natch but what are the implementation steps? 
+- regions need to get stats assigned to them
+- characters need to factor the region's stats in the tile relationship
+
+theoretically that's it, though there's a lot contained in each bullet point.
+
+2040 having encounter types that specifically test the linked attributes is interesting to me 
+
+the physicality are easier ones to test I guess. coordination? a roap bridge needs to be traversed, opponents are likely to have high awareness so dodging is more valuable? 
+
+2043 things like that. yogurt now. I like this general idea, test the stats so characters need boosted stats so players can influence character decision by way of gear that modifies stats. these are all the systems that are currently in place. 
+
+20221210 1111 a bit of a lull. fits and bursts is typical for me on this project. I've been thinking about how to communicate my hopes for this and the summary of it all is community. Or adoration? I'm not above admitting that the external validation of being known as someone who makes games is of value to me. But I want to build something here that allows me to build more things and to have people with me who build things. I don't need to be the center of it, being part of something is often a lot better than starting something but also I am so often just slightly out of alignment, the thing I am looking for isn't something I've found. 
+
+1115 but there is a very long way before that and the thing I get out of this right now today is immediate and gratifying. It's just a very long term tweaking and futzing and puttering and it really makes a difference in my experience in the world to have a creative outlet so if this is all I ever get out of it I am way way ahead.
+
+1116 So what is something to work on. Thinking on encounters previously. The aspect of the game I am trying to sort out is having gear influence character decision making. The mechanism by which I want to do this, that I hope is feasible and that seems like it builds on existing systems instead of making new ones, and adding complexity to those systems, is by having encounters test attributes. Gear modifies attributes, encounters test attributes, and success is building a character whose attributes allows them to discover and reach the tile.
+
+But I don't have a solution for this right now. Combat is a good test of a variety of things. The traps as constructed are good tests of awareness and coordination and neuroticism. like, paying attention and reacting. traps and combat test both of those things.
+
+probably a well-balanced system spreads things around very evenly but perhaps I do not want a well-balanced system. For one thing, I have no idea what the system is so making it well-balanced is particularly difficult. For another I just thought that it might be a type of progression. 
+
+So in theory combat tests a _lot_ of attributes but it isn't going to be a good test of say extraversion and magnetism. 
+
+also for personality especially I want there to be weird advantages to being very high and very low. Like, a test that introverts are more likely to see at than extroverts. a test where non-magnetic people are more likely to succeed than magnetic people. that's like a stealth mission or something, a non-magnetic person isn't repulsive... okay maybe they should be. 
+
+It is difficult to be discreet when you're extremely attractive. People are going to notice you when you're in a space. Similarly if you're extremely unattractive, it makes you stand out. But if you're like 20% - 60% attractive? people look right past you right? 70% is going to have people attentive and over 90% people are going to be like... obnoxious about it or intimidated by it in some cases.
+
+The tests aren't exclusively about high is good, it's about managing gear and characters such that you have good coverage for several different sorts of situations
+
+even different combat scenarios. I think right now I have a budget for Mobs yeah. And there are different spending strategies. Those different strageties favour different party compositions (and probably other things too) or different character abilities. 
+
+A lot of very small very fast - plague rats swarming or zergs rushing or whatever - enemies is going to test attributes differently than one large - colossus or giant or suchlike - thing. Agility vs endurance in a lot of ways.
+
+1127 chaining encounters eventually could be very interesting too. A trap encounter becomes a combat encounter - the trap triggers and frees an opponent from a cage who then attacks. Or like, a conversation encounter fails and the opposing party becomes hostile or the shopkeep calls their guards on the rogue.
+
+1152 there are a lot of questions about how to implement that, how to represent it in data. The tile relationship is to hold some of that. 
+
+1153 so a tile relationship should change every time that tile is interacted. Perhaps in very small amounts 
+
+2
+4
+8
+16
+32
+64
+
+just needed to see powers of two for a bit. that exponential line should be represented in game behaviours, difficulty, etc etc. 
+
+1155 so an encounter happens, attributes are tested, and the character fails. The character's relationship with that tile is affected in that they believe they need more of a particular attribute before they will go there again, perhaps on that same scale. 
+
+So.. but like a character's attributes don't go from 1 - 100 it starts somewhere in the middle or these days I think it is 8d8 so 8-64. 
+
+But that logic is simple threshold logic, it isn't sweet spot logic. Do I start with threshold logic to get the mechanics in place and then figure out sweet spot logic. Or do they just know which way their attribute is insufficient?
+
+If I fight and I dodge a lot and I hit a lot but I do not do enough damage to kill the opponent I want more brawn before continuing.
+
+If I fight and I am not able to dodge and I hit a lot and I do a lot of damage when I hit but I die first I want more coordination and awareness - whichever missed. I guess they work in conjunction like "do I see the attack coming" and "am I able to respond to the attack" or perhaps it is more awareness is detection of attack (doesn't have to be concious, but does the training kick in to even _start_ reacting) and then coordination determines whether or not the reaction is succesful. 
+
+That's a good way to look at it. I think right now the combat stuff is just that both of them modify rolls but it is not something like attack role versus a static defense number, it is a coordination roll for the attack and an awareness roll for the defense.
+
+if awareness is unsuccessful the attack hits. 
+
+I see here the value of a passive defense score. Someone can just miss without the target doing anything, especially in the case of like a bow and arrow right. 
+
+So:
+- coordination roll by the attacker determines if the attack is on target
+- Awareness roll by the defender determines if the target has an opportunity to defend
+- Coordination roll by the defender determines if the target adequately defends (dodge or parry for the time being at least it doesn't matter just that a defensive action was successful)
+- and then something determines how much damage is done. Weapons have degrees of effectiveness which establishes a base value and the coordination roll determines if the 
+
+1206 brain went blank. A high coordination roll means that a sensitive area is hit so it is like a critical roll, so the higher the coordination the more damage something does. An attack can hit but in a graze sort of situation it just nicks flesh.
+
+So it isn't a straight up pass/success on the defense action. There is an attack coordination roll and a defense coordination roll. 
+
+say evenly matched opponents, both have 50 coordination, both have the same weapon that does 5 damage. I don't think that's exactly how damage works but for the sake of this exercise it is for now.
+
+In this situation it is a straight up dice roll. Attacker rolls 80 defender rolls 20. Attack absolutely succeeds and does a high amount of damage.
+
+So things are modified so we want it on a range of 0 to 2 or higher even, why not 10x the damage if an attack hits exactly the right spot of the brain to immediately kill someone. 
+
+challenge and reward need to be factors in tile relationships. This is probably the point in time where I should start making wiki pages or at least text files for these behaviours but right now I do not want to. So I shan't. Although it is possible to get the wiki in the source right?
+
+1211 yes it is a separate project. For my convenience I could symlink something to it or just open it additionally probably in my editor. for pondering. back to other pondering.
+
+so attacker rolls 80 defender rolls 20. Attack defniitely hits and that's a pretty clear victory, it's going to do quite a bit of damage. 
+
+1212 start with a simple possibility: 
+
+```
+attackRoll - defenseRoll = damageModifer
+80 - 20 = 60
+
+weaponDamage * damageModifier = totalDamage
+5 * 60 = 300
+```
+
+now I definitely don't want to just do straight up points. I'm thinking that `damageModifier` is a percentage of something but I don't know how that's working just yet. 
+
+it goes negative when defense is good right, like swap the rolls:
+
+```
+damageModifier = attackRoll - defenseRoll
+-60 = 20 - 80
+
+totalDamage = weaponDamage * damageModifer
+-300 = 5 * -60
+```
+
+so it didn't heal anything because a sword isn't going to heal anything but in this scenario it was a clear and easy dodge or parry. defensive action. 
+
+1216 So with these examples it is a little off because of the big 300/-300 number instead of a percentage between 0 and 2 but I'm also not sure it is wrong necessarily, that totalDamage isn't hit points, there's some translation between the two. maybe as simple as dividing by 100 to get 3/-3. 
+
+3 is a lot at tier 1 which a weapon that does 5 damage is probably better and that base value goes far quickly.
+
+60 attack vs 55 defense
+
+this is really close but the attack definitely lands but just barely. 
+
+a just barely dodge is a dodge, a just barely attack is a glancing blow. The attack roll needs to be a lot higher than the defense roll to land and do meaningful damage. That's a balance issue I think to keep in mind.
+
+```
+damageModifier = attackRoll - defenseRoll
+5 = 60 - 55
+
+totalDamage = weaponDamage * damageModifer
+25 = 5 * 5
+
+actualDamageReduction = totalDamage / 100
+.25 = 25 / 100
+```
+
+so in that specific example it is so low that no damage is done. so the attack roll needs to be 10+ higher than the defence roll in this scenario to do damage, assuming that things are rounded. ((5 * 10 = 50) / 100) = .5, which rounds to 1. 
+
+that's a function of the weapon. so if the weapon does 1 then the difference needs to be at least 50 in favour of the attacker for any damage to be done. If I think of damage like the exponential scale above - which isn't how it works but I don't remember how it works and I am curious if the exponential scale is of help or hinderance. 
+
+ 2 * 25 =   50 / 100 = 0.5 = 1 point of damage
+ 4 * 25 =  100 / 100 =  1   = 1 point of damage
+ 8 * 25 =  200 / 100 =  2
+16 * 25 =  400 / 100 =  4
+32 * 25 =  800 / 100 =  8
+64 * 25 = 1600 / 100 = 16
+
+why am I doing * 25? What am I demonstrating here. this is weapon effectiveness being modified by an attack roll that is 25 > the defense roll.
+
+but I think I want to see what it takes from a roll perspective to do .5 points of damage, the absolutely minimum effective damage dealing
+
+ 2 * 25 =   50 / 100 = 0.5  = 1 point of damage
+ 4 * 13 =   52 / 100 = 0.52 = 1 point of damage
+ 8 * 25 =  200 / 100 =  2
+16 * 25 =  400 / 100 =  4
+32 * 25 =  800 / 100 =  8
+64 * 25 = 1600 / 100 = 16
+
+no it's 50/whatever to get to the interesting stuff
+50 /  2 = 25
+50 /  4 = 12.5
+50 /  8 =  6.25
+50 / 16 =  3.125
+50 / 32 =  1.5625
+50 / 64 =  0.78125
+
+So a weapon of effectiveness 64 only needs to beat the defense roll by 1 to inflict damage, but a weapon of effectiveness 25 needs the attack to beat the defense roll by 25 for it to land. 
+
+so low tier creatures 
+
+I'm not sure. hmm. 
+
+oh some jobs should use different stats in combat and potentially in other scenarios. like, in combat for fighters and rogues and like hunters, physical damage types, brawn and coordination matter a lot. I haven't even included brawn in the damage thing, that's to consider. 
+
+but a mage's attacks shouldn't depend on coordination right, their skills come from their personality perhaps? 
+
+a tanks most important combat attribute is endurance. this might be an interesting way to identify jobs, what attribute do they emphasize? 
+
+a tank wants to have endurance and magnetism to be able to attract the attacks. or this might be a case where low magentism/repulsiveness is of value too? but magnetism ultimately is about the ability to influence other characters. 
+
+so worry less about that and more about the desired attributes themselves. that's a good way to influence party makeup for different regions too perhaps, or like a character that is at odds with the party already (currently expressed as wanting to go in a different direction than the group often, sort of maybe not really but close enough for this entry's purposes) might leave the party if the party decides to go to a region that tests attributes in ways that character will fail. 
+
+So a tank isn't going to be effective against an opponent that is not susceptible to magnetism, because that opponent's decision formula will have other stronger factors. I don't know how that would be represented though. In a sense oppositional attributes would be most preferable but is there such a mix?
+
+
+|  PERSONALITY_AGREEABLENESS      |  PHYSICALITY_AWARENESS     |  |
+|  PERSONALITY_CONSCIENTIOUSNESS  |  PHYSICALITY_BRAWN      |  |
+|  PERSONALITY_EXTRAVERSION       |  PHYSICALITY_COORDINATION     |  |
+|  PERSONALITY_NEUROTICISM        |  PHYSICALITY_ENDURANCE     |  |
+|  PERSONALITY_OPENNESS           |  PHYSICALITY_MAGNETISM     |  |
+
+that is not oppositional right now that is just both lists being made available. Seeing agreeablesness and magnetism together like this does make me think that an agreeable person is especially susceptible to magnetism so I know above entries having me sorting out the like/dislike relationship between things but I think I am getting to it a little bit here. Each physical attribute has a personality attribute that it is dominant against and one that it is susceptible to and the other three are like, neutral or something. maybe degrees fo dominance/susceptibility if it works out. 
+
+agreeableness dominates ... nothing. it is susceptible to magnetism.
+concientiousness dominates ... nothing? it is susceptible to .. magnetism?
+
+1239 this is not playing out as I'd hoped but at least it is a fast failure. I can't just say that conscientousness dominates brawn because how? that doesn't make sense. 
+
+1256 so then for encounters
+
+1306 got distracted. I don't remember what I was thinking about encounters. 
+
+There could be magnetism-specific encounters. That's a negotiation and stuff. And it's a special case then? 
+
+1308 so the thing I am hoping to achieve is to associate regions with attributes so then players modify the characters to try to get to them. 
+
+but maybe that systematic mechanism is not as good as different types of encounters that eventually cover things off?
+
+1310 OR entirely-ish different consideration: Is that too much flavour?
+
+Another thing I haven't discussed in this repo yet but it is possible that this entire thing is best done completely generically. That's why I have difficulty tiers instead of experience levels and jobs like melee dps instead of rogue and fighter, to some extent it is about the system not about the flavour. 
+
+In which case then biasing towards generic encourages me to just assign a personality and physicality to each region (one region with no bias) and then make just attribute-testing encounters. Not combat or traps, those are both generic, but oppositional interactions where one side is particularly strong in a couple and particularly weak in a couple of attributes. Build the system, don't justify it with realism or logic or anything else. 
+
+1313 This is not to say that flavour is unimportant, but that flavourless (as in water, not vanilla) is also worth consideration.
+
+1314 Also it allows for skinning in the future or flavour being added by the regions which has long been a consideration. So maybe there is a way for the Forbidden Forest to add flavour to encounters that test awareness and neuroticism.
+
+1314 so this might be a big thing. Is it a one way thing? How massive is this restructure? Not very I think. There's some work involved but I don't think this is like a massive architectural impact decision. 
+
+While a board is being built I can "deal" out the physicality and personality attributes. The no-attribute one is like, easiest or the most generic sort of loot and then above I have some relationships mapped based on tile distance. and the empty one is just neutral, so maybe ohhhhh the tile opposite the blank tile isn't going to have any weaknesses then, that's interesting. So like:
+
+| Tile             | Opposite         | Personality         | Physicality   |  |
+|  Left            |  Right           |  Blank              |  Blank        |  |
+|  Left-upwards    |  Right-downwards |  AGREEABLENESS      |  AWARENESS    |  |
+|  Right-upwards   |  Left-downwards  |  CONSCIENTIOUSNESS  |  BRAWN        |  |
+|  Right           |  Left            |  EXTRAVERSION       |  COORDINATION |  |
+|  Right-downwards |  Left-upwards    |  NEUROTICISM        |  ENDURANCE    |  |
+|  Left-downwards  |  Right-upwards   |  OPENNESS           |  MAGNETISM    |  |
+
+So in this case, Left is easiest and Right is hardest. 
+
+1322 So does oppositionality actually matter? How would that be impacted? Implemented? 
+
+One possibility is to uhhhh just blanked. One possibility .. is to 
+
+1322 oh! have it impact the Mob generation roles. So actually yes this is probably the best? Or it modifies the encounters in some fashion based on those things, but in a combat scenario modifying the way mob attributes are generated makes the most sense. 
+
+So Right-down is NERUO and ENDU, leftup is AGREE, AWARE.
+
+So - right these encounters don't need to make narrative sense. It is not combat, it is opposition of a systematic nature.
+
+So right-down is generated such that Mob neuro and endu is increased by some percentage, and agree and aware are decreased by some percentage. Up above I had something about likes/dislikes relationships. 
+
+1325 one example of that is
+```
+left <- likes    -> left-upwards
+left <- dislikes -> right-upwards
+left <- opposes  -> right
+left <- dislikes -> right-downwards
+left <- likes    -> left-downwards
+```
+
+but my examples above are rightdown and leftup so 
+
+```
+leftup <- likes    -> right-upwards
+leftup <- dislikes -> right
+leftup <- opposes  -> right-downwards
+leftup <- dislikes -> left-downwards
+leftup <- likes    -> left-upwards
+```
+
+1326 There's only five rows which I was thinking was a mistake but of course the sixth row is just `left <- is -> left` so 5 is fine. 
+
+so if I translate all that to attributes?
+
+| Tile             | Opposite         | Personality         | Physicality   |  |
+|  Left            |  Right           |  Blank              |  Blank        |  |
+|  Left-upwards    |  Right-downwards |  AGREEABLENESS      |  AWARENESS    |  |
+|  Right-upwards   |  Left-downwards  |  CONSCIENTIOUSNESS  |  BRAWN        |  |
+|  Right           |  Left            |  EXTRAVERSION       |  COORDINATION |  |
+|  Right-downwards |  Left-upwards    |  NEUROTICISM        |  ENDURANCE    |  |
+|  Left-downwards  |  Right-upwards   |  OPENNESS           |  MAGNETISM    |  |
+
+```
+leftup AGR/AWA <- is       -> left-upwards      AGR/AWA
+leftup AGR/AWA <- likes    -> right-upwards     CON/BRA
+leftup AGR/AWA <- dislikes -> right             EXT/COO
+leftup AGR/AWA <- opposes  -> right-downwards   NEU/END
+leftup AGR/AWA <- dislikes -> left-downwards    OPE/MAG
+leftup AGR/AWA <- likes    -> left              blank/blank
+```
+
+so a mob generated in leftup gets 
+++ to AGR/AWA
+ + to CON/BRA
+ - to EXT/COO
+-- to NEU/END
+ - to OPE/MAG
+ + to blank/blank
+
+ So a party is going to want gear that defends against AGR/AWA and attacks against NEU/END
+
+ 1331 so this is a big chunk of work. And all of this as described won't have immediate impact on the game because there's no tile relationship stuff. 
+
+ and higher difficulty mobs are probably going to have gear that mitigates their biggest weakness so going in the side door with in this case lke EXT/COO and OPE/MAG targeting gear is more effective in the higher tiers
+
+ I am struck by the notion that the material a piece of gear is made from interacts with physicality, and the style of the gear impacts personality, such that gear also impacts two different things and then finding (or encouraging the creation of) gear that is the specific good combinations in opposition to a particular region are especially desirable. 
+
+ perhaps it shouldn't be the case that gear dropped in right (in this example) improves both ext and coo. Perhaps gear increases 
+ (region-aligned personality + random physicality) OR
+ (random personality + region-aligned physicality)
+
+ blank is a valid possibility, so it is a d6 chance
+
+1337 leet! 
+
+potentially tile difficulty plays into the random attribute selection by biasing the table or something like that. So a low difficult tile will often drop gear that is entirely region aligned but it is very low power gear. A high difficulty tile will only very rarely drop gear that is entirely region aligned but you could 
+
+so then yeah, there's a bunch of work to do to pick and choose what the best set of gear to target a specific reagion would be. 
+
+This tells me that eventually and relatively quickly the player is going to want 6 mannequins and those should get allocated relllllatively easily. Certainly have all 6 before a typical halfway point in the game right, it shouldn't be necessary to clump shit together in bags and update the single mannequin manually. So I'm not sure when they should be allocated but I guess each region would hold its own mannequin in a tier 1, 2 or 3 tile. 
+
+but a mannequin for each region for each character? That's a pretty intense interface. Especially if there's like 6 parties with 36 characters roaming around! Complexity could get marvellously large! Difficulty stays relatively low but the challenge comes from volume of work/things to track
+
+1342 Okay I like this. If there is a compelling reason to bias in favour of narrative I think all of this will still be structured in a way that is useful and once both the region/attribute alignment and tile relationship management work is completed then it will be a system that can be modified. The mechanics of attributes-driving-bias will persist this just is a big step in complexity and therefore perhaps enough of a step in complexity for some time.
+
+1346 Okay I have updated project with references about the region/attribute alignment and tile relationship region/attribute alignment alignment. Or like, considering a region's impact before going. 
