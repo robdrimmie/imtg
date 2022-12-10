@@ -1,12 +1,11 @@
+import Attributes from '$lib/Attributes';
 import Deck from '$lib/Deck';
-import Dice from '$lib/Dice';
-import Encounter from '$lib/Encounters/Encounter';
 import Environments from '$lib/Decks/Environments';
 import Hex from '$lib/Map/Hex';
 import Tile from '$lib/Map/Tile';
 
 // clockwise from left/pink
-const drawingOrder = [
+const DRAWING_ORDER = [
 	Hex.LEFT_WARDS,
 	Hex.LEFT_UPWARDS,
 	Hex.RIGHT_UPWARDS,
@@ -14,6 +13,8 @@ const drawingOrder = [
 	Hex.RIGHT_DOWNWARDS,
 	Hex.LEFT_DOWNWARDS
 ];
+
+const NUMBER_OF_REGIONS = 6
 
 const regions = [
 	{
@@ -54,28 +55,14 @@ const regions = [
 	}
 ];
 
+const TILE_PATTERN = [1, 3, 5, 5, 3, 1];
+
 export default class Board {
-	static ERROR_NEEDS_PROPS = 'Look, Board really needs props';
 
-	constructor(props) {
-		if (!props) throw new Error(Board.ERROR_NEEDS_PROPS);
+	constructor() {
+		this.populateRegions()
 
-		const environmentsDeck = new Deck(Environments.cards());
-		this.deckOfEnvironments = environmentsDeck.draw(props.regionsToDraw);
-
-		this.tiles = props.tiles ? props.tiles : this.generateTiles(props.regionsToDraw);
-
-		// Roll a dice with the number of tiles. Since dice don't return 0, and
-		// Origin is always the 0th tile go roll to length -1
-		this.winningTiles = [
-			this.tiles[Dice.roll(this.tiles.length - 1)]
-		]
-
-		// rmd to do winning tiles array stuff
-		// make this better when there are more win items
-		this.winningTiles[0].decks.adventuring.cards.push(
-			Encounter.ReturnWinCondition(this.winningTiles[0])
-		);
+		this.selectWinningTiles()
 	}
 
 	allWinConditionsReturned() {
@@ -174,5 +161,71 @@ export default class Board {
 		})
 	
 		return tilesAsMap
-	  }
+	}
+
+	// rmd todo extract this? maybe into a Region class or something?
+	allocateTilesToRegion(region) {
+		let tiles = []
+		let previousStemHexHex = Hex.ORIGIN;
+
+		for (const numberOfHexes of TILE_PATTERN) {
+			const stemHex = Hex.add(previousStemHexHex, region.stemDirection);
+
+			tiles.push(new Tile(region.environment, stemHex));
+
+			const armCount = (numberOfHexes - 1) / 2;
+
+			if (armCount > 0) {
+				let upArm = this.generateArm(stemHex, region.upDirection, armCount, region.environment);
+
+				let downArm = this.generateArm(stemHex, region.downDirection, armCount, region.environment);
+
+				tiles = tiles.concat(upArm, downArm);
+			}
+
+			previousStemHexHex = stemHex;
+		}
+
+		return tiles
+	}
+
+	populateRegions() {
+		const environments = new Deck(Environments.cards())
+		const personalities = new Deck([...Attributes.PERSONALITIES, null])
+		const physicalities = new Deck([...Attributes.PHYSICALITIES, null])
+		
+		this.tiles = []
+		regions.forEach(region => {
+			// allocate environment
+			region.environment = environments.drawOne()
+			region.color = region.environment.color
+			
+			// assign attributes	
+			region.personality = personalities.drawOne()
+			region.physicality = physicalities.drawOne()
+
+			// allocate tiles
+			region.tiles = this.allocateTilesToRegion(region)
+			console.log("region tiles", region.tiles)
+			this.tiles = [...this.tiles, ...region.tiles]
+		})
+
+		console.log("have regions and tiles ", regions, this.tiles)
+	}
+
+	selectWinningTiles() {
+		console.error("NO WINNING TILES ARE CURRENTLY BEING SELECTED!!")
+		this.winningTiles = []
+				// Roll a dice with the number of tiles. Since dice don't return 0, and
+		// Origin is always the 0th tile go roll to length -1
+		// this.winningTiles = [
+		// 	this.tiles[Dice.roll(this.tiles.length - 1)]
+		// ]
+
+		// // rmd to do winning tiles array stuff
+		// // make this better when there are more win items
+		// this.winningTiles[0].decks.adventuring.cards.push(
+		// 	Encounter.ReturnWinCondition(this.winningTiles[0])
+		// );
+	}
 }

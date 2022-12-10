@@ -7,7 +7,8 @@
 ## big tasks (not prioritized, but a little bit preference-ized)
 - * associate regions with attributes
   - 20221210 entries hold detail
-  - mob generation and gear allocation is impacted
+  - deal attributes to regions
+  - impact mob generation and loot generation
 - associate region attributes with tile relationships
   - 20221210 entries touch on it but no specific implementation is described
 - interface

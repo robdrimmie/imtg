@@ -1653,3 +1653,26 @@ but a mannequin for each region for each character? That's a pretty intense inte
 1342 Okay I like this. If there is a compelling reason to bias in favour of narrative I think all of this will still be structured in a way that is useful and once both the region/attribute alignment and tile relationship management work is completed then it will be a system that can be modified. The mechanics of attributes-driving-bias will persist this just is a big step in complexity and therefore perhaps enough of a step in complexity for some time.
 
 1346 Okay I have updated project with references about the region/attribute alignment and tile relationship region/attribute alignment alignment. Or like, considering a region's impact before going. 
+
+1348 So the immediate task ahead is region tile alignment. So when the Board is being generated and the regions are generated I need to shuffle and deal out personality and physicality decks onto the tiles. Pick one to be blanks and then deal clockwise from there.
+
+And then the impact on mob attributes needs to be implemented, and loot dropping needs to be updated. notes are in project. 
+
+I'm going to do some dishes I think. 
+
+So first step when I get back: Look at Board and Region generation. 
+
+1534 board generation. 
+
+1536 board calls a "generateTiles" method that I am going to rename to generateRegions. 
+
+1537 terminology: Region is one of six sections on the board. They are named for their orientation: Left, LeftUpwards, etc. 
+
+Environment is a layer of flavour that is applied to a region. 
+
+There are always 6 regions. Ideally there are more than 6 Environments, so that the flavour is different each time.
+
+So a board doesn't need to generate regions. But it might need to flavour regions? 
+
+It needs to configure regions. Each region gets an environment and a physicality (including blank) and a personality (including blank). Oh should it always be a blank blank region or should it be a chance that there is a blank blank region? I'm not sure. I'll go with whichever is easiest I think. I think that "wildcard" (or "null value" or whatever) should get dealt randomly... probably. I can see it both ways right now, there's an advantage to one particularly hard region, but also that makes some boards harder than others and that is kind of nice. roll that 12, I dare you. Or double 1s if you'd rather.
+

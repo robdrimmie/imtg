@@ -41,6 +41,14 @@ export default class Attributes {
 	*/
 	static PERSONALITY_OPENNESS = 'PERSONALITY_OPENNESS';
 
+	static PERSONALITIES = [
+		Attributes.PERSONALITY_AGREEABLENESS,
+		Attributes.PERSONALITY_CONSCIENTIOUSNESS,
+		Attributes.PERSONALITY_EXTRAVERSION,
+		Attributes.PERSONALITY_NEUROTICISM,
+		Attributes.PERSONALITY_OPENNESS
+	]
+
 	/*
 		> knowledge or perception of a situation or fact.
 		- define: @ google
@@ -66,6 +74,14 @@ export default class Attributes {
 		- define: @ google
 	*/
 	static PHYSICALITY_MAGNETISM = 'PHYSICALITY_MAGNETISM';
+
+	static PHYSICALITIES = [
+		Attributes.PHYSICALITY_AWARENESS,
+		Attributes.PHYSICALITY_BRAWN,
+		Attributes.PHYSICALITY_COORDINATION,
+		Attributes.PHYSICALITY_ENDURANCE,
+		Attributes.PHYSICALITY_MAGNETISM
+	]
 
 	static RESOURCES_ENERGY = 'RESOURCES_ENERGY';
 	static RESOURCES_HEALTH = 'RESOURCES_HEALTH';

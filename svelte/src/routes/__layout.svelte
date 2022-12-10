@@ -35,9 +35,7 @@
 		Dice.primeWithSeed(seed);
 
 		// Create the board
-		$board = new Board({
-			regionsToDraw: 6
-		});
+		$board = new Board();
 
 		// Create starting characters
 		$characters = [
