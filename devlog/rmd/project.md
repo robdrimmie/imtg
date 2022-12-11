@@ -5,10 +5,10 @@
 *NOTE:* This list is not a commitment to you, it is a reference for me. There is no guarantee that any of these items will be implemented.
 
 ## big tasks (not prioritized, but a little bit preference-ized)
-- * associate regions with attributes
+- associate regions with attributes
   - 20221210 entries hold detail
-  - deal attributes to regions
-  - impact mob generation and loot generation
+  - ✅ deal attributes to regions
+  - * impact mob generation and loot generation
 - associate region attributes with tile relationships
   - 20221210 entries touch on it but no specific implementation is described
 - interface
@@ -23,6 +23,8 @@
   - update character to desire going to the region the win condition tile is in
 - pretty sure traps are misbehaving now, result of item modifiers?
 - probably need to remove everything about the vendor action
+- character jobs should be determined based on or somehow influenced by best attributes
+  - like endurance and magnetism is a tank. 
 - ✅ give player something to do (perhaps something that is fun?)
  - ✅ single character starts with no gear
  - ✅ early fights acquire gear but can only ~equip or hold in hands~ put in 1-slot sack

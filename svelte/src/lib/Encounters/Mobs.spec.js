@@ -37,5 +37,5 @@ it('creates proper loot for back slot (real Dice)', async () => {
 
 	const actualBack = Mobs.lootForSlot(Paperdoll.DOLL_SLOT_BACK)
 
-	expect(actualBack.name).toBe('Food of Decreased Endurance')
+	expect(actualBack.name).toBe('Food of Increased Conscientiousness')
 })

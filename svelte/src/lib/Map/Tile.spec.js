@@ -103,13 +103,13 @@ it('calculates opponent budget correctly', async () => {
 
 	const tileLeftDown = new Tile(new TheRiverLands(), Hex.LEFT_DOWNWARDS)
 	const actualLeftDown = tileLeftDown.calculateOpponentBudget();
-	expect(actualLeftDown).toEqual(6);
+	expect(actualLeftDown).toEqual(1);
 
 	const tileLeftestDownest = new Tile(
 		new TheRiverLands(), 
 		new Hex(6, -6, 0)	
 	)
 	const actualLeftestDownest = tileLeftestDownest.calculateOpponentBudget();
-	expect(actualLeftestDownest).toEqual(36)
+	expect(actualLeftestDownest).toEqual(6)
 });
 // #endregion test instance methods

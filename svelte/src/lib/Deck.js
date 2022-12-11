@@ -36,7 +36,8 @@ export default class Deck {
 
 			drawnCards = [...drawnCards, card[0]];
 		}
-		console.log("deck.draw drew cards", drawnCards, numberOfCardsToDraw)
+		// console.log("deck.draw drew cards", drawnCards, numberOfCardsToDraw)
+		
 		return drawnCards;
 	}
 

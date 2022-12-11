@@ -18,3 +18,10 @@ I have hopes for this. Very high among them the hope that other people find it, 
 
 ## Contributing
 I'm not ready to accept contributions at this time. Someday!
+
+### Running tests
+I like to have a dedicated terminal window running tests. 
+```
+cd svelte
+npm run test:watch
+```

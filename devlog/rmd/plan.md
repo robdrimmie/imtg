@@ -1698,3 +1698,92 @@ maybe there's something that can be done
 1945 but now is not the time for that. low focus.
 
 1945 So region configuration is complete right? 
+
+1947 which means my next action is `impact mob generation and loot generation`. 
+
+I feel like I do need a Regions class or something that holds all the regions and can like, it's fine there's a fixed number 
+
+1957 Right, Regions. 
+
+2000 ohhhh my tests are not in good shape right now. I made a significant change to the rolls so now all my dice roll related tests are shot. frumble froo. 
+
+2002 it is time to get off a commercial editor for this project. Well, not immediately, tonight is not a good night for that drastic a change but I need to relearn how to use vim and maybe even that window management thing for terminals. I usually just setup a bunch of iterm windows but doing it inside a single terminal session would be good to know.
+
+I can't even remember the name of that tool though, sheesh.
+
+2004 tmux! a multiplexer! sheesh again. 
+
+anyway I like those sorts of setups maybe I can do something good with that. 
+
+2006 but not tonight. low focus!
+
+2006 working on Regions class. 
+
+No, working on tests. Trap flow changed. This _is_ an okay time to try to rethink how this stuff all works. It is so untestable right now, all of it. 
+
+2007 okay if I am changing encounters soon to be attribute tests then Traps and Combat are on their way out at least for a while and that has made me really quite excited!
+
+When I was talking to Jen earlier today I said something along the lines of "me using my intelligence to attack you and you defending with your brawn doesn't make sense" - probably really not very much like that at all but that notion of my two strengths versus your two strenghts. And I think it _does_ work. Because if the job is ranged dps and the character uses their coordination and extraversion to fight against another characters brawn and openness well, that is like Incredible Hulk fighting Quicksilver or something like that. They are not equally matched! But it is not immediately obvious who would win. 
+
+This feels like it is a huge levelling up in my understanding of what to build. An inflection point! Combat and the traps are so fucking clunky right now and this builds on the existing systems and ties encounters much more into that. 
+
+So I've circled back a bit to attributes defining a job but I think I disproved the feasibility of that above but if I ignore the need for narrative at present then it is okay. 
+
+strong physicality traits probably implies melee. well, high endurance and brawn. but high coordination and awareness is a rogue/melee dps but also a ranger/ranged dps. extraversion perhaps doesn't influence job? So maybe job is only based on physical attributes? 
+
+Perhaps instead of job it is combat role does that change thoughts? I'm not sure. Maybe just neuroticism determines melee or not but that's unfair it's not the case that an archer is absolutely an archer out of self-protection but because they're a good fucking archer. it's a useful skill. a mage is going to stay out of melee because they have not been trainingn their body they've been training their mind. concientousness perhaps. a highly concientous person is likely to be a good mage because that requires study and discipline? 
+
+2017 but then what about a natural magic type. Narrative isn't the goal right now but it helps me map onto the combat role better. it is still however justification. Role doesn't matter, this might just be a darling, fuck. 
+
+So the role doesn't matter position might be: If encounters are entirely about testing one character's attack against another's defense, and both characters get to use their best attributes in each case, then what do things like melee dps and ranged buffs even mean? 
+
+that's combat system: the game or something. 
+
+fuck this is a big piece to rip out. perhaps and probably not mechanically but just, conceptual. But I already ditched race/species and that didn't feel this big. But combat isn't an explicit thing. That's flavour. Narrative is not the thing right now. 
+
+2020 And if it is a wrong decision then the roles (and species even) can be reintroduced at some point when their value is better understood. 
+
+2021 still don't like it. I don't hate it but my immediate reaction is that there is a diminishing. But that's the thing that needs to happen! Rip shit out and put it back if it turns out to be important but I can't think of an argument against doing it other than that I think I'm clever in reducing combat roles down to those two range attributes and three role attributes. 
+
+That's not generic, that's reductive. 
+
+I've just created a billion other - well okay whatever like the number of combinations of attributes is which I think is earlier in this file but I'm not going to worry about it. 5! maybe, that's 120 instead of 6. but all of them attack and defend with their best selves. 
+
+But sometimes their best selves is ineffective. If their best defense is an attribute that isn't being attacked then. 
+
+hmm I'm not sure about how the test works again. mobs are going to have attributes that bias in favour of the region's attributes and are weak in the opposing ways but 
+
+so then characters always attack with their best attribute against that attribute of the opponent's. Brawn vs brawn. Openness vs Openness. 
+
+So if left has [agree/awareness] and right has [concientoussness/brawn] than a mob spawning in left probably has:
+
+- higher than average agree and aware
+- lower than average conc and brawn
+
+so my characters start exploring that region and their tile relationships start becoming biased. count the types of attacks of the mobs. if most of them are aware then the character's aware should be high so the player can then equip helm of increase aware so that they defend better. 
+
+and weapon of 
+
+shit I'm eliminating health? no because these are just hits.
+
+and if the opposite region is known to the player they know to equip weapon of brawn because it is more likely to be low until mob gear of quality starts being a factor
+
+2031 so then health. there's formulas above from earlier today that track damage and stuff. my brawn roll is 50 units higher than yours so I do x damage. The attributes aren't changed. 
+
+So there's still space here for things that modify the attributes of an opponent. buffs. heals too. how does that happen without the concept of buffs? (debuffs are a type of buff)
+
+It doesn't yet. But that at least is one thought in support of retaining Jobs - which I'm more and more inclined to excplicitly call combat role. 
+
+but that can come another time. I think it is a very good starting point to put the attribute testing encounter in place in some fashion. 
+
+There is still need for initiative? No because that is notionally baked in to the idea of attributes interacting with each other. 
+
+This makes combat for parties larger than one character weird though. One v One is no big deal because speed is represented as coordination. 
+
+I don't have a specific speed attribute. I'm mostly okay with that, I think it is a function of coordination and endurance probably. If a character has high coordination to avoid tripping, brawn to propel themselves and endurance to persist they are a fast runner. 
+
+2039 right? like I think they have to be. 
+
+so what is the actual code work I can do now? Tests! SHEESH
+
+So I can comment out the whole of Test.spec.js. q

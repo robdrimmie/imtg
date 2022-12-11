@@ -1,15 +1,15 @@
-import Board from './Board';
+import Board from './Board.js'
+import Dice from '../Dice.js'
 
+Dice.primeWithSeed(20)
 // #region test static methods
 
 // #endregion test static methods
 
 // #region test constructor
-it('it requires props to construct', async () => {
-	expect(() => {
-		new Board();
-	}).toThrow(Board.ERROR_NEEDS_PROPS);
-});
+it('it constructs', async () => {
+	new Board()
+})
 // #endregion test constructor
 
 // #region test instance methods
