@@ -22,6 +22,7 @@
   - add hint to log about needing to restore the item
   - update character to desire going to the region the win condition tile is in
 - pretty sure traps are misbehaving now, result of item modifiers?
+- probably need to remove everything about the vendor action
 - ✅ give player something to do (perhaps something that is fun?)
  - ✅ single character starts with no gear
  - ✅ early fights acquire gear but can only ~equip or hold in hands~ put in 1-slot sack

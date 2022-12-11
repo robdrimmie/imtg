@@ -306,7 +306,10 @@ export default class Party {
 
 		const move = new Move(Move.TYPE_OTHER_MESSAGES, {}, moveMessage);
 
-		const card = deck.draw()[0];
+		if(deck.length < 1) {
+			console.error("party action deck has no cards what!");
+		}
+		const card = deck.drawOne();
 
 		const results = card.modifyCharacters({
 			charactersToModify: this.membersInCharacters(characters),

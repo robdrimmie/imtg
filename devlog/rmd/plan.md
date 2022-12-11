@@ -1676,3 +1676,25 @@ So a board doesn't need to generate regions. But it might need to flavour region
 
 It needs to configure regions. Each region gets an environment and a physicality (including blank) and a personality (including blank). Oh should it always be a blank blank region or should it be a chance that there is a blank blank region? I'm not sure. I'll go with whichever is easiest I think. I think that "wildcard" (or "null value" or whatever) should get dealt randomly... probably. I can see it both ways right now, there's an advantage to one particularly hard region, but also that makes some boards harder than others and that is kind of nice. roll that 12, I dare you. Or double 1s if you'd rather.
 
+1616 region and tile generation is improved but origin town is nowhere to be found now. 
+1618 okay fixed that.
+
+It's not obvious to me that the game can be one but if it can then this is a good something or other. commit point.
+
+1901 so where was I? regions are getting setup are they getting set up with everything they need? 
+
+1905 it can run 2000 turns without - oh no there are some errors.
+
+1908 eventually OriginTown's vend deck runs out, then the party's fucked. Each tile has 100 adventure cards right now so there's no way origintown can keep up.
+
+1909 the party shouldn't choose to vend if they can't - and what does choosing to vend even mean any more with vendors that the player interacts with, it's probably not an action worth picking any more - 
+
+1940 but this is not the time to remove - or disable - vending. 
+
+1941 and eventually the party fills up the chest. So right now the game is not autoplayable to the end. I guess this might be a threshold change. If there's enough content for the game to be interesting then the chest is going to fill up long before the end can be reached. 
+
+maybe there's something that can be done 
+
+1945 but now is not the time for that. low focus.
+
+1945 So region configuration is complete right? 

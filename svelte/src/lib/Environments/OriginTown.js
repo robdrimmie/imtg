@@ -23,11 +23,11 @@ export default class OriginTown extends Environment {
 			),
 
 			resting: new Deck(
-				Array(99).fill(Rest.complete())
+				Array(999).fill(Rest.complete())
 			),
 
 			vending: new Deck(
-				Array(99).fill(Vend.unloadBackpacks())
+				Array(999).fill(Vend.unloadBackpacks())
 			)
 		};
 	}
