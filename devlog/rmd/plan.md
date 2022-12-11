@@ -1787,3 +1787,17 @@ I don't have a specific speed attribute. I'm mostly okay with that, I think it i
 so what is the actual code work I can do now? Tests! SHEESH
 
 So I can comment out the whole of Test.spec.js. q
+
+20221211 1339 okay I didn't do much after that last night but the test suite passes now. Since that is working what was the work I wanted to be doing but was blocked by? `  - * impact mob generation and loot generation`
+
+Right, tile attributes. I was making a Regions class to encapsulate a bunch of the region logic that's going on, because having the impact on attributes that I'm hoping to have is going to have to do a bunch of "what are the attributes of the other regions and how does that impact which stats I modify by how much?" 
+
+1515 okay, Regions class. 
+
+1519 So I moved the regions array from Board to it and populateRegions fails because it loops through the regions. 
+
+Do I call something in regions and pass in the things it needs? Sure maybe why not.
+
+1520 I don't even need to call something, this should happen in the constructor
+
+1531 okay I have a Regions class
