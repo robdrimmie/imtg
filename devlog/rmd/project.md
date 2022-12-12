@@ -25,6 +25,8 @@
 - probably need to remove everything about the vendor action
 - character jobs should be determined based on or somehow influenced by best attributes
   - like endurance and magnetism is a tank. 
+- maybe switch to HEXACO https://en.wikipedia.org/wiki/HEXACO_model_of_personality_structure
+  - add a 6th physicality, maybe speed
 - ✅ give player something to do (perhaps something that is fun?)
  - ✅ single character starts with no gear
  - ✅ early fights acquire gear but can only ~equip or hold in hands~ put in 1-slot sack

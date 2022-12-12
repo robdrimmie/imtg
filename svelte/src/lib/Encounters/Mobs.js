@@ -16,6 +16,44 @@ import Waists from '$lib/Items/Waists'
 import Weapons from '$lib/Items/Weapons'
 
 export default class Mobs {
+	static forTile(tile) {
+		// generate mob
+		const startingResources = [];
+		startingResources[Attributes.RESOURCES_ENERGY] = calcResource()
+		startingResources[Attributes.RESOURCES_HEALTH] = calcResource()
+		startingResources[Attributes.RESOURCES_SATIETY] = calcResource()
+
+		const startingPhysicality = []
+		startingPhysicality[Attributes.PHYSICALITY_AWARENESS] = calcPhysicality()
+		startingPhysicality[Attributes.PHYSICALITY_BRAWN] = calcPhysicality()
+		startingPhysicality[Attributes.PHYSICALITY_COORDINATION] = calcPhysicality()
+		startingPhysicality[Attributes.PHYSICALITY_ENDURANCE] = calcPhysicality()
+		startingPhysicality[Attributes.PHYSICALITY_MAGNETISM] = calcPhysicality()
+
+		const startingPersonality = []
+		startingPersonality[Attributes.PERSONALITY_AGREEABLENESS] = calcPersonality()
+		startingPersonality[Attributes.PERSONALITY_CONSCIENTIOUSNESS] = calcPersonality()
+		startingPersonality[Attributes.PERSONALITY_EXTRAVERSION] = calcPersonality()
+		startingPersonality[Attributes.PERSONALITY_NEUROTICISM] = calcPersonality()
+		startingPersonality[Attributes.PERSONALITY_OPENNESS] = calcPersonality()
+
+		const mob = new Character({
+			job: Jobs.random(),
+			name: Names.mob(),
+			resources: Character.generateResources(startingResources),
+			currency: Dice.d2(),
+			paperdoll: Paperdoll.forMob(),
+			personality: Character.generatePersonality(startingPersonality),
+			physicality: Character.generatePhysicality(startingPhysicality)
+		});
+		// apply region modifiers
+
+		// apply environment flavour
+
+		return mob
+	}
+
+
 	static template(calcResource, calcPhysicality, mobName) {
 		const startingResources = [];
 		startingResources[Attributes.RESOURCES_ENERGY] = calcResource();

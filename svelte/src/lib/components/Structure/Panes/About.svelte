@@ -28,9 +28,9 @@ The character has a Win Condition item equipped as their boots. The character wi
 until they find the special tile to return it to, at which point the game will immediately be
 completed. Don't move the Win Condition, there's a bug that will break things in non obvious ways
 for a while and then very obvious ways if you do. Characters can't die right now, so it is very 
-difficult to not win, it's just a matter of how many turns it takes to get there.
+difficult to not win, it's just a matter of how many turns it takes to get there (way too many).
 </p><p>
-There are a <em>log</em> of other bugs too. For display related things, toggling between modes can help. 
+There are a <em>lot</em> of other bugs too. For display related things, toggling between modes can help. 
 For others, well, sorry about that run.
 </p><p>
 There are plans but they are mostly buried in a 15000+ line markdown file that I have been keeping 

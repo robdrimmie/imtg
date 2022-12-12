@@ -33,6 +33,10 @@ export default class Names {
 		return fullName;
 	}
 
+	static mob() {
+		return Names.character()
+	}
+
 	static party() {
 		const possibleCollectives = ['Band', 'Club', 'Group', 'Guild'];
 

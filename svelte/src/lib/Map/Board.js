@@ -7,7 +7,6 @@ import Tile from '$lib/Map/Tile'
 import Regions from '$lib/Map/Regions'
 
 export default class Board {
-
 	constructor() {
 		this.regions = new Regions()
 
@@ -21,7 +20,6 @@ export default class Board {
 			return tile.isStoringItem()
 		})
 	}
-
 
 	// RMD TODO Refactor
 	// Big refactor, storing it here for now. It might be possible to make Board.tiles a Map,
@@ -52,27 +50,6 @@ export default class Board {
 	
 		return tilesAsMap
 	}
-
-	// populateRegions() {
-	// 	const environments = new Deck(Environments.cards())
-	// 	const personalities = new Deck([...Attributes.PERSONALITIES, null])
-	// 	const physicalities = new Deck([...Attributes.PHYSICALITIES, null])
-		
-	// 	this.tiles = [Tile.origin()];
-	// 	Regions.regions.forEach(region => {
-	// 		// allocate environment
-	// 		region.environment = environments.drawOne()
-	// 		region.color = region.environment.color
-			
-	// 		// assign attributes	
-	// 		region.personality = personalities.drawOne()
-	// 		region.physicality = physicalities.drawOne()
-
-	// 		// allocate tiles
-	// 		region.tiles = this.allocateTilesToRegion(region)
-	// 		this.tiles = [...this.tiles, ...region.tiles]
-	// 	})
-	// }
 
 	selectWinningTiles() {
 		this.winningTiles = []

@@ -166,7 +166,7 @@ export default class Tile {
 		const opponents = []
 
 		while(budget > 0) {
-			opponents.push(Mobs.tier1())
+			opponents.push(Mobs.tier1(this.region))
 			budget--
 		}
 
@@ -184,32 +184,32 @@ export default class Tile {
 		const TIER_6_COST = 36
 
 		while( budget >= TIER_6_COST) {
-			opponents.push(Mobs.tier6())
+			opponents.push(Mobs.tier6(this.region))
 			budget -= TIER_6_COST
 		}
 
 		while( budget >= TIER_5_COST) {
-			opponents.push(Mobs.tier5())
+			opponents.push(Mobs.tier5(this.region))
 			budget -= TIER_5_COST
 		}
 
 		while( budget >= TIER_4_COST) {
-			opponents.push(Mobs.tier4())
+			opponents.push(Mobs.tier4(this.region))
 			budget -= TIER_4_COST
 		}
 
 		while( budget >= TIER_3_COST) {
-			opponents.push(Mobs.tier3())
+			opponents.push(Mobs.tier3(this.region))
 			budget -= TIER_3_COST
 		}
 
 		while( budget >= TIER_2_COST) {
-			opponents.push(Mobs.tier2())
+			opponents.push(Mobs.tier2(this.region))
 			budget -= TIER_2_COST
 		}
 
 		while( budget >= TIER_1_COST) {
-			opponents.push(Mobs.tier1())
+			opponents.push(Mobs.tier1(this.region))
 			budget -= TIER_1_COST
 		}
 
