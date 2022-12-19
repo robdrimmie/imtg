@@ -6,7 +6,7 @@
 <div class="about">
     <article>
         <p>
-Hi. My name is Rob Drimmie and this is <strong>Inventory Management: The Game</strong>.
+Hi. My name is <a rel="me" href="https://peoplemaking.games/@robdrimmie">Rob Drimmie</a> and this is <strong>Inventory Management: The Game</strong>.
 </p><p>
 You don't control the characters in this game. The characters move around on their own, 
 making decisions based on several factors. One of those factors is the gear in their 

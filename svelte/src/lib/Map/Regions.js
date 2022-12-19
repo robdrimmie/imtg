@@ -57,8 +57,6 @@ baseRegions[Hex.LEFT_DOWNWARDS.id()] = {
 }
 
 export default class Regions {
-    
-
     constructor() {
         const environments = new Deck(Environments.cards())
 		const personalities = new Deck([...Attributes.PERSONALITIES, null])
@@ -88,6 +86,7 @@ export default class Regions {
 
 			// allocate tiles
 			this.regions[regionId].tiles = this.allocateTilesToRegion(this.regions[regionId])
+// console.log("new tiles", this.regions[regionId].tiles)
 
             // add tiles to list of all tiles
 			this.tiles = [...this.tiles, ...this.regions[regionId].tiles]
@@ -108,15 +107,15 @@ export default class Regions {
 		for (const numberOfHexes of TILE_PATTERN) {
 			const stemHex = Hex.add(previousStemHexHex, region.stemDirection);
 
-			tiles.push(new Tile(region.environment, stemHex));
+			tiles.push(new Tile(region, stemHex));
 
 			const armCount = (numberOfHexes - 1) / 2;
 
 			if (armCount > 0) {
-				let upArm = this.generateArm(stemHex, region.upDirection, armCount, region.environment);
+				let upArm = this.generateArm(stemHex, region.upDirection, armCount, region);
 
-				let downArm = this.generateArm(stemHex, region.downDirection, armCount, region.environment);
-
+				let downArm = this.generateArm(stemHex, region.downDirection, armCount, region);
+// console.log("upArm", upArm)
 				tiles = tiles.concat(upArm, downArm);
 			}
 
@@ -126,15 +125,15 @@ export default class Regions {
 		return tiles
 	}
 
-	generateArm(stemHex, direction, armCount, environment) {
-		// console.log("generateArm", stemHex, direction, armCount, region, environment)
+	generateArm(stemHex, direction, armCount, region) {
+		// console.log("generateArm", stemHex, direction, armCount, region, region)
 		const armLocations = [];
 		let armHex = stemHex;
 
 		for (let armIndex = 0; armIndex < armCount; armIndex++) {
 			const newTileHex = Hex.add(armHex, direction);
 
-			armLocations.push(new Tile(environment, newTileHex));
+			armLocations.push(new Tile(region, newTileHex));
 
 			armHex = newTileHex;
 		}
@@ -143,6 +142,7 @@ export default class Regions {
 	}
 
     getTiles() {
+        // console.log("getTiles", this.tiles)
         return this.tiles
     }
 
@@ -151,35 +151,32 @@ export default class Regions {
     }
 
     setupAttributeModifiersForRegion(region) {
-        region.modifiers = []
+        region.modifiers = {}
 
         const opposite = baseRegions[region.opposite.id()]
 
-        //         if(region.color == "green") {
-        // console.log(
-        //     "setup", region.color,
-        //     region.upDirection.id(), 
-        //     this.regions[region.upDirection.id()],
-        //     this.regions[region.upDirection.id()].personality
-        // )
-        // } else {
-        //     console.log("no match for ", region.color)
-        // }
-
+        // this tile doubles
         region.modifiers[region.personality] = 2
+        region.modifiers[region.physicality] = 2
+
+        // neighbour tiles increase
         region.modifiers[this.regions[region.upDirection.id()].personality] = 1.5
         region.modifiers[this.regions[region.downDirection.id()].personality] = 1.5
-        region.modifiers[this.regions[opposite.downDirection.id()].personality] = .75
-        region.modifiers[this.regions[opposite.upDirection.id()].personality] = .75
-        region.modifiers[opposite.personality] = .5
-        
-        region.modifiers[region.physicality] = 2
+
         region.modifiers[this.regions[region.upDirection.id()].physicality] = 1.5
         region.modifiers[this.regions[region.downDirection.id()].physicality] = 1.5
+        
+        // opposite tile's neighbours decrease
+        region.modifiers[this.regions[opposite.downDirection.id()].personality] = .75
+        region.modifiers[this.regions[opposite.upDirection.id()].personality] = .75
+
         region.modifiers[this.regions[opposite.downDirection.id()].physicality] = .75
         region.modifiers[this.regions[opposite.upDirection.id()].physicality] = .75
+        
+        // opposite tile halves
+        region.modifiers[opposite.personality] = .5
         region.modifiers[opposite.physicality] = .5
-
+        
         return region
     }
 }

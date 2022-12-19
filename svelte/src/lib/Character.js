@@ -510,6 +510,34 @@ export default class Character {
 	// #endregion Attributes and other getters
 
 	// #region Attribute setters
+	applyRegionModifiers(modifiers) {
+		console.log("Applying mods", modifiers)
+		console.log("before", this.getAgreeableness().base, this.getAgreeableness().current, this.getAgreeableness().apparent)
+
+		const modifyBase = (attribute) => {
+			const attributeToSet = this.getAttribute(attribute)
+
+			const traitToSet = this.getTrait(
+				Attributes.getTraitConstantForAttribute(attribute)
+			)
+
+			attributeToSet.base *= modifiers[attribute]
+
+			traitToSet.set(attribute, attributeToSet)
+
+			return attribute	
+		}
+
+		[
+			...Attributes.PERSONALITIES, 
+			...Attributes.PHYSICALITIES
+		].forEach(physicality => {
+			return modifyBase(physicality)
+		})
+
+		console.log("after", this.getAgreeableness().base, this.getAgreeableness().current, this.getAgreeableness().apparent)
+	}
+
 	setAttribute(attributeToSet, attributeDelta) {	
 		// console.log("Character setAttribute - attributeToSet, attributeDelta", attributeToSet, attributeDelta)
 

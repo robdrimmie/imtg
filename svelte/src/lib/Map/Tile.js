@@ -26,7 +26,20 @@ export default class Tile {
 	}
 
 	static origin() {
-		return new Tile(new OriginTown(), Hex.origin());
+		// RMD TODO maybe better homed in Regions but I am not convinced
+		const OriginRegion = {
+			color: 'orange',
+			environment: new OriginTown(),
+			stemDirection: null,
+			upDirection: null,
+			downDirection: null,
+			opposite: null,
+			tiles: [
+				Hex.OriginTown
+			]
+		}
+
+		return new Tile(OriginRegion, Hex.origin());
 	}
 
 	// RMD TODO  Tile Encounters
@@ -34,16 +47,17 @@ export default class Tile {
 	// and then maybe make specific modifications.
 	// maybe static methods for Capital and such that setup their decks? I'm not sure. There's a
 	// piece missing here that I will need to get to when I decide to implement this
-	constructor(environment, hex) {
+	constructor(region, hex) {
 		// console.log(
 		//   "Tile constructed with",
-		//   environment,
+		//   region,
 		//   hex
 		// )
 
-		this.environment = environment;
+		this.region = region
+		this.environment = this.region.environment;
 
-		this.color = this.environment.color;
+		this.color = this.region.color;
 
 		this.hex = hex;
 		this.id = this.hex.id();
@@ -209,6 +223,7 @@ export default class Tile {
 		}
 
 		while( budget >= TIER_1_COST) {
+			console.log("making mob", this.region)
 			opponents.push(Mobs.tier1(this.region))
 			budget -= TIER_1_COST
 		}

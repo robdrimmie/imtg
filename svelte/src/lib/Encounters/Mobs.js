@@ -16,19 +16,11 @@ import Waists from '$lib/Items/Waists'
 import Weapons from '$lib/Items/Weapons'
 
 export default class Mobs {
-	static forTile(tile) {
-		// generate mob
-		const startingResources = [];
+	static template(calcResource, calcPersonality, calcPhysicality, mobName) {
+		const startingResources = []
 		startingResources[Attributes.RESOURCES_ENERGY] = calcResource()
 		startingResources[Attributes.RESOURCES_HEALTH] = calcResource()
 		startingResources[Attributes.RESOURCES_SATIETY] = calcResource()
-
-		const startingPhysicality = []
-		startingPhysicality[Attributes.PHYSICALITY_AWARENESS] = calcPhysicality()
-		startingPhysicality[Attributes.PHYSICALITY_BRAWN] = calcPhysicality()
-		startingPhysicality[Attributes.PHYSICALITY_COORDINATION] = calcPhysicality()
-		startingPhysicality[Attributes.PHYSICALITY_ENDURANCE] = calcPhysicality()
-		startingPhysicality[Attributes.PHYSICALITY_MAGNETISM] = calcPhysicality()
 
 		const startingPersonality = []
 		startingPersonality[Attributes.PERSONALITY_AGREEABLENESS] = calcPersonality()
@@ -37,45 +29,25 @@ export default class Mobs {
 		startingPersonality[Attributes.PERSONALITY_NEUROTICISM] = calcPersonality()
 		startingPersonality[Attributes.PERSONALITY_OPENNESS] = calcPersonality()
 
-		const mob = new Character({
-			job: Jobs.random(),
-			name: Names.mob(),
-			resources: Character.generateResources(startingResources),
-			currency: Dice.d2(),
-			paperdoll: Paperdoll.forMob(),
-			personality: Character.generatePersonality(startingPersonality),
-			physicality: Character.generatePhysicality(startingPhysicality)
-		});
-		// apply region modifiers
-
-		// apply environment flavour
-
-		return mob
-	}
-
-
-	static template(calcResource, calcPhysicality, mobName) {
-		const startingResources = [];
-		startingResources[Attributes.RESOURCES_ENERGY] = calcResource();
-		startingResources[Attributes.RESOURCES_HEALTH] = calcResource();
-		startingResources[Attributes.RESOURCES_SATIETY] = calcResource();
-
-		const startingPhysicality = [];
-		startingPhysicality[Attributes.PHYSICALITY_AWARENESS] = calcPhysicality();
-		startingPhysicality[Attributes.PHYSICALITY_BRAWN] = calcPhysicality();
-		startingPhysicality[Attributes.PHYSICALITY_COORDINATION] = calcPhysicality();
-		startingPhysicality[Attributes.PHYSICALITY_ENDURANCE] = calcPhysicality();
-		startingPhysicality[Attributes.PHYSICALITY_MAGNETISM] = calcPhysicality();
+		const startingPhysicality = []
+		startingPhysicality[Attributes.PHYSICALITY_AWARENESS] = calcPhysicality()
+		startingPhysicality[Attributes.PHYSICALITY_BRAWN] = calcPhysicality()
+		startingPhysicality[Attributes.PHYSICALITY_COORDINATION] = calcPhysicality()
+		startingPhysicality[Attributes.PHYSICALITY_ENDURANCE] = calcPhysicality()
+		startingPhysicality[Attributes.PHYSICALITY_MAGNETISM] = calcPhysicality()
 
 		const name = mobName ? mobName : Names.character()
-		return new Character({
+		const mob = new Character({
 			job: Jobs.random(),
 			name,
 			resources: Character.generateResources(startingResources),
 			currency: Dice.d2(),
 			paperdoll: Paperdoll.forMob(),
+			personality: Character.generatePersonality(startingPersonality),
 			physicality: Character.generatePhysicality(startingPhysicality)
-		});		
+		})
+	
+		return mob
 	}
 
 	static lootForBackpack() {
@@ -124,12 +96,17 @@ export default class Mobs {
 		return thing
 	}
 
-	static tier1() {
+
+
+	static tier1(region) {
 		const mob = Mobs.template(
 			() => Dice.d4(),
 			() => 10 + Dice.d10(),
+			() => 10 + Dice.d10(),
 			'Tier 1 Mob'
 		)
+
+		mob.applyRegionModifiers(region.modifiers)
 
 		// 60% chance of loot drop
 		if(Dice.d100() < 61) {
@@ -148,11 +125,13 @@ export default class Mobs {
 		return mob
 	}
 
-	static tier2() {
+	static tier2(region) {
 		const mob = Mobs.template(
 			() => Dice.d4(2),
 			() => 20 + Dice.d10(),
-			'Tier 2 Mob'
+			() => 20 + Dice.d10(),
+			'Tier 2 Mob',
+			region
 		)
 
 		mob.paperdoll.slots[Paperdoll.DOLL_SLOT_HAND_LEFT] = new Weapons({
@@ -162,11 +141,13 @@ export default class Mobs {
 		return mob
 	}
 
-	static tier3() {
+	static tier3(region) {
 		const mob = Mobs.template(
 			() => Dice.d8(2),
 			() => 35 + Dice.d10(),
-			'Tier 3 Mob'
+			() => 35 + Dice.d10(),
+			'Tier 3 Mob',
+			region
 		)
 
 		mob.paperdoll.slots[Paperdoll.DOLL_SLOT_HAND_LEFT] = Weapons.ofDecreaseHealth(
@@ -176,11 +157,13 @@ export default class Mobs {
 		return mob
 	}
 
-	static tier4() {
+	static tier4(region) {
 		const mob = Mobs.template(
 			() => Dice.d10(2),
 			() => 55 + Dice.d20(),
-			'Tier 4 Mob'
+			() => 55 + Dice.d20(),
+			'Tier 4 Mob',
+			region
 		)
 
 		mob.paperdoll.slots[Paperdoll.DOLL_SLOT_HAND_LEFT] = Weapons.ofDecreaseHealth(
@@ -190,11 +173,13 @@ export default class Mobs {
 		return mob
 	}
 
-	static tier5() {
+	static tier5(region) {
 		const mob = Mobs.template(
 			() => Dice.d10(3),
 			() => 75 + Dice.d20(),
-			'Tier 5 Mob'
+			() => 75 + Dice.d20(),
+			'Tier 5 Mob',
+			region
 		)
 
 		mob.paperdoll.slots[Paperdoll.DOLL_SLOT_HAND_LEFT] = Weapons.ofDecreaseHealth(
@@ -204,11 +189,13 @@ export default class Mobs {
 		return mob
 	}
 
-	static tier6() {
+	static tier6(region) {
 		const mob = Mobs.template(
 			() => Dice.d20(3),
 			() => 95 + Dice.d4(),
-			'Tier 6 Mob'
+			() => 95 + Dice.d4(),
+			'Tier 6 Mob',
+			region
 		)
 
 		mob.paperdoll.slots[Paperdoll.DOLL_SLOT_HAND_LEFT] = Weapons.ofDecreaseHealth(

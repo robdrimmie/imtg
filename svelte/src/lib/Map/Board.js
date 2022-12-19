@@ -9,7 +9,7 @@ import Regions from '$lib/Map/Regions'
 export default class Board {
 	constructor() {
 		this.regions = new Regions()
-
+// console.log("cons board", this.regions)
 		this.tiles = this.regions.getTiles()
 
 		this.selectWinningTiles()
@@ -63,6 +63,7 @@ export default class Board {
 		}
 
 		console.info("only one return win condition encounter is being generated")
+		// console.log("win tiles", this.winningTiles)
 		this.winningTiles[0].decks.adventuring.cards.push(
 			Encounter.ReturnWinCondition(this.winningTiles[0])
 		);

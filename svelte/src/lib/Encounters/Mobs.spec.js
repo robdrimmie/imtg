@@ -7,10 +7,11 @@ Dice.primeWithSeed(20)
 it('makes a mob', async () => {
 
 	const resourceCalculator = () => 1
+	const personalityCalculator = () => 2
 	const physicalityCalculator = () => 2
 	const name = "test"
 
-	const actual = Mobs.template(resourceCalculator, physicalityCalculator, name);
+	const actual = Mobs.template(resourceCalculator, personalityCalculator, physicalityCalculator, name);
 
 	expect(actual.name).toEqual(name);
 	expect(actual.getCurrentEnergy()).toEqual(1)
@@ -36,5 +37,5 @@ it('creates loot for non-back slots', async () => {
 it('creates proper loot for back slot (real Dice)', async () => {
 	const actualBack = Mobs.lootForSlot(Paperdoll.DOLL_SLOT_BACK)
 
-	expect(actualBack.name).toBe('Food of Increased Endurance')
+	expect(actualBack.name).toBe('Food of Increased Neuroticism')
 })
