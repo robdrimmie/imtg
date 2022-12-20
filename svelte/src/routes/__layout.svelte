@@ -113,7 +113,7 @@
 			let turn = 0;
 			// autopilot setting here
 			// CHANGE THIS VALUE TO AUTOPLAY
-			// > 120 - 130ish - game is won last I tried
+			// > adventure decks are much to large to autoplay, chest fills up
 			const autoplayToTurn = 0;
 
 			Logger.info(`auto playing to turn ${autoplayToTurn}...`)
@@ -133,6 +133,7 @@
 			character.progress()
 		})
 		$characters = [...updatedCharacters]
+		// #endregion progress characters
 		
 		// #region progress parties
 		const updatedParties = [];
@@ -149,14 +150,14 @@
 				$characters,
 				$chests,
 				$moves
-				)
+			)
 				
-				$board = progressedBoard
-				$characters = progressedCharacters
-				$chests = progressedChests
-				$moves = progressedMoves
-				
-				$parties[index] = party
+			$board = progressedBoard
+			$characters = progressedCharacters
+			$chests = progressedChests
+			$moves = progressedMoves
+			
+			$parties[index] = party
 		});
 		// #endregion progress parties
 

@@ -1542,6 +1542,7 @@ There could be magnetism-specific encounters. That's a negotiation and stuff. An
 
 but maybe that systematic mechanism is not as good as different types of encounters that eventually cover things off?
 
+
 1310 OR entirely-ish different consideration: Is that too much flavour?
 
 Another thing I haven't discussed in this repo yet but it is possible that this entire thing is best done completely generically. That's why I have difficulty tiers instead of experience levels and jobs like melee dps instead of rogue and fighter, to some extent it is about the system not about the flavour. 
@@ -1915,3 +1916,118 @@ that might complicate things in that I need to specify `.id` in places but it wi
 2058 oh right I can't get the personality and physicality of the upwards/clockwards one because it gets set after this one. I'm trying to meddle with the future.
 
 2101 I think modifiers are mostly correct now. 
+
+20221213 2001 not here for a long time, working on CS with H. Damnit I just had something actually worth noting down. Oh right! I"m going to have to build the new encounter type too.
+
+20221215 1922 another cs session shortly. I did get that item into project.md. 
+
+working on 
+
+1926 working on something with regions and getting the modifiers from the regions. oh modifiers are mostly correct I thought so I need to roll back a bit further to figure out what to do next.
+
+2011 Are the modifiers being applied? 
+
+2013 this is happening during mob generation, theoretically. 
+
+Should happen during character generation, get a starting region or starting tile or something. 
+
+Hm. Starting the character not on origin town is interesting. Have that initial first combat and also that sets them up as a member of that region. I noted the other night, perhaps not in this file and just to myself, that having this effect on characers might be interesting. 
+
+2022 apply region modifiers to mobs, that's the next step
+
+2209 uhhhh things are a bit exploded. fix broken tests. want to get region into Tile, it used to just take environment so need to make sure I'm sending right things to right places. 
+
+20221216 1944 I heard about codeberg.org today and tried using it and I got caught in some weird activation code error, where the activation codes I get sent are immediately inactive. I'll give it a try another time.
+
+20221217 0937 not going to get far today, only 10 or so minutes. Tests are failing and app isn't launching. Maybe try to sneak a push out if I can stabilize things. I got approved on peoplemaking.games last night and posted some things and the visible version is very out of date so it would be nice to get a bit more up.
+
+0942 oh, okay. So `Tile.origin` makes OriginTown, which is an environment. But I'm trying to pass regions into tiles now because there's more than just the environment that is worth knowing. So this structure doesn't play nice because OriginTown is an environment. 
+
+So there should also be a Region for OriginTown? Probably. 
+
+0950 Oh and the tile specs are passing environments in rather than regions. So that's where to pick up next. I changed the construction of Tiles such that they are constructed with a region instead of just an environment but there are secondary effects from that change left to resolve, especially in the tests.
+
+20221218 1149 right, region instead of environment.
+
+1822 things are stable again, published a thing. Have my mastadon account and told eft about it and in theory perhaps a couple of people who aren't me have looked. There just isn't much to do though. 
+
+1823 so what to do next. impact mob generation and loot generation is the current project and so.. Mobs.js again.
+
+1925 okay, the modifiers are being applied to mobs. I think it works fine but it's not super clear. There's so much I need to change to be aligned to region attributes.
+
+1929 the next thing is having region modifiers impact loot generation. I'm inclined to look at encounters though. 
+
+1931 so how does the thingamajig work. Encounters? 
+
+1935 it is part of party progression, after they decide the adventure action and draw from the adventure deck. 
+
+The adventure deck is setup in each Environment, right? 
+
+1936 just in Environment.js right now.
+
+So okay, going on an adventure.
+the adventure tests attribute and attribute
+character defends with attribute and attribute
+defense fails, character takes damage
+defense succeeds, character resists damage
+character attacks the adventure (this doesn't make sense, a mob or something more) 
+
+1937 I have some thoughts above about how to generate mobs in thi.. or like, how these encounters go maybe.
+
+1946 I never landed on clear combat changes. But fundamentally, characters need high defense in the region's attributes and high attack against the region's most vulnerable attributes. 
+
+Region LEFT_WARDS 
+personality CONSC
+physicality AWARE
+
+Region RIGHT_WARDS
+personality OPENNESS
+physicality BRAWN
+
+so those two regions are in opposition. 
+
+If a character has high openness and brawn and good defense against cons and aware, they should want to explore the left_wards region. 
+
+I do eventually want to make higher tier mobs defend against their weakness in some fashion or another but that can come later, for now everything's super stereotyped
+
+2003 SO the way to revamp encounters is to what. Make them just that single competition? No, everyone should still take turns but how do things resolve
+
+I mean just in party order would work. each character in the party goes, each mob in their party goes. players first is a bias but that's fine probably? 
+
+2005 I am resisting an initiative order because that is a test of attributes.
+
+It is okay if attributes do other things though. 
+
+Maybe if I just sort the list of actors by roll * coordinating%
+
+It's dramatically more simple. 
+
+2010 okay stepping away for a while. Making a new Encounter, TestAttributes. Pass it tile and the party. make mobs in the existing fashion, cycle through everyone attacking each other, yadda yadda. 
+
+2150 maybe a touch more
+
+2153 so the encounter gets instantiated in Environment.js when the deck is created so I don't know the party yet but it is an encounter for a party so that is what I can do.
+
+2201 have a structure in place. lots of messy but it's going in the right direction overall still. Encounter.runForParty has a nice ring to it. 
+
+So what does this attribute testing encounter do? 
+
+It's run like a simple combat loop. So it is necessary to do decide who goes first. Classic initiative is roll the die, apply modifier, fastest character goes first. 
+
+Simplest implementation for now is party order then opponents order. Will make party order interesting, eventually, at least. 
+
+Simple sounds good for now. I am still concerned this is eliminating the need for health but it's still of use for now I think. 
+
+2205 I have an opportunity to generate mobs during board creation here. I like some run time randomization though so I'm going to stick with this. It is pretty straight forward to extract I think, should I change my mind eventually
+
+2215 stuck a bit. I pass the party but the party only has character ids, and I need the full character store to look things up. Or at least a list of the characters. 
+
+Sleepy though. night.
+
+20221219 2155 I had a thought today that encounters are simply all the attacking party's modifers for the combined strike and all the defending party's combined value for the defense and it's actually like both defense and offense, the winning modified roll wins it all.
+
+It just rips all the combat and jobs and everything out but all that shit is too much for what the party is out there doing anyway.
+
+the whole combat and encounter stuff just feels bad. 
+
+2202 

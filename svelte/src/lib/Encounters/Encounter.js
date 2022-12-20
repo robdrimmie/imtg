@@ -1,15 +1,78 @@
-import Move from '$lib/Move';
+import Move from '$lib/Move'
 
 const modifyCharacters = (memberCharacters) => {
-	console.error('Default Encounter.modifyCharacters used');
-	return memberCharacters;
+	console.error('Default Encounter.modifyCharacters used')
+	return memberCharacters
+};
+
+const runForParty = () => {
+	console.error('Default Encounter.run used')
 };
 
 export default class Encounter {
 	constructor(options) {
-		this.description = options.description;
-		this.name = options.name;
-		this.modifyCharacters = options?.modifyCharacters ?? modifyCharacters;
+		this.description = options.description
+		this.name = options.name
+		this.modifyCharacters = options?.modifyCharacters ?? modifyCharacters
+
+		this.runForParty = options?.runForParty ?? runForParty
+	}
+
+	static TestAttributes() {
+		// RMD TODO start here
+		return new Encounter({
+			description: 'An encounter that tests the dominant attributes of this region',
+			name: 'Attribute test',
+			runForParty: (party) => {
+				console.log("Running TestAttributes Encounter")
+
+				// Generate mobs
+				const mobs = party.tile.generateOpponents()
+				// console.log("generated mobs", mobs)
+
+				// while combat is active
+				let isActive = true
+				let loopBreaker = 0
+			
+				// console.log("Combat - runInitiative", characters, opponents)
+			
+				// the combat loop
+				while (isActive && ++loopBreaker < 50) {
+					//	each party member attacks the first living mob
+					party.memberCharacters.forEach(member => {
+
+					})
+
+					//  each mob attacks the first living party member
+					mobs.forEach(mob => {
+
+					})
+
+					//	if one side or the other is dead, combat deactivates
+					if (false) {
+						isActive = false
+					}
+
+					loopBreaker++ 
+				}
+
+				// Distribute loot
+
+				console.log("Finished TestAttributes Encounter")
+			},
+			modifyCharacters: (params) => {
+				const {charactersToModify, chests} = params
+				
+				let move = Move.other(this.description);
+				let characters = [...charactersToModify];
+
+				return {
+					characters,
+					move,
+					chests
+				};
+			}
+		})
 	}
 
 	static NothingHappens() {
@@ -64,7 +127,6 @@ export default class Encounter {
 					chests
 				}
 			}
-
 		})
 	}
 }

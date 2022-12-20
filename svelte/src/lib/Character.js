@@ -511,8 +511,7 @@ export default class Character {
 
 	// #region Attribute setters
 	applyRegionModifiers(modifiers) {
-		console.log("Applying mods", modifiers)
-		console.log("before", this.getAgreeableness().base, this.getAgreeableness().current, this.getAgreeableness().apparent)
+		// console.log("before", this.getAgreeableness().base, this.getAgreeableness().current, this.getAgreeableness().apparent)
 
 		const modifyBase = (attribute) => {
 			const attributeToSet = this.getAttribute(attribute)
@@ -535,7 +534,7 @@ export default class Character {
 			return modifyBase(physicality)
 		})
 
-		console.log("after", this.getAgreeableness().base, this.getAgreeableness().current, this.getAgreeableness().apparent)
+		// console.log("after", this.getAgreeableness().base, this.getAgreeableness().current, this.getAgreeableness().apparent)
 	}
 
 	setAttribute(attributeToSet, attributeDelta) {	

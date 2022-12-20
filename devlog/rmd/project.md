@@ -8,7 +8,8 @@
 - associate regions with attributes
   - 20221210 entries hold detail
   - ✅ deal attributes to regions
-  - * impact mob generation and loot generation
+  - ✅ impact mob generation 
+  - impact loot generation
 - associate region attributes with tile relationships
   - 20221210 entries touch on it but no specific implementation is described
 - interface
@@ -25,8 +26,7 @@
 - probably need to remove everything about the vendor action
 - character jobs should be determined based on or somehow influenced by best attributes
   - like endurance and magnetism is a tank. 
-- maybe switch to HEXACO https://en.wikipedia.org/wiki/HEXACO_model_of_personality_structure
-  - add a 6th physicality, maybe speed
+- Combat needs to be replaced with a generic encounter type that tests the strongest attributes or something based on 
 - ✅ give player something to do (perhaps something that is fun?)
  - ✅ single character starts with no gear
  - ✅ early fights acquire gear but can only ~equip or hold in hands~ put in 1-slot sack
@@ -37,6 +37,8 @@
 
 
 ### scope creep - this are future current targets
+- maybe switch to HEXACO https://en.wikipedia.org/wiki/HEXACO_model_of_personality_structure
+  - add a 6th physicality, maybe speed
 - add more encounters
 - figure out consequences of character death
 - style-focused commit. get rid of semi-colons, indent 2 spaces, etc. 

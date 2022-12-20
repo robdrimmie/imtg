@@ -309,7 +309,13 @@ export default class Party {
 		if(deck.length < 1) {
 			console.error("party action deck has no cards what!");
 		}
-		const card = deck.drawOne();
+		const card = deck.drawOne()
+
+		const something = card.runForParty(this)
+
+		console.log("Something", something)
+
+
 
 		const results = card.modifyCharacters({
 			charactersToModify: this.membersInCharacters(characters),

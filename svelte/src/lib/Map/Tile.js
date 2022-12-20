@@ -223,7 +223,7 @@ export default class Tile {
 		}
 
 		while( budget >= TIER_1_COST) {
-			console.log("making mob", this.region)
+			// console.log("making mob", this.region)
 			opponents.push(Mobs.tier1(this.region))
 			budget -= TIER_1_COST
 		}
