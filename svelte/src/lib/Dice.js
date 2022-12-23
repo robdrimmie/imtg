@@ -33,6 +33,8 @@ export default class Dice {
 	roll(sides, count = 1) {
 		// console.log(`rolling ${count} d${sides}(s)`)
 
+		if(sides === 0) return 0
+
 		var countIndex = 0,
 			total = 0;
 		for (countIndex = 0; countIndex < count; countIndex++) {

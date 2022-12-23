@@ -234,15 +234,14 @@ export default class TileRelationship {
 	getBestAttributeOfTrait(trait) {
 		let bestScore = 0
 		let bestAttribute
-console.log(trait)
+
 		for (const [attribute, value] of trait) {
-			console.log("att", attribute)
 			if(value.apparent > bestScore) {
 				bestScore = value.apparent
 				bestAttribute = attribute
 			}
 		}
-console.log("best", bestAttribute)
+
 		return bestAttribute
 	}
 	
@@ -264,7 +263,7 @@ console.log("best", bestAttribute)
 		
 		// will be 0-7 I think, right now is just "how many items are equipped"
 		const gearLevel = this.paperdoll.capacity - this.paperdoll.availableCapacity()
-console.log("this", this)
+
 		// if the character's attribute is higher than the relationship, then it is good.
 		const characterPersonality = this.tile.region.personality 
 			? this.personality.get((this.tile.region.personality).apparent)

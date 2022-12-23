@@ -1,3 +1,4 @@
+import Deck from '$lib/Deck';
 import Dice from '$lib/Dice'
 import Move from '$lib/Move'
 
@@ -52,7 +53,8 @@ export default class Encounter {
 			
 				if(charactersEncounterScore >= mobsEncounterScore) {
 					// characters win
-					
+					console.log("chars win")
+
 					// update each character's tile relationship with victory details
 					// also build list of characters with space
 					const charactersWithCapacity = []
@@ -64,17 +66,38 @@ export default class Encounter {
 						character.victoryOnTile(currentTile)
 					})
 
+					console.log("cwithcap", charactersWithCapacity)
+
 					// acquire and distribute loot
-					let loot = []
+					let lootCurrency = 0
+					let lootItems = []
 					opponents.forEach(opponent => {
-						loot = [...loot, opponent.loot]
+						lootCurrency += opponent.loot.currency
+						lootItems = [...lootItems, opponent.loot().items]
 					})
 
-					while(loot.length > 0) {
-						// pick a character with backpack space
+					// allocate items
+					while(lootItems.length > 0) {
 						// pick a piece of loot
+						const lootIndex = Dice.roll(lootItems.length - 1)
+						const item = lootItems.splice(lootIndex, 1)[0]
+						// pick a character with backpack space
+						const characterIndex = Dice.roll(charactersWithCapacity.length - 1)
+						
+						console.log("here", characterIndex, charactersWithCapacity)
 						// add piece of loot to picked character's backpack
+						charactersWithCapacity[characterIndex].backpack().contain(item)
+
+						console.log("allocate loot", 
+							lootIndex,
+							item,
+							characterIndex,
+							charactersWithCapacity
+						)
 					}
+
+					// divvy up currency
+					console.log("DIVVY UP CURRENCY", characters, lootCurrency)
 					
 				} else {
 					// characters lose. impact?
