@@ -36,7 +36,9 @@ export default class Tile {
 			opposite: null,
 			tiles: [
 				Hex.OriginTown
-			]
+			],
+			personality: null,
+			physicality: null
 		}
 
 		return new Tile(OriginRegion, Hex.origin());

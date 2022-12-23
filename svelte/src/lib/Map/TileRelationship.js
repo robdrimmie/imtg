@@ -17,6 +17,8 @@ export default class TileRelationship {
 
 		// RMD TODO compare against mannequin in some cases, paperdoll in others
 		this.paperdoll = character.paperdoll		
+		this.personality = character.personality
+		this.physicality = character.physicality
 		this.resources = character.resources
 
 		this.tile = tile
@@ -41,6 +43,13 @@ export default class TileRelationship {
 			resting: 0,
 			vending: 0
 		}
+
+		this.attributes = {
+			personality: tile.personality,
+			personalityThreshold: 0,
+			physicality: tile.physicality,
+			physicalityThreshold: 0
+		}
 	}
 
 	progress(character) {
@@ -48,6 +57,8 @@ export default class TileRelationship {
 		this.characterId = character.id
 		this.currentTile = character.currentTile
 		this.paperdoll = character.paperdoll
+		this.personality = character.personality
+		this.physicality = character.physicality
 		this.resources = character.resources
 		
 		this.values.adventuring = this.calculateAdventuringValue()
@@ -63,7 +74,17 @@ export default class TileRelationship {
 		this.scores.overall = this.calculateOverallScore()
 	}
 
-	score() {}
+	// #region Encounter results
+	defeat() {
+		this.attributes.personalityThreshold += 5
+		this.attributes.physicalityThreshold += 5
+	}
+
+	victory() {
+		this.attributes.personalityThreshold -= 5
+		this.attributes.physicalityThreshold -= 5
+	}
+	// #endregion Encounter results
 
 	// #region Calculate Tile Values
 	calculateValue(knowledge) {
@@ -210,6 +231,29 @@ export default class TileRelationship {
 		return energyScore
 	}
 
+	getBestAttributeOfTrait(trait) {
+		let bestScore = 0
+		let bestAttribute
+console.log(trait)
+		for (const [attribute, value] of trait) {
+			console.log("att", attribute)
+			if(value.apparent > bestScore) {
+				bestScore = value.apparent
+				bestAttribute = attribute
+			}
+		}
+console.log("best", bestAttribute)
+		return bestAttribute
+	}
+	
+	getBestPersonality() {
+		return this.getBestAttributeOfTrait(this.personality)
+	}
+
+	getBestPhysicality() {
+		return this.getBestAttributeOfTrait(this.physicality)
+	}
+
 	calculateGearScore() {
 		let gearScore = 1
 
@@ -220,6 +264,18 @@ export default class TileRelationship {
 		
 		// will be 0-7 I think, right now is just "how many items are equipped"
 		const gearLevel = this.paperdoll.capacity - this.paperdoll.availableCapacity()
+console.log("this", this)
+		// if the character's attribute is higher than the relationship, then it is good.
+		const characterPersonality = this.tile.region.personality 
+			? this.personality.get((this.tile.region.personality).apparent)
+			: this.getBestPersonality().apparent
+
+		const characterPhysicality = this.tile.region.physicality
+			? this.physicality.get((this.tile.region.physicality).apparent)
+			: this.getBestPhysicality().apparent
+
+		console.log("gear score character stats", characterPersonality, characterPhysicality, this.attributes.personalityThreshold, this.attributes.physicalityThreshold)
+		// otherwise it is bad.
 
 		// console.log("gear score:::     gearLevel, tileDifficulty", gearLevel, tileDifficulty)
 		if (gearLevel === tileDifficulty) {

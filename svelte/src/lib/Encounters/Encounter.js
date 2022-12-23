@@ -1,3 +1,4 @@
+import Dice from '$lib/Dice'
 import Move from '$lib/Move'
 
 const modifyCharacters = (memberCharacters) => {
@@ -5,7 +6,7 @@ const modifyCharacters = (memberCharacters) => {
 	return memberCharacters
 };
 
-const runForParty = () => {
+const runForCharacters = () => {
 	console.error('Default Encounter.run used')
 };
 
@@ -15,7 +16,7 @@ export default class Encounter {
 		this.name = options.name
 		this.modifyCharacters = options?.modifyCharacters ?? modifyCharacters
 
-		this.runForParty = options?.runForParty ?? runForParty
+		this.runForCharacters = options?.runForCharacters ?? runForCharacters
 	}
 
 	static TestAttributes() {
@@ -23,40 +24,69 @@ export default class Encounter {
 		return new Encounter({
 			description: 'An encounter that tests the dominant attributes of this region',
 			name: 'Attribute test',
-			runForParty: (party) => {
-				console.log("Running TestAttributes Encounter")
+			runForCharacters: (characters) => {
+				console.log("Running TestAttributes Encounter for characters", characters)
 
-				// Generate mobs
-				const mobs = party.tile.generateOpponents()
-				// console.log("generated mobs", mobs)
+				const currentTile = characters[0].currentTile
 
-				// while combat is active
-				let isActive = true
-				let loopBreaker = 0
-			
-				// console.log("Combat - runInitiative", characters, opponents)
-			
-				// the combat loop
-				while (isActive && ++loopBreaker < 50) {
-					//	each party member attacks the first living mob
-					party.memberCharacters.forEach(member => {
-
-					})
-
-					//  each mob attacks the first living party member
-					mobs.forEach(mob => {
-
-					})
-
-					//	if one side or the other is dead, combat deactivates
-					if (false) {
-						isActive = false
-					}
-
-					loopBreaker++ 
+				const encounterScore = (score, character)  => {
+					console.log("a loop with character", character, currentTile, score, currentTile.region.personality,
+					
+						character.getAttribute(currentTile.region.personality)
+					)
+					return Math.ceil((score
+						+ character.getAttribute(currentTile.region.personality).apparent
+						+ character.getAttribute(currentTile.region.physicality).apparent
+					) / 3)
 				}
 
-				// Distribute loot
+				const charactersEncounterScore = characters.reduce(encounterScore, Dice.d100())
+
+				console.log("charactersEncounterScore", charactersEncounterScore)
+
+				// Generate mobs and their encounter score
+				const opponents = currentTile.generateOpponents()
+				const mobsEncounterScore = opponents.reduce(encounterScore, Dice.d100())
+
+				console.log("mobsEncounterScore", mobsEncounterScore)
+			
+				if(charactersEncounterScore >= mobsEncounterScore) {
+					// characters win
+					
+					// update each character's tile relationship with victory details
+					// also build list of characters with space
+					const charactersWithCapacity = []
+					characters.forEach(character => {
+						if(character.getCapacity() > 0) {
+							charactersWithCapacity.push(character) 
+						}
+
+						character.victoryOnTile(currentTile)
+					})
+
+					// acquire and distribute loot
+					let loot = []
+					opponents.forEach(opponent => {
+						loot = [...loot, opponent.loot]
+					})
+
+					while(loot.length > 0) {
+						// pick a character with backpack space
+						// pick a piece of loot
+						// add piece of loot to picked character's backpack
+					}
+					
+				} else {
+					// characters lose. impact?
+					// tile relationship updated to indicate the character cannot handle the tile
+					// characters/party get moved one tile closer to hub
+					//		this one might be weird because the party will have to have its tile updated
+					characters.forEach(character => {
+						character.defeatOnTile(currentTile)
+					})
+				}
+
+				
 
 				console.log("Finished TestAttributes Encounter")
 			},

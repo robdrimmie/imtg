@@ -933,6 +933,19 @@ export default class Character {
 		this.tileRelationships.set(tile.id, relationship);
 		return relationship;
 	}
+
+	defeatOnTile(tile) {
+		const relationship = this.tileRelationships.get(tile.id)
+
+		relationship.defeat()
+	}
+
+	victoryOnTile(tile) {
+		// find TileRelationship
+		const relationship = this.tileRelationships.get(tile.id)
+
+		relationship.victory()
+	}
 	// #endregion Tile Relationship, movement, knowledge
 
 	// #region Encounter resolution

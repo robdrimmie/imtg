@@ -310,8 +310,8 @@ export default class Party {
 			console.error("party action deck has no cards what!");
 		}
 		const card = deck.drawOne()
-
-		const something = card.runForParty(this)
+console.log("drew card", card, this.membersInCharacters(characters))
+		const something = card.runForCharacters(this.membersInCharacters(characters))
 
 		console.log("Something", something)
 
