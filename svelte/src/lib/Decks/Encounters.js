@@ -1,35 +1,11 @@
-import Combat from '../Encounters/Combat';
-import Gear from '../Encounters/Gear';
 import Move from '$lib/Move';
-import Rest from '../Encounters/Rest';
-import Trait from '../Encounters/Trait';
-import Trap from '../Encounters/Trap';
 import QuestItems from '$lib/Decks/QuestItems';
 
 export default class Encounters {
-	static get ALL() {
-		return [Combat, Gear, Rest, Trait, Trap];
-	}
-
-	static get ADVENTURE() {
-		return [Combat, Gear, Trait, Trap];
-	}
-
-	static get REST() {
-		return [Rest];
-	}
-
-	static get VENDOR() {
-		return [
-			// Potions,
-			// Weapons, etc
-		];
-	}
-
-	constructor(things) {
-		this.description = things.description;
-		this.name = things.name;
-		this.modifyCharacters = things.modifyCharacters;
+	constructor(params) {
+		this.description = params.description;
+		this.name = params.name;
+		this.run = params.run;
 	}
 
 	// Encounter iteself doesn't have any cards of its own,
@@ -51,7 +27,7 @@ export default class Encounters {
 		return {
 			description,
 			name: 'Nothing Happens',
-			modifyCharacters: (params) => {
+			run: (params) => {
 				const {charactersToModify, chests} = params
 				
 				const move = new Move(Move.TYPE_OTHER_MESSAGES, {}, description);
@@ -70,7 +46,7 @@ export default class Encounters {
 		return new Encounters({
 			description: 'The Win Condition is Acquired!',
 			name: 'Win Condition Encounter',
-			modifyCharacters: (params) => {
+			run: (params) => {
 				const {charactersToModify, chests} = params
 
 				let characters = [...charactersToModify];

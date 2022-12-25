@@ -1,5 +1,3 @@
-import { chests } from '$lib/stores.js';
-
 import Encounter from '$lib/Encounters/Encounter';
 import Move from '$lib/Move';
 
@@ -11,12 +9,10 @@ export default class Vend extends Encounter {
 		return new Vend({
 			description,
 			name,
-			modifyCharacters: (params) => {
-				const {charactersToModify, chests} = params
-				
-				
+			run: (params) => {
+				const {characters, chests} = params
+								
 				let move = Move.other(description);
-				let characters = [...charactersToModify];
 
                 // loop through the party
                 characters.forEach( partyMember => {

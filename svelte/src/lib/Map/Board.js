@@ -62,8 +62,6 @@ export default class Board {
 			this.winningTiles.push(drawn)		
 		}
 
-		console.info("only one return win condition encounter is being generated")
-		// console.log("win tiles", this.winningTiles)
 		this.winningTiles[0].decks.adventuring.cards.push(
 			Encounter.ReturnWinCondition(this.winningTiles[0])
 		);

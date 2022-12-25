@@ -1,13 +1,7 @@
-import Deck from '$lib/Deck';
 import Dice from '$lib/Dice'
 import Move from '$lib/Move'
 
-const modifyCharacters = (memberCharacters) => {
-	console.error('Default Encounter.modifyCharacters used')
-	return memberCharacters
-};
-
-const runForCharacters = () => {
+const run = () => {
 	console.error('Default Encounter.run used')
 };
 
@@ -15,9 +9,8 @@ export default class Encounter {
 	constructor(options) {
 		this.description = options.description
 		this.name = options.name
-		this.modifyCharacters = options?.modifyCharacters ?? modifyCharacters
 
-		this.runForCharacters = options?.runForCharacters ?? runForCharacters
+		this.run = options?.run ?? run
 	}
 
 	static TestAttributes() {
@@ -25,7 +18,9 @@ export default class Encounter {
 		return new Encounter({
 			description: 'An encounter that tests the dominant attributes of this region',
 			name: 'Attribute test',
-			runForCharacters: (characters) => {
+			run: (params) => {
+				const {characters, chests} = params
+
 				console.log("Running TestAttributes Encounter for characters", characters)
 
 				const currentTile = characters[0].currentTile
@@ -43,14 +38,11 @@ export default class Encounter {
 
 				const charactersEncounterScore = characters.reduce(encounterScore, Dice.d100())
 
-				console.log("charactersEncounterScore", charactersEncounterScore)
-
 				// Generate mobs and their encounter score
 				const opponents = currentTile.generateOpponents()
 				const mobsEncounterScore = opponents.reduce(encounterScore, Dice.d100())
-
-				console.log("mobsEncounterScore", mobsEncounterScore)
 			
+				let description = "An Encounter!"
 				if(charactersEncounterScore >= mobsEncounterScore) {
 					// characters win
 					console.log("chars win")
@@ -81,25 +73,21 @@ export default class Encounter {
 						// pick a piece of loot
 						const lootIndex = Dice.roll(lootItems.length - 1)
 						const item = lootItems.splice(lootIndex, 1)[0]
+
 						// pick a character with backpack space
 						const characterIndex = Dice.roll(charactersWithCapacity.length - 1)
 						
-						console.log("here", characterIndex, charactersWithCapacity)
 						// add piece of loot to picked character's backpack
 						charactersWithCapacity[characterIndex].backpack().contain(item)
-
-						console.log("allocate loot", 
-							lootIndex,
-							item,
-							characterIndex,
-							charactersWithCapacity
-						)
 					}
 
 					// divvy up currency
 					console.log("DIVVY UP CURRENCY", characters, lootCurrency)
+
+					description += " The party is victorious!"
 					
 				} else {
+					console.log("chars lose whomp whomp")
 					// characters lose. impact?
 					// tile relationship updated to indicate the character cannot handle the tile
 					// characters/party get moved one tile closer to hub
@@ -107,23 +95,17 @@ export default class Encounter {
 					characters.forEach(character => {
 						character.defeatOnTile(currentTile)
 					})
+
+					description += " The party is defeated!"
 				}
 
-				
-
-				console.log("Finished TestAttributes Encounter")
-			},
-			modifyCharacters: (params) => {
-				const {charactersToModify, chests} = params
-				
-				let move = Move.other(this.description);
-				let characters = [...charactersToModify];
+				console.log("Finished TestAttributes Encounter", description)
 
 				return {
 					characters,
-					move,
+					move: Move.other(description),
 					chests
-				};
+				}
 			}
 		})
 	}
@@ -132,11 +114,10 @@ export default class Encounter {
 		return new Encounter({
 			description: 'Nothing happened',
 			name: 'Nothing happened',
-			modifyCharacters: (params) => {
-				const {charactersToModify, chests} = params
+			run: (params) => {
+				const {characters, chests} = params
 				
 				let move = Move.other(this.description);
-				let characters = [...charactersToModify];
 
 				return {
 					characters,
@@ -157,11 +138,10 @@ export default class Encounter {
 			description: 'The Win Condition is returned to its rightful place',
 			name: 'The Win Condition is Returned!',
 
-			modifyCharacters: (params) => {
-				const {charactersToModify, chests} = params
+			run: (params) => {
+				const {characters, chests} = params
 				
 				let move = Move.other("The Win Condition's rightful place has been found")
-				let characters = [...charactersToModify]
 
 				// if any of the characters has the win condition
 				// remove it from them
