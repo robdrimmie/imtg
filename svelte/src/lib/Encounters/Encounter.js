@@ -14,22 +14,15 @@ export default class Encounter {
 	}
 
 	static TestAttributes() {
-		// RMD TODO start here
 		return new Encounter({
 			description: 'An encounter that tests the dominant attributes of this region',
 			name: 'Attribute test',
 			run: (params) => {
 				const {characters, chests} = params
 
-				console.log("Running TestAttributes Encounter for characters", characters)
-
 				const currentTile = characters[0].currentTile
 
 				const encounterScore = (score, character)  => {
-					console.log("a loop with character", character, currentTile, score, currentTile.region.personality,
-					
-						character.getAttribute(currentTile.region.personality)
-					)
 					return Math.ceil((score
 						+ character.getAttribute(currentTile.region.personality).apparent
 						+ character.getAttribute(currentTile.region.physicality).apparent
@@ -43,13 +36,14 @@ export default class Encounter {
 				const mobsEncounterScore = opponents.reduce(encounterScore, Dice.d100())
 			
 				let description = "An Encounter!"
-				if(charactersEncounterScore >= mobsEncounterScore) {
-					// characters win
-					console.log("chars win")
+				let lootCurrency = 0
+				let lootItems = []
 
+				// characters win
+				if(charactersEncounterScore >= mobsEncounterScore) {
 					// update each character's tile relationship with victory details
 					// also build list of characters with space
-					const charactersWithCapacity = []
+					let charactersWithCapacity = []
 					characters.forEach(character => {
 						if(character.getCapacity() > 0) {
 							charactersWithCapacity.push(character) 
@@ -57,16 +51,16 @@ export default class Encounter {
 
 						character.victoryOnTile(currentTile)
 					})
-
-					console.log("cwithcap", charactersWithCapacity)
+					console.log("beft", lootCurrency)
 
 					// acquire and distribute loot
-					let lootCurrency = 0
-					let lootItems = []
 					opponents.forEach(opponent => {
-						lootCurrency += opponent.loot.currency
+						console.log("opp", opponent)
+						lootCurrency += opponent.currency
 						lootItems = [...lootItems, opponent.loot().items]
 					})
+
+					console.log("aft", lootCurrency)
 
 					// allocate items
 					while(lootItems.length > 0) {
@@ -79,13 +73,19 @@ export default class Encounter {
 						
 						// add piece of loot to picked character's backpack
 						charactersWithCapacity[characterIndex].backpack().contain(item)
+
+						// ensure only those with capacity remain eligible
+						charactersWithCapacity = []
+						characters.forEach(character => {
+							if(character.getCapacity() > 0) {
+								charactersWithCapacity.push(character) 
+							}
+
+							character.victoryOnTile(currentTile)
+						})
 					}
 
-					// divvy up currency
-					console.log("DIVVY UP CURRENCY", characters, lootCurrency)
-
 					description += " The party is victorious!"
-					
 				} else {
 					console.log("chars lose whomp whomp")
 					// characters lose. impact?
@@ -100,6 +100,16 @@ export default class Encounter {
 				}
 
 				console.log("Finished TestAttributes Encounter", description)
+
+				const lootShare = Math.floor(lootCurrency / characters.length)
+				const lootRemainder = lootCurrency % characters.length
+
+				characters.forEach(character => {
+					character.currency += lootShare
+				})
+
+				// todo it's not fair that the first character gets the remainder but that's what happens here
+				characters[0].currency += lootRemainder
 
 				return {
 					characters,

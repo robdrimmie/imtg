@@ -2031,3 +2031,151 @@ It just rips all the combat and jobs and everything out but all that shit is too
 the whole combat and encounter stuff just feels bad. 
 
 2202 
+2204 okay how about party attacks with one dominant attribute? 
+
+hmm. this might oversimplify. haven't made any changes yet but. 
+
+It would render health nothing which isn't itself a big thing but there's something about the back and forth that feels like it's more of a test?
+
+There are two attributes, a personality and a physicality. Party wants to attack with something different than those because mobs in this region are generally very high in those attributes. 
+
+Okay so like, Quicksilver vs Hulk. Quicksilver rolls based on their best two attributes - magnetism because he's witty? and coordination for speed - and Hulk rolls on theirs - brawn and neuroticism, say. 
+
+Boil it all down to two numbers? 
+
+Oh, the party doesn't attack given its strengths, the _party_ does. X-Men doesn't use openness and endurance, each X-Men member uses their own best attributes and a roll. All percentages right? .72 * .61 * .92 type deal roll times personality times physicality
+
+that's a good starting point and it feels like a good level of combat abstraction. I think I like this a lot. but now it is late and sleep beckons. 
+
+1904 okay time for other things for a while. Left off calculating encounter scores in Encounter.js. Error in browser points to next action too.
+
+1944 just wrote:
+```
+				if(charactersEncounterScore >= mobsEncounterScore) {
+					// characters win, Distribute loot
+				} else {
+					// characters lose. impact?
+				}
+```
+
+if there is no health there is no need to rest. well, energy I suppose. but what if there are no resources? rip rip rip. hrm. gets rid of food. is there a use for potions any more? 
+
+but what is the impact of losing? Some things might be losing gear. or currency. 
+
+I like the different pieces though. 
+
+1946 so for now I am going to leave them in, even if health never changes and food is never consumed. I will take them out when it seems right to or when I no longer hold attachements to it. Or I'll figure out how to make it interesting. 
+
+But for now, I will say if the party loses they need to like the tile less, want to have better stats with the qualities of it to go there and get moved one tile towards Hub. they get pushed back. 
+
+Health can still be of value, a lost fight might just be lost health, and there's the energy cost of moving tiles into those spots that you lose if you get pushed back. So there is potential utility for those still.
+
+20221221 1409 vacation day today so a bit of extra time. Working on resolving the new encounters now.
+
+1411 so I am at a point where I need to figure out how to represent victories and losses in a tile relationship. 
+
+A victory increases desire. A loss decreases desire. 
+
+If a character is victorious in an encounter then they should want to come there more. 
+
+So one way is to track the stat that they lost against. The personality stat and physicality stat of the tile become like... thresholds?
+
+So `tileRelationship.thresholds.personality` or somesuch shape. 
+
+So if I lose to a "70" - although that can't happen with the way scoring is happening and modified so this probably won't work but get it out of my brain at least. 
+
+So if I lose to a 70 AWARENESS then tileRElationship.thresholds.personality.attribute = AWARENESS and personality.threshold = 70.
+
+So if my attribute AWARENESS is lower than 70, I am disclined to go to this tile. There might be other more compelling reasons that overload that but if my awareness is like 5? Fuck that noise those people are going to _trounce_ me. 
+
+1417 hmm. as written, this encounter scoring mechanism doesn't pit the character's best attributes against the region's.
+```
+				const encounterScore = (score, character)  => {
+					console.log("a loop with character", character, currentTile, score, currentTile.region.personality,
+					
+						character.getAttribute(currentTile.region.personality)
+					)
+					return score
+						* character.getAttribute(currentTile.region.personality).current
+						* character.getAttribute(currentTile.region.physicality).current
+				}
+```
+
+this is calculating how well all the characters do with the region's dominant attributes but Hulk v Quicksilver dictates that each character use their best attributes. So I need a getBestAttribute or something. 
+
+1503 I haven't been focusing, but that's what days off are for. I am thinking about how to set the threshold and I guess if the character loses in a tile that emphasizes AWARENESS then their awareness is too low. 
+
+A narrow defeat might encourage the character to go back, or only increase the threshold a small amount
+A moderate defeat might increase the threshold by.. 5? 
+A resounding defeat would set the threshold quite high probably
+
+Size of defeat can be measured by the difference in encounter scores probably. I don't know what that range mioght be but right now for example with seed 20 the first fight's charactersEncounterScore is 21168 and the mobsEncounterScore is 7200. So that's a times 3 victory that seems pretty solid? BUT ALSO I don't know what the possible range is like, really. What happens if I put a brand new character in a tier 6 tile? I don't know! Something, probably. It would (and should!) be a huge gap though
+
+I get so far from things through the code though right? Like the part does an action and it goes into encounter which goes into character blah blah blah. 
+
+1517 adding this to TileRelationship:
+```
+		this.attributes = {
+			personality: tile.personality,
+			personalityThreshold: 0,
+			physicality: tile.physicality,
+			physicaltyThreshold: 0
+		}
+```
+
+1605 okay so I'm just going to modify them by 5 in each direction and then I guess gear score should be calculated with this? Or gear score is entirely useless and like there's an encounterConfidenceScore or something like that?
+
+Well, I'm just going to leave it as gear score for now because it really is the result of a character's gear and such. So yeah, this is a gear-gated progression game. 
+
+1608 this simplifies gear score _so much_. dang that's good refactoring.
+
+1610 hmm. So one way to do gear score is if charater's personality trait > threshold then good, else bad. That is the simplification I had in mind when complimenting myself there. 
+
+The complicating factor is the way tilerelationships store character data. Like, a character has tile relationships right, so I don't want the entire character stored in the relationship because then all the relationships are also in there and blah blah blah. circular references amirite?
+
+so for gear score calculating I was looking at the tier of each piece of gear. Now I just want to compare two numbers basically. But I don't store those numbers oh oh..
+
+no. damn. it has to get updated every time so I need to keep something in progress right?
+
+Okay yeah so fuck it, I'm just going to store the character's personality and physicality all the time too. There's definitely a better way to capture and maintain this relationship but this is what I am doing anyway. 
+
+I guess arguably character should calculate a bunch of shit or whatever is necessary with all of its attributes in its progress, then pass that along down to the tilerelationship's progress. but it's easier for now to let tilerelationship know a bunch about character than the other way around. character's already fucking huge.
+
+1626 regions can have null values for personality and physicality. If a region doesn't have these then it needs to create mobs without biased stats. So it is just a .
+
+huh. What to. Okay so the null region is a special case that will happen every game so it's not that special but it is different than the others. 
+
+If I'm in a region without any specific stat and I win then my gear overall is good, and if I lose than I guess my gear overall is bad? 
+
+Okay so maybe I need a threshold for all stats instead of just the region's favorites. If I don't know anything about the region I can make some guesses based on gear quality which is how things were being done before when I was crowing about how simple I'd made things. 
+
+well, time to step aside for a while, so I guess I have something to ponder as my evening begins.
+
+2109 Averages. I keep forgetting that some things should be averages, and I think these encounter scores should be.
+
+And if a personality or physicality is null, then the character just uses their best personality
+
+2211 okay, things are working right now in that they aren't crashing but encounters don't fully replace combat yet and so like I think things stall out
+
+2213 committed that so but what do I need to do? step through from party progress I guess? 
+
+2216 oh look at that an infinte loop in Encounter.js `while(loot.length > 0) {`
+
+2226 ohhhh I forgot that loot is an object: `return { items, currency: this.currency };`
+
+2237 hmm, high neuroticism is good according to this model. That's not a super awesome thing necessarily
+
+2238 okay working on Encounter, need to allocate currency. How do I do it in Combat? 
+
+20221223 ???? sometimes I don't want to record the time I guess. 
+
+I'm doing a thing. Encounters are run, Items modifyCharacters. 
+
+???? might be something going on with how destination tiles are selected but that's all in the process of being changed anyway so I'll get to that eventually.
+
+20221225 1113 
+1124 okay so the thing I was doing with extracting functionality from the encounter went poorly. I definitely need a stronger and consistent style. am I doing functional programming? Uhhh I mean really not even close anywhere. Am I doing OOP? not really either! so, figure something about that out. make it more testable especially things are just so clunky in that regard.
+
+1125 the party can be victorious but they can't lose properly yet. Oh I'm not sure currency is being allocated
+
+1130 okay currency is allocated better. 
