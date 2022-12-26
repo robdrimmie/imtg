@@ -87,7 +87,7 @@ export default class Encounter {
 
 					description += " The party is victorious!"
 				} else {
-					console.log("chars lose whomp whomp")
+					console.error("chars lose whomp whomp STILL NEED TO HANDLE")
 					// characters lose. impact?
 					// tile relationship updated to indicate the character cannot handle the tile
 					// characters/party get moved one tile closer to hub

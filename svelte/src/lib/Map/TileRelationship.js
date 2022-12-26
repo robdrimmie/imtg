@@ -44,11 +44,15 @@ export default class TileRelationship {
 			vending: 0
 		}
 
+		// rmd todo revisit how a tile relationship's thresholds are set
+		const personalityThreshold = character.getPersonalityAverage()
+		const physicalityThreshold = character.getPhysicalityAverage()
+		
 		this.attributes = {
 			personality: tile.personality,
-			personalityThreshold: 0,
+			personalityThreshold,
 			physicality: tile.physicality,
-			physicalityThreshold: 0
+			physicalityThreshold
 		}
 	}
 
@@ -76,6 +80,7 @@ export default class TileRelationship {
 
 	// #region Encounter results
 	defeat() {
+
 		this.attributes.personalityThreshold += 5
 		this.attributes.physicalityThreshold += 5
 	}

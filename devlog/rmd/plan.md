@@ -2179,3 +2179,48 @@ I'm doing a thing. Encounters are run, Items modifyCharacters.
 1125 the party can be victorious but they can't lose properly yet. Oh I'm not sure currency is being allocated
 
 1130 okay currency is allocated better. 
+
+1131 the party eventually stops exploring tiles and it looks like that is because the deck is empty but maybe the card information is wrong? I don't know.
+
+1132 argh. I had a small todo list mentally assembled and started adding it to project and fwhoomp there it went. 
+
+1133 it pr updating character tile relationships in each of those cases
+
+I almost wrote about it instead of doing it. 
+
+1135 this is a really big refactor and sometime soonish the dishwasher is going to finish and I'm going to spend a bunch of time working on a turkey dinner and then probably play videogames for a while so it's not going to like... do much. I'm not sure what do much means here but it's a big hard thing that is going to move in small pieces I think and none of them happening soon. This is a week off work though and so I do hope to move the needle. 
+
+1136 This is a big piece and I'm excited for it. I'm more and more content with entirely losting Combat and Traps - I think I removed them a commit or two ago. Eventually if there's a skinning system to like make an sf thing maybe that skin can figure out what to call the job with high Openness and Brawn or whatever but that is not at present my concern.
+
+1137 more generic more better and all that.
+
+1140 So I'm a little blocked because the party decides to hit tile whatever left-downwards is and just stay there resting. It's a motivations balance issue so it isn't super great but I can't work through the loss case. 
+
+But I guess I can work through the win case and the motivation changes of different equipment and see how that changes party behaviour in this scenario. Losing does already call the defeated whatever in the relationship so lots of changes can take place 
+
+1142 so the personality and physicality thresholds are changing. Gear score calc is where this should impact. 
+
+1948 a bit of time to poke around. calculateGearScore is a mess, I was in the middle of things there
+
+```
+		// if the character's attribute is higher than the relationship, then it is good.
+		const characterPersonality = this.tile.region.personality 
+			? this.personality.get((this.tile.region.personality).apparent)
+			: this.getBestPersonality().apparent
+```
+
+I dont think this makes any sense. 
+
+So I'm consider a tile. I have a relationship with that tile. I know that that tile's personality trait is OPENNESS and physicality is BRAWN. 
+
+`this.tile.rgion.personality` might be null. If it is, then get the character's best personality score. If it isn't, get the character's score for that attribute.
+
+The character has a threshold. if a character is defeated that threshold is increased by 5. That can probably be changed perhaps depending on how sound the defeat was, which is discussed above, but for now it goes up by five when the character is defeated.
+
+So tile101's brawn threshold for a character is 0 because we don't know anything else about the tile. We lose, it goes to 5. 
+
+Next time the character considers that tile, if their BRAWN is > 5 then they are comfortable going there. If it is < 5, they are not.
+
+The initial threshold should probably be their attribute score. 
+
+1954 If the character wins, it goes to -5, or ([character's attribute value] - 5) so we are comfortable going there. Long term this should be some sort of arc where only just surpassing it makes it highly desirable, just missing it is cautiously interested, and badly missing it or resoundingly higher than it are like, too scared to go and too bored to bother. 

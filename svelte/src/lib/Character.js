@@ -507,6 +507,28 @@ export default class Character {
 
 		return accumulatedModifier
 	}
+
+	getTraitAverage(trait) {
+		let sum = 0
+		let count = 0
+
+		for(const attribute of trait) {
+			sum += attribute[1].apparent
+			count++
+		}
+		
+		return sum / count
+	}
+
+	getPersonalityAverage() {
+		return this.getTraitAverage(this.personality)
+	}
+	
+	getPhysicalityAverage() {
+		return this.getTraitAverage(this.physicality)
+
+	}
+
 	// #endregion Attributes and other getters
 
 	// #region Attribute setters
