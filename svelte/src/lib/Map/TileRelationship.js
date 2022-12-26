@@ -45,15 +45,20 @@ export default class TileRelationship {
 		}
 
 		// rmd todo revisit how a tile relationship's thresholds are set
-		const personalityThreshold = character.getPersonalityAverage()
-		const physicalityThreshold = character.getPhysicalityAverage()
+		const personalityThreshold = (tile.region.personality === null)
+			? character.getPersonalityAverage()
+			: character.getAttribute(tile.region.personality).apparent
+		const physicalityThreshold = (tile.region.physicality === null)
+			? character.getPhysicalityAverage()
+			: character.getAttribute(tile.region.physicality).apparent
 		
 		this.attributes = {
-			personality: tile.personality,
+			personality: tile.region.personality,
 			personalityThreshold,
-			physicality: tile.physicality,
+			physicality: tile.region.physicality,
 			physicalityThreshold
 		}
+		console.log("made attr", this.attributes)
 	}
 
 	progress(character) {
@@ -269,16 +274,18 @@ export default class TileRelationship {
 		// will be 0-7 I think, right now is just "how many items are equipped"
 		const gearLevel = this.paperdoll.capacity - this.paperdoll.availableCapacity()
 
+		console.log("A", this.tile.region.personality, this.personality.get(this.tile.region.personality) )
+
 		// if the character's attribute is higher than the relationship, then it is good.
-		const characterPersonality = this.tile.region.personality 
-			? this.personality.get((this.tile.region.personality).apparent)
-			: this.getBestPersonality().apparent
+		const characterPersonality = (this.tile.region.personality === null)
+			? this.personality.get(this.getBestPersonality()).apparent
+			: this.personality.get(this.tile.region.personality).apparent
 
-		const characterPhysicality = this.tile.region.physicality
-			? this.physicality.get((this.tile.region.physicality).apparent)
-			: this.getBestPhysicality().apparent
-
-		console.log("gear score character stats", characterPersonality, characterPhysicality, this.attributes.personalityThreshold, this.attributes.physicalityThreshold)
+		const characterPhysicality = (this.tile.region.physicality === null)
+			? this.physicality.get(this.getBestPhysicality()).apparent
+			: this.physicality.get(this.tile.region.physicality).apparent
+			
+			console.log("gear score character stats", characterPersonality, characterPhysicality, this.attributes)
 		// otherwise it is bad.
 
 		// console.log("gear score:::     gearLevel, tileDifficulty", gearLevel, tileDifficulty)

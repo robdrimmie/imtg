@@ -2224,3 +2224,7 @@ Next time the character considers that tile, if their BRAWN is > 5 then they are
 The initial threshold should probably be their attribute score. 
 
 1954 If the character wins, it goes to -5, or ([character's attribute value] - 5) so we are comfortable going there. Long term this should be some sort of arc where only just surpassing it makes it highly desirable, just missing it is cautiously interested, and badly missing it or resoundingly higher than it are like, too scared to go and too bored to bother. 
+
+2120 thresholds are being primed with the character's average personality and physicality. Not the best, but better than nothing. Oh that might only be in the case whereumm. something. is missing? where did you go brain
+
+2121 only in the case where a tile doesn't have that trait? 
