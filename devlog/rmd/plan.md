@@ -2228,3 +2228,66 @@ The initial threshold should probably be their attribute score.
 2120 thresholds are being primed with the character's average personality and physicality. Not the best, but better than nothing. Oh that might only be in the case whereumm. something. is missing? where did you go brain
 
 2121 only in the case where a tile doesn't have that trait? 
+
+20221226 0817 today might be a progress day. It might also be a Cyberpunk 2077 day. 
+
+But what I'm working on was tile relationship. I got that initial threshold in place 
+
+20221227 0911 I woke up this morning thinking about project structure and architecture. This project is do for a massive architectural overhaul but I am not really up to speed on what that looks like in modern javascript and truly I've never really had a strong opinion about how to do things and without benefit of other eyeballs on my work tend towards a mishmash of styles and conventions based on whatever I feel like in the moment I'm writing things, and whatever it is I can bang together to make behaviours that resemble what I want. 
+
+That's going to continue, this is still me, but I do want to start moving towards something. 
+
+There's a lot of bad information about javascript in the world and it's hard to find discussion of conventions that I really feel great about. I'm inclined towards functional programming - there's lots of parameter copying throughout the code at least - but not very good at it. 
+
+0914 Anyway I found these two references. I haven't gotten into them substantially but they're referenced from a couple of independent branches I went down and based on some critique of Eric Elliiot's work which I've found very useful over the years so that but even better is a compelling argument.
+
+https://mostly-adequate.gitbook.io/mostly-adequate-guide/
+https://github.com/getify/Functional-Light-JS
+
+0917 both are books so will be longish term things to work through but 
+
+0957 that mostly adequate book is missing all its subsections. oh, no, they're just presented weirdly
+
+1400 so what work am I trying to do? Another Great Refactor. Get attributes working as tile influence. Encounters impacting relationships
+
+1401 scrolled up. gear score, thresholds, etc. 
+
+1403 game flows okay but party still gets stuck resting on left-downwards. down-leftwards. 
+
+character's health alternates between 5 and whatever amount it gets healed. 
+
+It is weird that health is changing at all. 
+
+1404 I think above I postulated that this behaviour would be fixed when all the tile relationship stuff was done and that it was better to wait. I think that is still the case, though I do not believe that it will be cleared up by unravelling all of this, I think it is some other problem I've introduced. 
+
+1406 okay so all the old flow stuff is in there for gear score too. 
+
+gear score is amultiplier, so it needs to be 0+ not 0.0-1.0
+
+20221228 0820 I'm hoping today is a productive day.
+
+0825 not just with this, but I'd like to move the needle on this rework again. there's been some good steps but it's been a couple of days of Cyberpunk 2077 and that will continue to be the case for a while. 
+
+Gear score is the thing. 
+
+0826 `gear score character stats 28 36` and then the two objects. that's outputting the character's value for the personality attribute in question and the physicality one in question
+
+0851 https://mostly-adequate.gitbook.io/mostly-adequate-guide/ch03#oh-to-be-pure-again
+
+this discussion of function purity (which is a bit of a barfy name but that's not math's problem really) is a good one. 
+
+```
+
+// impure
+let minimum = 21;
+const checkAge = age => age >= minimum;
+​```
+
+it is impure because something else can change minimum, that's an external dependency. That's a notion of functional programming I don't think has registered before. 
+
+I am glad this is basics but I'd also like to see something that is like "here's how to turn a large scale oop project into a large-scale functional project over time". I guess this will sort of be that, although it's not starting from a particularly strong oop state. More like an oopish mess turned into something clean. I hope, eventually.
+
+0854 So gear score though. I need to eat sometime soonish and I want to do some non-this work after around 10 or so so there's not too much time right now. Gaming time means less project time and I know that and that's a trade-off I have to be okay making. I'm excited for both and I don't want to completely lose this thread.
+
+So the score is getting the character's two stats. It needs to find out if the character's gear is better or worse than the tile's thresholds.
+

@@ -268,14 +268,6 @@ export default class TileRelationship {
 
 		if (this.tile.isOrigin()) return gearScore
 
-		// will be 0-6, right now is just distance from origin
-		const tileDifficulty = this.tile.getDifficulty()
-		
-		// will be 0-7 I think, right now is just "how many items are equipped"
-		const gearLevel = this.paperdoll.capacity - this.paperdoll.availableCapacity()
-
-		console.log("A", this.tile.region.personality, this.personality.get(this.tile.region.personality) )
-
 		// if the character's attribute is higher than the relationship, then it is good.
 		const characterPersonality = (this.tile.region.personality === null)
 			? this.personality.get(this.getBestPersonality()).apparent
@@ -288,33 +280,21 @@ export default class TileRelationship {
 			console.log("gear score character stats", characterPersonality, characterPhysicality, this.attributes)
 		// otherwise it is bad.
 
-		// console.log("gear score:::     gearLevel, tileDifficulty", gearLevel, tileDifficulty)
-		if (gearLevel === tileDifficulty) {
-			gearScore = 1
-		} else if (gearLevel > tileDifficulty) {
-			gearScore = 1.25
+		// console.log("per", characterPersonality, this.tile.region.personality.threshold, characterPersonality >= this.tile.region.personalityThreshold)
+		// if the gear is good enough, the character wants to go there
+		if (characterPersonality >= this.attributes.personalityThreshold) {
+			gearScore *= 1.25
 		} else {
-			gearScore = 0.9
+			gearScore *= 0.9
 		}
 
-		// Items that are equipped can modify the score, so give each one a chance
-		gearScore = this.paperdoll.slots.reduce(
-			(accumulatedGearScore, itemInSlot /*, indexOfSlot*/) => {
-				// if there is an item in the slot but it doesn't have a modifier method,
-				// then just move on
+		if (characterPhysicality >= this.attributes.physicalityThreshold) {
+			gearScore *= 1.25
+		} else {
+			gearScore *= 0.9
+		}
 
-				// rmd todo item quality should modify gear level - I suppose that could 
-				// take place in its modifier though, hmm.
-
-				if (!itemInSlot || !itemInSlot.multiplier) {
-					return accumulatedGearScore
-				}
-				// Apply the modifier
-				return accumulatedGearScore * itemInSlot.multiplier(this.tile)
-			},
-			gearScore
-		)
-
+		console.log("gearScore", gearScore)
 		return gearScore
 	}
 
