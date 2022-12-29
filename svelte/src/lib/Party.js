@@ -43,7 +43,7 @@ export default class Party {
 		const scoredActionsAndTiles = this.scoreActionsAndTiles(
 			this.membersInCharacters(characters)
 		);
-
+console.log("scoredActionsAndTiles", scoredActionsAndTiles)
 		// Figure out the best tile for that action
 		const { selectedAction, selectedTile } = this.chooseActionAndTile(scoredActionsAndTiles);
 
@@ -129,7 +129,7 @@ export default class Party {
 			partyMemberVotes[memberIndex] = member.scoreActionsAndTiles();
 		}
 
-		// console.log("scoreActionsAndTiles partyMemberVotes", partyMemberVotes)
+		console.log("scoreActionsAndTiles partyMemberVotes", partyMemberVotes)
 
 		const tally = {
 			adventure: {
@@ -149,6 +149,7 @@ export default class Party {
 		};
 
 		for (const thisMemberVote of partyMemberVotes) {
+			
 			const memberAdventure = thisMemberVote.get('adventure');
 			tally.adventure.score += memberAdventure.score;
 
@@ -172,25 +173,27 @@ export default class Party {
 				tally.vend.tiles.push(memberVend.tile);
 			}
 		}
+console.log('bef', tally.adventure.score)
+tally.adventure.score /= partyMemberVotes.length;
+tally.rest.score /= partyMemberVotes.length;
+tally.vend.score /= partyMemberVotes.length;
 
-		tally.adventure.score /= partyMemberVotes.length;
-		tally.rest.score /= partyMemberVotes.length;
-		tally.vend.score /= partyMemberVotes.length;
-
-		// console.log(
-		// 	"tally preprune", 
-		// 	tally, 
-		//  	tally.adventure,
-		//  	tally.adventure.tiles, 
-		//  	tally.adventure.tiles[0], 
-		//  	tally.adventure.tiles.length
-		// )
-
-		// If there are no tiles suitable for the action, we don't actually want to do it!
-		if (tally.adventure.tiles.length === 0) {
-			tally.adventure.score = 0;
-		}
-		
+console.log('aft', tally.adventure.score)
+// console.log(
+	// 	"tally preprune", 
+	// 	tally, 
+	//  	tally.adventure,
+	//  	tally.adventure.tiles, 
+	//  	tally.adventure.tiles[0], 
+	//  	tally.adventure.tiles.length
+	// )
+	
+	// If there are no tiles suitable for the action, we don't actually want to do it!
+	if (tally.adventure.tiles.length === 0) {
+		tally.adventure.score = 0;
+	}
+	
+	console.log('aft2', tally.adventure.score)
 		if (tally.rest.tiles.length === 0) {
 			tally.rest.score = 0;
 		}

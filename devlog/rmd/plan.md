@@ -2323,3 +2323,49 @@ so like, that's why. adv and vend scores get stuck at 0.
 
 so something is probably multiplying adventure score by 0 or some such sort of event.
 
+0953 the party member has an adventure score in their vote but it drops to 0. because of cards in the tiles maybe? something in the tally process.
+
+0956 So the character is choosing -110 (down-leftwards/left-downwards - the latter, just confirmed and want to get consistent. left or right side first because hexes are pointy up) for adventure even though there are no tiles on it. I still suspect this is related to how I swaped in Encounters because the deck shouldn't be empty but I want to make sure that putting 100 cards in the deck isn't just masking something.
+
+So why does the character choose -110 as best for adventuring?
+
+0959 size of deck doesn't really look like it contributes to the desire-related scores:
+```
+capacity
+  1
+  distance
+  0.3333333333333333
+  nrg
+  0.3666666666666667
+  ger
+  1.2100000000000002
+  hth
+  1
+  sat
+  1
+  overall
+  0.44366666666666676
+```
+if I do the math:
+1 * 0.3333333333333333 * 0.3666666666666667 * 1.2100000000000002 * 1 * 1 = 0.1478888889
+
+so why is overall score not 0.1478888889?
+
+1002 I don't know that it is related but choosing the best tile for an action dampens based on distance but arguably the energy score should be doing that?
+
+```
+			// Dampen the score based on the distance
+			const tileDistance = this.currentTile.distanceFromTile(tileUnderConsideration)
+			const distanceDampener = 1 - tileDistance * 0.1
+```
+
+1004 yes, in TileRelationship calcenergy
+```
+		const energyScore = multiplier * this.scores.distance
+```
+
+and calcdistance:
+```
+return (distance === 0) ? 1 : 1 / (distance + 1)
+```
+

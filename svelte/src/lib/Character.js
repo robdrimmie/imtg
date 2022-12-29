@@ -807,17 +807,9 @@ export default class Character {
 			const tileUnderConsideration = tileRelationship.tile
 			// console.log(`Considering tile with ID ${tileUnderConsideration.id}`)
 
-			// Dampen the score based on the distance
-			const tileDistance = this.currentTile.distanceFromTile(tileUnderConsideration)
-			const distanceDampener = 1 - tileDistance * 0.1
-
-			// Get base the tile relationship score, dampened by distance
-			const tileRelationshipScore = tileRelationship.scores.overall * distanceDampener
-			// console.log("scores", tileRelationshipScore, tileRelationship.scores.overall, distanceDampener)
-
-			const tileScoreForAdventuring = tileRelationshipScore * tileRelationship.values.adventuring
-			const tileScoreForResting = tileRelationshipScore * tileRelationship.values.resting
-			const tileScoreForVending = tileRelationshipScore * tileRelationship.values.vending;
+			const tileScoreForAdventuring = tileRelationship.scores.overall * tileRelationship.values.adventuring
+			const tileScoreForResting = tileRelationship.scores.overall * tileRelationship.values.resting
+			const tileScoreForVending = tileRelationship.scores.overall * tileRelationship.values.vending;
 
 			// console.log("here", 
 			// tileScoreForVending, bestTiles, tileRelationshipScore, tileRelationship.scores.overall, distanceDampener)
