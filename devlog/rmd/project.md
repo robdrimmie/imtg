@@ -5,12 +5,13 @@
 *NOTE:* This list is not a commitment to you, it is a reference for me. There is no guarantee that any of these items will be implemented.
 
 ## big tasks (not prioritized, but a little bit preference-ized)
-- associate regions with attributes
+- * party gets stuck on tile down-leftwards
+- ✅ associate regions with attributes
   - 20221210 entries hold detail
   - ✅ deal attributes to regions
   - ✅ impact mob generation 
   - impact loot generation
-- associate region attributes with tile relationships
+- ✅ associate region attributes with tile relationships
   - 20221210 entries touch on it but no specific implementation is described
 - interface
   - images need to exist for all item types
@@ -22,12 +23,14 @@
   - make it impossible to sell to vendor
   - add hint to log about needing to restore the item
   - update character to desire going to the region the win condition tile is in
-- pretty sure traps are misbehaving now, result of item modifiers?
-- probably need to remove everything about the vendor action
-- character jobs should probably be removed entirely but I'm still  
+- ✅ pretty sure traps are misbehaving now, result of item modifiers?
+  - removing the Traps class really made that better
+- ✅ probably need to remove everything about the vendor action
+  - this was wrong. the vendor action gets characters into OriginTown and eventually other vend locations
+- character jobs should probably be removed entirely but I'm keeping that particular darling on life support
 - Combat needs to be replaced with a generic encounter type that tests the strongest attributes or something based on 
   - handle party loss
-  - tile relationships updated with loss and victory changes
+  - ✅ tile relationships updated with loss and victory changes
 
 - ✅ give player something to do (perhaps something that is fun?)
  - ✅ single character starts with no gear

@@ -2,9 +2,8 @@ import Attributes from '$lib/Attributes'
 import Deck from '$lib/Deck'
 import Hex from '$lib/Map/Hex.js'
 import Tile from '$lib/Map/Tile'
+import Modifiers from '$lib/Modifiers'
 
-const INCREASE = 1.1
-const DECREASE = 0.9
 
 export default class TileRelationship {
 	constructor(character, tile) {
@@ -58,7 +57,6 @@ export default class TileRelationship {
 			physicality: tile.region.physicality,
 			physicalityThreshold
 		}
-		console.log("made attr", this.attributes)
 	}
 
 	progress(character) {
@@ -217,15 +215,15 @@ export default class TileRelationship {
 		if (tileToConsider) {
 			if (characterIsEnergetic) {
 				if (tileToConsider.hasAdventuringAvailable()) {
-					multiplier *= INCREASE
+					multiplier *= Modifiers.INCREASE
 				} else {
-					multiplier *= DECREASE
+					multiplier *= Modifiers.DECREASE
 				}
 			} else {
 				if (tileToConsider.hasRestingAvailable()) {
-					multiplier *= INCREASE
+					multiplier *= Modifiers.INCREASE
 				} else {
-					multiplier *= DECREASE
+					multiplier *= Modifiers.DECREASE
 				}
 			}
 		}
@@ -268,33 +266,27 @@ export default class TileRelationship {
 
 		if (this.tile.isOrigin()) return gearScore
 
-		// if the character's attribute is higher than the relationship, then it is good.
 		const characterPersonality = (this.tile.region.personality === null)
-			? this.personality.get(this.getBestPersonality()).apparent
-			: this.personality.get(this.tile.region.personality).apparent
+		? this.personality.get(this.getBestPersonality()).apparent
+		: this.personality.get(this.tile.region.personality).apparent
+		
+		// if the character's attribute is higher than the relationship, then it is good.
+		if (characterPersonality >= this.attributes.personalityThreshold) {
+			gearScore *= Modifiers.INCREASE
+		} else {
+			gearScore *= Modifiers.DECREASE
+		}
 
 		const characterPhysicality = (this.tile.region.physicality === null)
 			? this.physicality.get(this.getBestPhysicality()).apparent
 			: this.physicality.get(this.tile.region.physicality).apparent
 			
-			console.log("gear score character stats", characterPersonality, characterPhysicality, this.attributes)
-		// otherwise it is bad.
-
-		// console.log("per", characterPersonality, this.tile.region.personality.threshold, characterPersonality >= this.tile.region.personalityThreshold)
-		// if the gear is good enough, the character wants to go there
-		if (characterPersonality >= this.attributes.personalityThreshold) {
-			gearScore *= 1.25
-		} else {
-			gearScore *= 0.9
-		}
-
 		if (characterPhysicality >= this.attributes.physicalityThreshold) {
-			gearScore *= 1.25
+			gearScore *= Modifiers.INCREASE
 		} else {
-			gearScore *= 0.9
+			gearScore *= Modifiers.DECREASE
 		}
 
-		console.log("gearScore", gearScore)
 		return gearScore
 	}
 
@@ -344,10 +336,10 @@ export default class TileRelationship {
 				// console.log('calculateSatietyScore - tileToConsider', tileToConsider)
 				if (tileToConsider.hasForagingAvailable()) {
 					// I want to get food so score this tile higher
-					multiplier *= INCREASE
+					multiplier *= Modifiers.INCREASE
 				} else {
 					// no food so yuck!
-					multiplier *= DECREASE
+					multiplier *= Modifiers.DECREASE
 				}
 			}
 
@@ -355,10 +347,10 @@ export default class TileRelationship {
 			if (percentAvailable < 0.1) {
 				if (tileToConsider.hasForagingAvailable()) {
 					// I want to get food so score this tile higher
-					multiplier *= INCREASE
+					multiplier *= Modifiers.INCREASE
 				} else {
 					// no food so yuck!
-					multiplier *= DECREASE
+					multiplier *= Modifiers.DECREASE
 				}
 			}
 		}

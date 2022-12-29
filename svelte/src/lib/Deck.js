@@ -66,7 +66,6 @@ export default class Deck {
 			return Deck.SIZE_LARGE;
 		}
 
-		console.error('RETURNING UNLIMITED DECK SIZE IS THAT ON PURPOSE?');
 		return Deck.SIZE_UNLIMITED;
 	}
 }

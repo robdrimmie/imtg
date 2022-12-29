@@ -2291,3 +2291,35 @@ I am glad this is basics but I'd also like to see something that is like "here's
 
 So the score is getting the character's two stats. It needs to find out if the character's gear is better or worse than the tile's thresholds.
 
+0907 so, better gear scores coming. probably not done but it's hard to say without really knowing what the actual system is supposed to be. 
+
+In my head lately I've been working on a clever analogy for the project. The model train room is very appropriate but it somewhat implies more forethought than I actually am bringing to the table here. So what I've been working on is that it's like a gelatenous cube that I'm trying to sculpt into something. There's no firm edges anywhere.
+
+1556 so I think at this point there's no getting around the stuck-on-left-downwards issue. That should reveal what I've missed. There's consequences of failure as well but that definitely won't impact this behaviour. Will be interrupted again soon, this wasn't a strong imtg day necessarily but was good for other things.
+
+20221229 0935 it's not going to be a week of focus on this and I'm just going to stop talking about that here. So what's up with that demand for rest on left-downwards.
+
+0936 I have a big console.error outputting "returning unlimited deck size is that on purpose" that is probably worth looking into as well. I'm certain it was, but while converting to Encounters I probably left a lot of cruft from Combat and Trap as well.
+
+0938 something is generating 999 cards? did I make a loop? yes in origin town so that there would be effectively unlimited rest and vend cards. okay so yes it is on purpose. so I should just ditch that error.
+
+0941 it has been long enough since I looked at /sheet that I can't remember which numbers are factoring into the next decision and which ones factored into the decision that just took place. most of it should be _current state_.
+
+the whole messy state thing is another reason I want to keep working on understanding functional programming. clean state transitions please!
+
+0948 
+```
+Adventure: 0
+
+Rest: 0.7290000000000001
+
+    -110
+    -110
+
+Vend: 0
+```
+
+so like, that's why. adv and vend scores get stuck at 0.
+
+so something is probably multiplying adventure score by 0 or some such sort of event.
+

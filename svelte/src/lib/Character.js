@@ -677,22 +677,17 @@ export default class Character {
 	calculateVendingDesire() {
 		let vendingDesireScore = 1
 
-		const threshold = 0.01 * this.getCurrentConscientousness() * (0.01 * this.getCurrentNeuroticism())
-
 		const capacity = {
 			base: this.backpack().capacity,
 			current: this.backpack().availableCapacity()
 		}
 
-		const modifier = capacity.base - capacity.current
-
+		// _really_ wants to vend if there's no capacity
 		if(capacity.current === 0) {
 			vendingDesireScore = 2
 		} else {
 			vendingDesireScore = (capacity.base - capacity.current) * .2
 		}
-
-		console.log("vending desire", vendingDesireScore, capacity.base, capacity.current)
 
 		return vendingDesireScore
 	}

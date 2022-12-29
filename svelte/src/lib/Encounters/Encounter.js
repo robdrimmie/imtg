@@ -51,16 +51,12 @@ export default class Encounter {
 
 						character.victoryOnTile(currentTile)
 					})
-					console.log("beft", lootCurrency)
 
 					// acquire and distribute loot
 					opponents.forEach(opponent => {
-						console.log("opp", opponent)
 						lootCurrency += opponent.currency
 						lootItems = [...lootItems, opponent.loot().items]
 					})
-
-					console.log("aft", lootCurrency)
 
 					// allocate items
 					while(lootItems.length > 0) {
@@ -98,8 +94,6 @@ export default class Encounter {
 
 					description += " The party is defeated!"
 				}
-
-				console.log("Finished TestAttributes Encounter", description)
 
 				const lootShare = Math.floor(lootCurrency / characters.length)
 				const lootRemainder = lootCurrency % characters.length
