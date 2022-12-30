@@ -802,15 +802,15 @@ export default class Character {
 			const tileUnderConsideration = tileRelationship.tile
 			console.log(`Considering tile with ID ${tileUnderConsideration.id}`
 
-,			tileRelationship.scores.overall
+// ,			tileRelationship.scores.overall
 ,			tileRelationship.values.adventuring
 ,			tileRelationship.values.resting
 ,			tileRelationship.values.vending
 			)
 
-			const tileScoreForAdventuring = /*tileRelationship.scores.overall * */tileRelationship.values.adventuring
-			const tileScoreForResting = /*tileRelationship.scores.overall * */tileRelationship.values.resting
-			const tileScoreForVending = /*tileRelationship.scores.overall * */tileRelationship.values.vending;
+			const tileScoreForAdventuring = /*tileRelationship.scores.overall * */tileRelationship.values.adventuring.overall
+			const tileScoreForResting = /*tileRelationship.scores.overall * */tileRelationship.values.resting.overall
+			const tileScoreForVending = /*tileRelationship.scores.overall * */tileRelationship.values.vending.overall
 			
 			// update best tiles
 			if (tileScoreForAdventuring > bestTiles.adventure.score) {
@@ -854,7 +854,6 @@ export default class Character {
 			}
 
 			console.log("here", 
-				tileRelationship.scores.overall, 
 				tileRelationship.values, 
 				bestTiles.adventure,
 				bestTiles.adventure.score, 

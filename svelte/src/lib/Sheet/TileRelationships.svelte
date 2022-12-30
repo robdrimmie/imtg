@@ -24,14 +24,18 @@
             tileid: {relationship[0]}
             {#if visible}
             <div>
-                <ul>
-                    <li><div>capacity</div> <div>{relationship[1].scores.capacity}</div></li>
+                <ul>rmd todo get scores from values
+                    <!-- 
+                        
+                        <li><div>capacity</div> <div>{relationship[1].scores.capacity}</div></li>
                     <li><div>distance</div> <div>{relationship[1].scores.distance}</div></li>
                     <li><div>nrg</div> <div>{relationship[1].scores.energy}</div></li>
                     <li><div>ger</div> <div>{relationship[1].scores.gear}</div></li>
                     <li><div>hth</div> <div>{relationship[1].scores.health}</div></li>
                     <li><div>sat</div> <div>{relationship[1].scores.satiety}</div></li>
-                    <li><div>overall</div> <div>{relationship[1].scores.overall}</div></li>
+                    <li><div>overall</div> <div>{relationship[1].scores.overall}</div></li> 
+                
+                -->
                 </ul>
             </div>
             {/if}

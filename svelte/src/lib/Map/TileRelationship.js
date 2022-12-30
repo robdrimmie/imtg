@@ -24,23 +24,46 @@ export default class TileRelationship {
 
 		this.knowledgeLevel = Tile.KNOWLEDGE_UNKNOWN
 
-		// Scores are modifiers, so 1 is neutral
-		this.scores = {
-			capacity: 1,
-			distance: 1,
-			energy: 1,
-			gear: 1,
-			health: 1,
-			satiety: 1,
-
-			overall: 1
-		}
-
-		// Values are absolute, so 0 is a baseline
 		this.values = {
-			adventuring: 0,
-			resting: 0,
-			vending: 0
+			adventuring: {
+				// desires are absolute, so 0 is a baseline
+				desire: 0,
+
+				// Scores are modifiers, so 1 is neutral
+				attribute: 1,
+				capacity: 1,
+				distance: 1,
+				energy: 1,
+				health: 1,
+				satiety: 1,
+				overall: 1
+			},
+			resting: {
+				// desires are absolute, so 0 is a baseline
+				desire: 0,
+
+				// Scores are modifiers, so 1 is neutral
+				attribute: 1,
+				capacity: 1,
+				distance: 1,
+				energy: 1,
+				health: 1,
+				satiety: 1,
+				overall: 1
+			},
+			vending: {
+				// desires are absolute, so 0 is a baseline
+				desire: 0,
+
+				// Scores are modifiers, so 1 is neutral
+				attribute: 1,
+				capacity: 1,
+				distance: 1,
+				energy: 1,
+				health: 1,
+				satiety: 1,
+				overall: 1
+			}
 		}
 
 		// rmd todo revisit how a tile relationship's thresholds are set
@@ -73,15 +96,6 @@ export default class TileRelationship {
 		this.values.adventuring = this.calculateAdventuringValue()
 		this.values.resting = this.calculateRestingValue()
 		this.values.vending = this.calculateVendingValue()
-
-		// 
-		this.scores.capacity = this.calculateCapacityScore()
-		this.scores.distance = this.calculateDistanceScore()
-		this.scores.energy = this.calculateEnergyScore()
-		this.scores.gear = this.calculateGearScore()
-		this.scores.health = this.calculateHealthScore()
-		this.scores.satiety = this.calculateSatietyScore()
-		this.scores.overall = this.calculateOverallScore()
 	}
 
 	// #region Encounter results
@@ -149,26 +163,61 @@ export default class TileRelationship {
 			value *= 1.25
 		}
 
-		console.log("calculating value", this.tile.id, value, this.scores.distance)
-		return value * this.scores.distance
+		return value
 	}
 
 	calculateAdventuringValue() {
-		return this.calculateValue(
-			this.tile.getKnowledgeForLevel(this.knowledgeLevel).adventuring
-		)
+		const knowledge = this.tile.getKnowledgeForLevel(this.knowledgeLevel)
+
+		const desire = this.calculateValue(knowledge.adventuring)
+		
+		const attribute = this.calculateAttributeScore()
+		const capacity = this.calculateCapacityScore()
+		const distance = this.calculateDistanceScore()
+		const energy = this.calculateEnergyScore(distance)
+		const health = this.calculateHealthScore()
+		const satiety = this.calculateSatietyScore()
+		const overall = this.calculateOverallScore(this.values.adventuring)		
+
+
+		return {
+			attribute,
+			desire,
+			capacity,
+			distance,
+			energy,
+			health,
+			satiety,
+			overall,
+		}
 	}
 
 	calculateRestingValue() {
-		return this.calculateValue(
-			this.tile.getKnowledgeForLevel(this.knowledgeLevel).resting
-		)
+		const knowledge = this.tile.getKnowledgeForLevel(this.knowledgeLevel)
+		return {
+			desire: this.calculateValue(knowledge.resting)
+			, attribute: this.calculateAttributeScore()
+			, capacity: this.calculateCapacityScore()
+			, distance: this.calculateDistanceScore()
+			, energy: this.calculateEnergyScore()
+			, health: this.calculateHealthScore()
+			, satiety: this.calculateSatietyScore()
+			, overall: this.calculateOverallScore(this.values.resting)
+		}
 	}
 
 	calculateVendingValue() {
-		return this.calculateValue(
-			this.tile.getKnowledgeForLevel(this.knowledgeLevel).vending
-		)
+		const knowledge = this.tile.getKnowledgeForLevel(this.knowledgeLevel)
+		return {
+			desire: this.calculateValue(knowledge.vending)
+			, attribute: this.calculateAttributeScore()
+			, capacity: this.calculateCapacityScore()
+			, distance: this.calculateDistanceScore()
+			, energy: this.calculateEnergyScore()
+			, health: this.calculateHealthScore()
+			, satiety: this.calculateSatietyScore()
+			, overall: this.calculateOverallScore(this.values.vending)
+		}
 	}
 	// #endregion Calculate Tile Values
 
@@ -209,7 +258,7 @@ export default class TileRelationship {
 		return retval
 	}
 
-	calculateEnergyScore() {
+	calculateEnergyScore(distance) {
 		const tileToConsider = this.tile
 		// console.log("calculateEnergyScore - tileToConsider, currentTile", tileToConsider, currentTile)
 
@@ -239,7 +288,7 @@ export default class TileRelationship {
 			}
 		}
 
-		const energyScore = multiplier * this.scores.distance
+		const energyScore = multiplier * distance
 
 		// console.log("calculated [energy score] for [currenttile] with [multiplier] dampened by [distanceScore]",
 		//   energyScore,
@@ -272,10 +321,10 @@ export default class TileRelationship {
 		return this.getBestAttributeOfTrait(this.physicality)
 	}
 
-	calculateGearScore() {
-		let gearScore = 1
+	calculateAttributeScore() {
+		let attributeScore = 1
 
-		if (this.tile.isOrigin()) return gearScore
+		if (this.tile.isOrigin()) return attributeScore
 
 		const characterPersonality = (this.tile.region.personality === null)
 		? this.personality.get(this.getBestPersonality()).apparent
@@ -283,9 +332,9 @@ export default class TileRelationship {
 		
 		// if the character's attribute is higher than the relationship, then it is good.
 		if (characterPersonality >= this.attributes.personalityThreshold) {
-			gearScore *= Modifiers.INCREASE
+			attributeScore *= Modifiers.INCREASE
 		} else {
-			gearScore *= Modifiers.DECREASE
+			attributeScore *= Modifiers.DECREASE
 		}
 
 		const characterPhysicality = (this.tile.region.physicality === null)
@@ -293,12 +342,12 @@ export default class TileRelationship {
 			: this.physicality.get(this.tile.region.physicality).apparent
 			
 		if (characterPhysicality >= this.attributes.physicalityThreshold) {
-			gearScore *= Modifiers.INCREASE
+			attributeScore *= Modifiers.INCREASE
 		} else {
-			gearScore *= Modifiers.DECREASE
+			attributeScore *= Modifiers.DECREASE
 		}
 
-		return gearScore
+		return attributeScore
 	}
 
 	// RMD TODO improve calculate health score
@@ -373,12 +422,12 @@ export default class TileRelationship {
 	}
 	// #endregion Calculate Motivator Scores
 
-	calculateOverallScore() {
+	calculateOverallScore(value) {
 		return 1 * 
-			this.scores.capacity * 
-			this.scores.energy * 
-			this.scores.gear * 
-			this.scores.health * 
-			this.scores.satiety
+			value.attribute * 
+			value.capacity * 
+			value.energy * 
+			value.health * 
+			value.satiety
 	}
 }

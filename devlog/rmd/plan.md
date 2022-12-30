@@ -2587,3 +2587,25 @@ so in this context, probably desire and overall should just be the same thing. b
 I do think that the values objects should look like that I guess. But then maybe I can just turn it back to scores. except the function names still matter.
 
 Okay so I have to break a lot of shit here. commit first.
+
+1141 I am refactoringn tile relationships such that the values have the shape as described just a few lines up.
+
+and the scores property has to go too.
+
+1142 AAAAAAAAAAAAAAAAA
+1142
+```
+		// Scores are modifiers, so 1 is neutral
+
+		// Values are absolute, so 0 is a baseline
+```
+
+does the new object fuck that up? I'll just add those to the properties
+
+1146 that was in Character.js, not TileRelationship.js.
+
+1154 energy has to be a function of distance, so should it use the distance or the distance score? I feel like that's the point of the distance score is to be that value for everything that needs it so there yes, use the score. 
+
+1158 just renamed gear to attribute in tile relationships, that's not going to fuck me up much
+
+1204 okay, things are stable again. Probably not _right_ but like, the first turn can happen. 
