@@ -129,13 +129,11 @@ export default class Character {
 			attribute.current = attribute.apparent
 		})
 
+		// Items equipped in hand slots do not apply passive effects
 		const slots = [
 			Paperdoll.DOLL_SLOT_HEAD,
 			Paperdoll.DOLL_SLOT_TORSO,
 			Paperdoll.DOLL_SLOT_LEGS,
-			// 20220908 2019 just not letting stuff held in hands have a passive effect on the character holding them
-			// Paperdoll.DOLL_SLOT_HAND_LEFT,
-			// Paperdoll.DOLL_SLOT_HAND_RIGHT,
 			Paperdoll.DOLL_SLOT_WAIST,
 		]
 
@@ -805,34 +803,28 @@ export default class Character {
 		// find the best tiles for each type of action based on this character's knowledge
 		this.tileRelationships.forEach((tileRelationship, key, map) => {
 			const tileUnderConsideration = tileRelationship.tile
-			// console.log(`Considering tile with ID ${tileUnderConsideration.id}`)
+			console.log(`Considering tile with ID ${tileUnderConsideration.id}`
 
-			const tileScoreForAdventuring = tileRelationship.scores.overall * tileRelationship.values.adventuring
-			const tileScoreForResting = tileRelationship.scores.overall * tileRelationship.values.resting
-			const tileScoreForVending = tileRelationship.scores.overall * tileRelationship.values.vending;
+,			tileRelationship.scores.overall
+,			tileRelationship.values.adventuring
+,			tileRelationship.values.resting
+,			tileRelationship.values.vending
+			)
 
-			// console.log("here", 
-			// tileScoreForVending, bestTiles, tileRelationshipScore, tileRelationship.scores.overall, distanceDampener)
-			// if (tileScoreForVending > 0) {
-			// 	console.log("here", 
-			// 		tileScoreForVending, 
-			// 		tileRelationshipScore, 
-			// 		tileRelationship.values, 
-			// 		bestTiles.vend.score, 
-			// 		bestTiles.vend.tile, 
-			// 	tileScoreForVending > bestTiles.vend.score
-			// 	)
-			// }
-
-
+			const tileScoreForAdventuring = /*tileRelationship.scores.overall * */tileRelationship.values.adventuring
+			const tileScoreForResting = /*tileRelationship.scores.overall * */tileRelationship.values.resting
+			const tileScoreForVending = /*tileRelationship.scores.overall * */tileRelationship.values.vending;
+			
 			// update best tiles
 			if (tileScoreForAdventuring > bestTiles.adventure.score) {
+				console.log("Replacing score", tileScoreForAdventuring, bestTiles.adventure.score)
 				// replace if score is higher
 				bestTiles.adventure = {
 					score: tileScoreForAdventuring,
 					contenders: [tileUnderConsideration]
 				};
 			} else if (tileScoreForAdventuring == bestTiles.adventure.score) {
+				console.log("adding contender")
 				// combine if score is equal
 				bestTiles.adventure = {
 					score: tileScoreForAdventuring,
@@ -863,7 +855,32 @@ export default class Character {
 					contenders: [...bestTiles.vend.contenders, tileUnderConsideration]
 				};
 			}
+
+			console.log("here", 
+				tileRelationship.scores.overall, 
+				tileRelationship.values, 
+				bestTiles.adventure,
+				bestTiles.adventure.score, 
+				bestTiles.adventure.contenders, 
+				tileScoreForAdventuring, 
+				tileScoreForAdventuring > bestTiles.adventure.score,
+
+				// bestTiles.resting.score, 
+				// bestTiles.resting.tile, 
+				// tileScoreForResting, 
+				// tileScoreForResting > bestTiles.resting.score,
+
+				// bestTiles.vending.score, 
+				// bestTiles.vending.tile, 
+				// tileScoreForVending, 
+				// tileScoreForVending > bestTiles.vending.score
+			)
+
 		});
+
+		console.log('adventure', bestTiles.adventure.contenders)
+		console.log('rest', bestTiles.rest.contenders)
+		console.log('vend', bestTiles.vend.contenders)
 
 		bestTiles.adventure.tile = Deck.pickOneCard(bestTiles.adventure.contenders)
 		bestTiles.rest.tile = Deck.pickOneCard(bestTiles.rest.contenders)

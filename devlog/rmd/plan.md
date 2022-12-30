@@ -2369,3 +2369,118 @@ and calcdistance:
 return (distance === 0) ? 1 : 1 / (distance + 1)
 ```
 
+1007 yeah that didn't change behaviour to the point where they go stuck it just I think reduced the impact of distance overall which is good, that should be controlled entirely in the relationship.
+
+1008 best tiles is where I removed the distance dampening from though so I'm in the right place overall.
+
+1108 conceptually I feel like i get currying, but in practical terms I never use it. Probably the Dice class needs a revisit.
+
+1109 anyway, leftdownwards. So I took distance out, yay. Next up... work?
+
+1115 adv, rest, vend scores are all the same for all tiles. By this point in the game there should be more differentiation, shouldn't there?
+
+it's very unclear to me why this tile keeps getting picked for adventure, it has no adventure value. so.. calculate adventure score is an issue?
+
+1116 This is the stuff that I know could be done better and tested better. Start composing from small methods that are well tested and the composition sounds good when they're all together. strained analogies.
+
+1344 just a quick dipin again. I wonder if coming at it from Sheet might be useful to track down where it is showing these numbers. It might not be fully updated with the various changes to calculating once per turn.
+
+1345 yeah, like:
+```
+    $: sAAT = party.scoreActionsAndTiles(
+        party.membersInCharacters($characters)
+    )
+``` 
+
+so that's asking for math to be done instead of showing state. Argh. Too many moving pieces right now, not enough focus on it. 
+
+20221230 0818 k. so. uhh. The problem is in which tile they pick to satisfy the adventuring urge right? 
+
+-110 (leftdownwards) `Considering tile with ID -110 1.3310000000000004 1 1 1`
+
+overall score 1.33, adv rest and vend all 1. 
+
+And it gets replaced because this is the tile the character scores highest but _not_ for adventuring specifically, for overall. It shouldn't be the best tile for _adventuring_ if they are all scored 1 for adventuring.
+
+0825 oh, that's because of:
+```
+			const tileScoreForAdventuring = tileRelationship.scores.overall * tileRelationship.values.adventuring
+```
+
+But I think this is probably unnecessary. 
+
+0826 so when they are all score 1, then the contender is picked randomly so what happens now is the party keeps moving. 
+
+So that's what the overall inclusion was supposed to do. This tile is good for adventuring and just best so stay. 
+
+But maybe distance should matter when scoring a tile for adventuring. If there are two tiles that are of equivalent adventuring value and I am on one and beside the other I should just adventure here. 
+
+0831 well that's worse. score * this.scores.distance was not the thing
+
+0921 what is happening now is that the capacity score for all known tiles is .5, and the capacity score for unknown tiles is 1. I think that is skewing things towards the new tiles. 
+
+So calc cap scores?
+
+0923
+```
+
+calculating value -202 1 1 3 TileRelationship.js:149:11
+capacityScore, percentAvailable, adventuringValue, vendingValue -202 1 1 1 1
+```
+
+1 1 3 - 3 is this.scores.distance. So like, that's a huge distance score?
+
+0932 okay so I need to sort out what I'm doing with all these scores and whether or not I am using them for the correct purpose, etc. 
+
+TileRelationship has improved a lot but it is still really rough.
+
+0934 I calculate values (adv, rest, vend) before scores (cap, dist, etc). That order feels backwards to me and I wonder if that's causing fuckery? 
+
+0936 it does seem like it needs to be this way as written. 
+
+scores are used to determine the overall value of the tile. But I really am starting to think that it is backwards maybe? 
+
+How is overall used? Only in bestTilesForAction. 
+
+So by taking it out above I've completely eliminated the influence of capacity and whatnot. 
+
+So I need to figure out again what this information is for and how the details are used. 
+
+Each character ranks the actions they can take and identifies the tile they prefer for each of those actions. 
+
+I want to adventure _this much_ and this tile is where the adventuring is best.
+I want to rest _this much_ and this tile is where the resting is best. 
+I want to vend _this much_ and this tile is where the vending is best.
+
+Right now value is only based on tile knowledge. 
+
+But should a character choose what action they want to take based on tiles or based on their properties? It feels like the latter makes more sense.
+
+If I am in good health and I am energetic and I am satiated and I have capacity I want to adventure.
+If I have low or no capacity I want to vend.
+If I am in low health or not energetic or not satiated I want to rest.
+
+Is there any other criteria in that decision making process? None of that is based on code or what is actually happening (I mean it is all in the context of this application of course but I haven't looked to verify). So how does a character decide which action to take?
+
+Okay in character these are Desires.
+
+0944 Desires are all based on character properties. So all the tile relationship stuff has to be how much value that specific tile has for that specific action for that specific character.
+
+This character believes this tile is the most valuable for adventuring because of a, b and c. 
+This character believes this tile is the most valuable for resting because of d, e and f. 
+This character believes this tile is the most valuable for vending because of g, h and i.
+
+0950 perhaps knowledge is fucked?
+
+```
+calculating value for knowledge and tile.id 
+Object { available: null, cardsRemaining: null, deckSize: null }
+ -101
+```
+
+So the knowledge object was a very early attempt to encapsulate what information is interestingn to deciding whether or not a character should go adventuring and as a way of changing the character's relationship with a tile over time. As they know more they are able to make better decisions about where to do what. 
+
+0959 made a progress character flowchart but that's only four boxes.
+
+1005 I'm not sure that flowcharting is getting me places here. It's good to have this content but I don't think this is the way for me to figure out how to clean it all up. Jen and I talked about walking through it with her today and perhaps that will happen. 
+

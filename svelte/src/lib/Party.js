@@ -173,12 +173,12 @@ console.log("scoredActionsAndTiles", scoredActionsAndTiles)
 				tally.vend.tiles.push(memberVend.tile);
 			}
 		}
-console.log('bef', tally.adventure.score)
-tally.adventure.score /= partyMemberVotes.length;
-tally.rest.score /= partyMemberVotes.length;
-tally.vend.score /= partyMemberVotes.length;
+// console.log('bef', tally.adventure.score)
+		tally.adventure.score /= partyMemberVotes.length;
+		tally.rest.score /= partyMemberVotes.length;
+		tally.vend.score /= partyMemberVotes.length;
 
-console.log('aft', tally.adventure.score)
+// console.log('aft', tally.adventure.score)
 // console.log(
 	// 	"tally preprune", 
 	// 	tally, 
@@ -188,12 +188,11 @@ console.log('aft', tally.adventure.score)
 	//  	tally.adventure.tiles.length
 	// )
 	
-	// If there are no tiles suitable for the action, we don't actually want to do it!
-	if (tally.adventure.tiles.length === 0) {
-		tally.adventure.score = 0;
-	}
-	
-	console.log('aft2', tally.adventure.score)
+		// If there are no tiles suitable for the action, we don't actually want to do it!
+		if (tally.adventure.tiles.length === 0) {
+			tally.adventure.score = 0;
+		}
+		
 		if (tally.rest.tiles.length === 0) {
 			tally.rest.score = 0;
 		}

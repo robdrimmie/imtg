@@ -60,6 +60,7 @@ export default class TileRelationship {
 	}
 
 	progress(character) {
+		// store all the required information
 		this.backpack = character.backpack
 		this.characterId = character.id
 		this.currentTile = character.currentTile
@@ -68,10 +69,12 @@ export default class TileRelationship {
 		this.physicality = character.physicality
 		this.resources = character.resources
 		
+		// Calculate how valuable this tile is for each action type
 		this.values.adventuring = this.calculateAdventuringValue()
 		this.values.resting = this.calculateRestingValue()
 		this.values.vending = this.calculateVendingValue()
 
+		// 
 		this.scores.capacity = this.calculateCapacityScore()
 		this.scores.distance = this.calculateDistanceScore()
 		this.scores.energy = this.calculateEnergyScore()
@@ -96,7 +99,7 @@ export default class TileRelationship {
 
 	// #region Calculate Tile Values
 	calculateValue(knowledge) {
-		// console.log("calculating value for knowledge and tile.id", knowledge, this.tile.id)
+		console.log("calculating value for knowledge and tile.id", knowledge, this.tile.id)
 		let value = 1
 
 		if (knowledge.deckSize) {
@@ -141,11 +144,13 @@ export default class TileRelationship {
 		}
 
 		// rmd todo I don't recall the reasoning behind this blanket increase
+		// if I know about it I want to go but does this actually make a difference? experiment.
 		if (knowledge.available) {
 			value *= 1.25
 		}
 
-		return value
+		console.log("calculating value", this.tile.id, value, this.scores.distance)
+		return value * this.scores.distance
 	}
 
 	calculateAdventuringValue() {
@@ -176,12 +181,13 @@ export default class TileRelationship {
 		const adventuringValue = this.values.adventuring
 		const vendingValue = this.values.vending
 
+
 		// rmd todo improved capacity calcuation
 		// This is pretty heavy handed still, but basically, if I want to adventure just
 		// use the adventuring value. If I want to vend, just use the vending value.
 
 		const capacityScore = 2 * percentAvailable > 0.5 ? adventuringValue : vendingValue
-		// console.log("capacityScore, percentAvailable, adventuringValue, vendingValue", capacityScore, percentAvailable, adventuringValue, vendingValue)
+		console.log("capacityScore, percentAvailable, adventuringValue, vendingValue", this.tile.id, capacityScore, percentAvailable, adventuringValue, vendingValue)
 
 		return capacityScore
 	}
@@ -195,7 +201,12 @@ export default class TileRelationship {
 		// simple fall off. 1/2, 1/3, 1/4 etc.
 		// this might end up having too much of an impact but it should impact all decisions
 		// in the same way so maybe that balances out? :shrug:
-		return (distance === 0) ? 1 : 1 / (distance + 1)
+
+		const retval = (distance === 0) ? 1 : 1 / (distance + 1)
+
+		console.log("calculateDistanceScore", this.tile.hex, this.currentTile.hex, distance, retval)
+
+		return retval
 	}
 
 	calculateEnergyScore() {

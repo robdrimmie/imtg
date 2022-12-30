@@ -1,17 +1,17 @@
 ```mermaid
 flowchart TD
-    A{is game started};
+    A{A is game started};
 
     B1[B start game.md];
     B2[autoplay turns];
 
-    CHAR[progress characters];
+    CHAR[CHAR progress characters];
 
-    PART[progress party.md];
+    PART[PART progress party.md];
 
-    STOR[update stores];
+    STOR[STOR update stores];
 
-    VEND[progress vendors];
+    VEND[VEND progress vendors];
 
     F{all win conditions returned?}
 
