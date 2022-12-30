@@ -87,6 +87,7 @@
   - like, 10 Resource of Modify [Attribute] can be combined into 1 Torso of Modify [Attribute] by 1 (increase or decrease)
   - and then 1 Torso of Modify [Attribute] by 1 (increase or decrease) decomposes into, say, 9 Resources of Modify [Attribute]. Some cost to crafting/destroying should exist.
   - see [[20220724 1106]] in bucket for slightly more thoughts but not really all that many
+- maybe capacity should impact how much energy travelling costs? would impact rest
 
 ## What 1.0 Might Require
 - 6 regions with 16 tiles

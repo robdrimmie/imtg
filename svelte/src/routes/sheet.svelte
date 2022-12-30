@@ -6,6 +6,7 @@ import { characters, moves, parties, started } from '$lib/stores.js'
 <a href="/">home</a>
 
 {#if started}
+    <div><strong>move:</strong> {$moves.length}</div>
     <div class="rows">
         {#each $parties as party}
             <SheetParty {party} />

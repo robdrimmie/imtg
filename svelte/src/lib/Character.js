@@ -464,8 +464,8 @@ export default class Character {
 	}
 
 	getGearScore() {
-		const tileRelationship = this.tileRelationships.get(this.currentTile.id);
-		return tileRelationship.calculateGearScore(this);
+		const tileRelationship = this.tileRelationships.get(this.currentTile.id)
+		return tileRelationship.calculateAttributeScore(this)
 	}
 
 	getItemModifierForAttribute(attributeToGet) {
@@ -812,6 +812,8 @@ export default class Character {
 			const tileScoreForResting = /*tileRelationship.scores.overall * */tileRelationship.values.resting.overall
 			const tileScoreForVending = /*tileRelationship.scores.overall * */tileRelationship.values.vending.overall
 			
+			console.log("tile scores", tileScoreForAdventuring, tileScoreForResting, tileScoreForVending)
+
 			// update best tiles
 			if (tileScoreForAdventuring > bestTiles.adventure.score) {
 				console.log("Replacing score", tileScoreForAdventuring, bestTiles.adventure.score)

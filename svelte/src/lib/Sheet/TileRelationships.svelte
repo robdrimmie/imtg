@@ -6,6 +6,8 @@
     const toggle = () => {
         visible = !visible
     }
+    
+    console.log("SHEET RELS" , member.tileRelationships)
 </script>
 
 <div on:click={toggle}><b>tile relationships</b></div>
@@ -47,7 +49,7 @@
 
         <div>
             adv val: {
-                relationship[1].values.adventuring
+                relationship[1].values.adventuring.overall
             }
         </div>
 

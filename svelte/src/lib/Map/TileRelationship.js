@@ -5,6 +5,10 @@ import Tile from '$lib/Map/Tile'
 import Modifiers from '$lib/Modifiers'
 
 
+const CONTEXT_ADVENTURING = 'CONTEXT_ADVENTURING'
+const CONTEXT_RESTING = 'CONTEXT_RESTING'
+const CONTEXT_VENDING = 'CONTEXT_VENDING'
+
 export default class TileRelationship {
 	constructor(character, tile) {
 		// Characters are big objects and store relationships, so taking just the bits I need
@@ -93,9 +97,13 @@ export default class TileRelationship {
 		this.resources = character.resources
 		
 		// Calculate how valuable this tile is for each action type
-		this.values.adventuring = this.calculateAdventuringValue()
-		this.values.resting = this.calculateRestingValue()
-		this.values.vending = this.calculateVendingValue()
+		const knowledge = this.tile.getKnowledgeForLevel(this.knowledgeLevel)
+
+		this.values.adventuring = this.calculateAdventuringValue(knowledge)
+		this.values.resting = this.calculateRestingValue(knowledge)
+		this.values.vending = this.calculateVendingValue(knowledge)
+
+		console.log("tile values", this.tile.id, this.values)
 	}
 
 	// #region Encounter results
@@ -112,7 +120,7 @@ export default class TileRelationship {
 	// #endregion Encounter results
 
 	// #region Calculate Tile Values
-	calculateValue(knowledge) {
+	calculateDesire(knowledge) {
 		console.log("calculating value for knowledge and tile.id", knowledge, this.tile.id)
 		let value = 1
 
@@ -166,19 +174,17 @@ export default class TileRelationship {
 		return value
 	}
 
-	calculateAdventuringValue() {
-		const knowledge = this.tile.getKnowledgeForLevel(this.knowledgeLevel)
-
-		const desire = this.calculateValue(knowledge.adventuring)
+	calculateActionValue(context, knowledgeForAction, value) {
+		const desire = this.calculateDesire(knowledgeForAction)
 		
-		const attribute = this.calculateAttributeScore()
-		const capacity = this.calculateCapacityScore()
-		const distance = this.calculateDistanceScore()
-		const energy = this.calculateEnergyScore(distance)
-		const health = this.calculateHealthScore()
-		const satiety = this.calculateSatietyScore()
-		const overall = this.calculateOverallScore(this.values.adventuring)		
+		const attribute = this.calculateAttributeScore(context)
+		const capacity = this.calculateCapacityScore(context)
+		const distance = this.calculateDistanceScore(context)
+		const energy = this.calculateEnergyScore(context, distance)
+		const health = this.calculateHealthScore(context)
+		const satiety = this.calculateSatietyScore(context)
 
+		const overall = this.calculateOverallScore(value)		
 
 		return {
 			attribute,
@@ -192,32 +198,39 @@ export default class TileRelationship {
 		}
 	}
 
-	calculateRestingValue() {
-		const knowledge = this.tile.getKnowledgeForLevel(this.knowledgeLevel)
-		return {
-			desire: this.calculateValue(knowledge.resting)
-			, attribute: this.calculateAttributeScore()
-			, capacity: this.calculateCapacityScore()
-			, distance: this.calculateDistanceScore()
-			, energy: this.calculateEnergyScore()
-			, health: this.calculateHealthScore()
-			, satiety: this.calculateSatietyScore()
-			, overall: this.calculateOverallScore(this.values.resting)
-		}
+	calculateAdventuringValue(knowledge) {
+		return this.calculateActionValue(CONTEXT_ADVENTURING, knowledge.adventuring, this.values.adventuring)
+		// const desire = this.calculateValue(knowledge.adventuring)
+		
+		// const attribute = this.calculateAttributeScore(CONTEXT_ADVENTURING)
+		// const capacity = this.calculateCapacityScore(CONTEXT_ADVENTURING)
+		// const distance = this.calculateDistanceScore(CONTEXT_ADVENTURING)
+		// const energy = this.calculateEnergyScore(CONTEXT_ADVENTURING, distance)
+		// const health = this.calculateHealthScore(CONTEXT_ADVENTURING)
+		// const satiety = this.calculateSatietyScore(CONTEXT_ADVENTURING)
+
+		// const overall = this.calculateOverallScore(this.values.adventuring)		
+
+		// return {
+		// 	attribute,
+		// 	desire,
+		// 	capacity,
+		// 	distance,
+		// 	energy,
+		// 	health,
+		// 	satiety,
+		// 	overall,
+		// }
 	}
 
-	calculateVendingValue() {
-		const knowledge = this.tile.getKnowledgeForLevel(this.knowledgeLevel)
-		return {
-			desire: this.calculateValue(knowledge.vending)
-			, attribute: this.calculateAttributeScore()
-			, capacity: this.calculateCapacityScore()
-			, distance: this.calculateDistanceScore()
-			, energy: this.calculateEnergyScore()
-			, health: this.calculateHealthScore()
-			, satiety: this.calculateSatietyScore()
-			, overall: this.calculateOverallScore(this.values.vending)
-		}
+	calculateRestingValue(knowledge) {
+		return this.calculateActionValue(CONTEXT_RESTING, knowledge.resting, this.values.resting)
+		
+	}
+
+	calculateVendingValue(knowledge) {
+		return this.calculateActionValue(CONTEXT_VENDING, knowledge.vending, this.values.vending)
+		
 	}
 	// #endregion Calculate Tile Values
 
@@ -225,23 +238,21 @@ export default class TileRelationship {
 	// #endregion Calculate Action Scores
 
 	// #region Calculate Motivator Scores
-	calculateCapacityScore() {
+	calculateCapacityScore(context) {
 		const percentAvailable = this.backpack().availableCapacity() / this.backpack().capacity
-		const adventuringValue = this.values.adventuring
-		const vendingValue = this.values.vending
 
+		// for adventuring, we want a high score if we have a lot of capacity and a low score otherwise
+		if(context == CONTEXT_ADVENTURING) {
+			return percentAvailable
+		} else if(context == CONTEXT_VENDING) {
+			return 1 - percentAvailable
+		} 
 
-		// rmd todo improved capacity calcuation
-		// This is pretty heavy handed still, but basically, if I want to adventure just
-		// use the adventuring value. If I want to vend, just use the vending value.
-
-		const capacityScore = 2 * percentAvailable > 0.5 ? adventuringValue : vendingValue
-		console.log("capacityScore, percentAvailable, adventuringValue, vendingValue", this.tile.id, capacityScore, percentAvailable, adventuringValue, vendingValue)
-
-		return capacityScore
+		// capacity doesn't really matter when resting
+		return 1
 	}
 
-	calculateDistanceScore() {
+	calculateDistanceScore(context) {
 		const distance = Hex.distance(this.tile.hex, this.currentTile.hex)
 
 		// rmd todo the tile the character on is always best from a distance perspective
@@ -258,9 +269,9 @@ export default class TileRelationship {
 		return retval
 	}
 
-	calculateEnergyScore(distance) {
+	calculateEnergyScore(context, distance) {
 		const tileToConsider = this.tile
-		// console.log("calculateEnergyScore - tileToConsider, currentTile", tileToConsider, currentTile)
+		console.log("calculateEnergyScore - tileToConsider, distance", tileToConsider,distance)
 
 		const energy = this.resources.get(Attributes.RESOURCES_ENERGY)
 		const percentAvailable = energy.current / energy.base
@@ -321,7 +332,7 @@ export default class TileRelationship {
 		return this.getBestAttributeOfTrait(this.physicality)
 	}
 
-	calculateAttributeScore() {
+	calculateAttributeScore(context) {
 		let attributeScore = 1
 
 		if (this.tile.isOrigin()) return attributeScore
@@ -353,7 +364,7 @@ export default class TileRelationship {
 	// RMD TODO improve calculate health score
 	// can get a lot more nuanced here, get a bit of a curve that plateaus around 90 or something.
 	// but anyway.
-	calculateHealthScore() {
+	calculateHealthScore(context) {
 		const characterHealth = this.resources.get(Attributes.RESOURCES_HEALTH)
 		const percentAvailable = characterHealth.current / characterHealth.base
 
@@ -382,7 +393,7 @@ export default class TileRelationship {
 	// this is probably wrong, probably most every turn a character will eat to satiety if they can
 	// then satiety starts dropping and the character wants to get somewhere with food
 	// so... tiles should have something to indicate that they contain food?
-	calculateSatietyScore() {
+	calculateSatietyScore(context) {
 		const tileToConsider = this.tile
 
 		let multiplier = 1

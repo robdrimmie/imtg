@@ -2609,3 +2609,71 @@ does the new object fuck that up? I'll just add those to the properties
 1158 just renamed gear to attribute in tile relationships, that's not going to fuck me up much
 
 1204 okay, things are stable again. Probably not _right_ but like, the first turn can happen. 
+
+1205 definitely not right, the party just keeps roaming. I found several places where the scores were being used in the old fashion by way of errors loading the page but those are no longer occuring, that's how stability was demonstrated. but so what to look at next? There's lots of places where this change isn't being touched yet and I don't think anything is getting scores and such based on the actual action yet. 
+
+so start in progress umm... something? in characters again? progressBestTiles and progressDesires. 
+
+that was a change to progress desires so when I get back I will start there.
+
+1316 progress desires.
+
+wait that's in the character again. oh right I'm working through to figure out what to do next. 
+
+1322 working on sheet might be best for the brain I have right now. 
+
+1339 somewhere in the values mix, capacity ends up getting populated with an object that is all the scores but that one has an actual score for capacity so that's weird and should be fixed.
+
+1342 
+```
+const capacityScore = 2 * percentAvailable > 0.5 ? adventuringValue : vendingValue
+```
+
+when it is vendingValue that is an object. 
+
+1344 oh wait probably also adventuringValue is because that's work I did earlier. Anyway this isn't good logic because this is specifically calculating a score for a specific context so I need to know the context to make good decisions. 
+
+1346 this feels like it is going to be so messy. OOP fixes this problem with subclasses, there should be like AdventureContext and it calculates the score blah blah blah. Today I'm just going with ifs. 
+
+1359 okay I have clunky ifs in place but it can be easier than that. A high percent available is bad for adventuring but good for vending, and vice versa.
+
+1402 how do I express that in math? 
+
+so if capacity is say .6 that is slightly bad for adventuring. But it isn't straight up adventuring * .6 because that would be better than adventuring * .4 and it should be worse. 
+
+so I need score = 1 - percentAvailable
+
+? So .6 capacity is a score of .4. I've gone through this math so many times I think and it just doesn't stay. 
+
+1404 but .4 capacity is good. it should slightly improve adventuring score. so 1 + percentAvailable? noo for exact same reasons. 
+
+1407 I tried scrolling through code but nothing jumped out at me. 
+
+percentAvailable can go from 0 - 1 so it is a score, not a modifier? 
+
+capacity score should go from 0 - 1 as well then. So return percent available when adventuring and 1 - percent available when vending? 
+
+1411 okay but now there are no cards to pick one when I'm picking from tile candidates?
+
+1412 energy is nan
+
+1414 I may have just eliminated the overall? I expected it to dupe desire but if it isn't being used anywhere none of the scores are either? maybe? 
+
+well if I'm not using it than it being `NaN` is not the actual problem. So leave it alone for now.
+
+1416
+```
+const tileScoreForAdventuring = /*tileRelationship.scores.overall * */tileRelationship.values.adventuring.overall
+```
+
+1417 so I am using it. So why is it `NaN` then? 
+1418 oh because I'd started sending it context and it had a parameter it used. I guess this one really doesn't need context given that it can only exist inside its own context. 
+
+1421 bestTiles.adventure.contenders has content, but rest and vend don't. 
+1422 `tile scores 1 NaN NaN`
+
+1429 okay, returned to stability again but still with roaming but not adventuring party.
+
+back and forth between -101 and -202, left right left right left right. 
+
+1432 so figure out why that is.
