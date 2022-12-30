@@ -604,9 +604,6 @@ export default class Character {
 			adventuringDesireScore *= Modifiers.DECREASE;
 		}
 
-		// RMD TODO - maybe should still be able to adventure even if satiety is 0?
-		// but I'm not sure. that's a desperate degree of hunger so I think I'll
-		// stick with the pattern for now.
 		const satiety = this.getSatiety();
 		if (satiety.current === 0) {
 			adventuringDesireScore *= 0;

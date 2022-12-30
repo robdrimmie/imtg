@@ -254,12 +254,7 @@ export default class Tile {
 	}
 
 	getKnowledgeForLevel(knowledgeLevel = Tile.KNOWLEDGE_UNKNOWN) {
-		/// maybe check how many moves since it has been updated and then dial down some info?
-		// hrm no. maybe check number of moves and then drop down the knowledge if it has been
-		// a lot? but that only works if I get this knowledge a lot, I think that as characters
-		// are scanning their tile relatinoships it could change in a cycle/pass before the one that gets this knowledge I don't know
-
-		// console.log("getKnowledgeForLevel", this, knowledgeLevel)
+		// console.log("Tile@getKnowledgeForLevel", this, knowledgeLevel)
 
 		const tileKnowledge = {
 			id: null,

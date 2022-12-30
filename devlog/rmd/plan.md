@@ -2484,3 +2484,106 @@ So the knowledge object was a very early attempt to encapsulate what information
 
 1005 I'm not sure that flowcharting is getting me places here. It's good to have this content but I don't think this is the way for me to figure out how to clean it all up. Jen and I talked about walking through it with her today and perhaps that will happen. 
 
+1032 desire calculating seems fine. where does tile knowledge come into play again? in the tile's value for a specific action. We get a DeckKnowledge object
+
+A tile's value for an action is based primarily on how many cards it has?
+
+deck size is in deck, reduces the number to one of the values of the DECK_SIZE constants. 
+
+1038 Desires are derived from Resources. That's a description for part of the system I think that hasn't been stated before. The resources available to a character influence what action that character will want to perform.
+
+1039 I keep wrapping back around to desires and that's the wrong place to be looking. the values are the thing probably.
+
+Values are used to rank tiles.
+
+1041 best tiles for action is still ultimately the center of failures here. The wrong tile is being chosen to adventure on. 
+
+So what is it about a tile that draws a character to it? 
+
+Primarily the attributes. The gear check is the most influential thing? Well, let's not bring weighting into this. These should end up being the 
+
+1124 distraction - it's a hell of a game!
+
+so gear check. where I drifted off above was saying that in theory this should be a recreation of the overall score contributing bits. 
+
+things that matter when selecting a tile:
+- does the character's attribute value exceeds the threshold value
+- does the character have enough resources to survive the trip
+
+okay I'm just going to look at the function again
+
+```
+			this.scores.capacity * 
+			this.scores.energy * 
+			this.scores.gear * 
+			this.scores.health * 
+			this.scores.satiety
+```
+
+so yeah. capacity is the thing I missed, and I clustered resources. 
+
+So to determine - I should change the name of gear. It's affected by gear but in theory permanent attribute changes could exist, or potions of attribute whatever could be used but probably not potions that would be weird to implement.
+
+So right now each factor is evenly weighted. Some of them can evaluate to 0, making the entire worthless.
+
+So this doesn't really take into consideration what I want to do on that tile though right? Is my relationship with a tile different depending on the action I want to take? Yes it must be just because of decks. 
+
+So is my capacity good to - this is where I've got all those fucky branching in the functions and stuff. 
+
+Trying to decide in capacity what the character wants to do but the character already knows their desires, and each tile is different based on what a character wants to do.
+
+So this is the overhaul I have to make next, and it is good but continues to be big. I'm not sure how to make this sort of thing an incremental release. I mean it is stable and could be pushed up but it's not like I want to knowingly introduce the current behaviour to the release, so yeah. I'm not doing that anyway but this is a place where I don't really know how to. I guess I could have `imtg.robsdreamco.com/current` and `imtg.robsdreamco.com/stable` point to different things. Different thoughts for different times!
+
+1131 So how then do I calculate these scores in the context of different actions? 
+
+```
+		this.scores.capacity = {
+      adventuring: .123,
+      resting: 0.333333333333333,
+      vending: 1
+    }
+```
+
+That's probably the right way to store them? Such messy data structure but that's okay I think because this will simplify the logic in some ways too. A messy this is better than whatever it is I have now which is messy perhaps in different ways but clearly not functional anyway, so
+
+1135 "pointfree", literally tabbed over and read this. https://mostly-adequate.gitbook.io/mostly-adequate-guide/ch05#pointfree
+
+my code is very pointful, so. I'm not grokking currying and composing still. The thing to do is as the book says, clone the repo and play. Not right now though.
+
+1137 so I have this:
+
+```
+		this.scores = {
+			capacity: 1,
+			distance: 1,
+			energy: 1,
+			gear: 1,
+			health: 1,
+			satiety: 1,
+
+			overall: 1
+		}
+```
+
+if I explicitly make each of those a value with three properties that's going to be fucking ugly. oh well, go with it I guess, work through the ugh.
+
+No wait I came here to ponder whether or not the scores should just live under values. 
+
+so value.adventuring = {
+  desire,
+
+  capacity,
+  distance,
+  energy,
+  gear,
+  health,
+  satiety,
+
+  overall
+}
+
+so in this context, probably desire and overall should just be the same thing. but that can wait to be confirmed.
+
+I do think that the values objects should look like that I guess. But then maybe I can just turn it back to scores. except the function names still matter.
+
+Okay so I have to break a lot of shit here. commit first.

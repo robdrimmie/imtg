@@ -69,6 +69,7 @@
   - these days it's a pretty simple scp pattern which I should be able to script up pretty easily if and when I want to get around to it
   - or like, release when I push up a tag that's kind of the ideal. boom I'm versioning, blah blah.
   - something that publishes an rss feed or updates a changelog or something with the contents of the devlog?
+  - `current` and `stable` releases. in ci/cd sense, current is updated with every push, stable requires a tag.
 - testish things
   - jest tests are in place, some classes have specs. The many many dice roles in the game make mocking really difficult and I'll have to check out some test strategies that do well with this sort of randomness. chaos monkey is a test strategy that embraces randomness so perhaps there
 - extract various class constants into References 
