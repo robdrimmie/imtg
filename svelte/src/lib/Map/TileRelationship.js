@@ -200,27 +200,6 @@ export default class TileRelationship {
 
 	calculateAdventuringValue(knowledge) {
 		return this.calculateActionValue(CONTEXT_ADVENTURING, knowledge.adventuring, this.values.adventuring)
-		// const desire = this.calculateValue(knowledge.adventuring)
-		
-		// const attribute = this.calculateAttributeScore(CONTEXT_ADVENTURING)
-		// const capacity = this.calculateCapacityScore(CONTEXT_ADVENTURING)
-		// const distance = this.calculateDistanceScore(CONTEXT_ADVENTURING)
-		// const energy = this.calculateEnergyScore(CONTEXT_ADVENTURING, distance)
-		// const health = this.calculateHealthScore(CONTEXT_ADVENTURING)
-		// const satiety = this.calculateSatietyScore(CONTEXT_ADVENTURING)
-
-		// const overall = this.calculateOverallScore(this.values.adventuring)		
-
-		// return {
-		// 	attribute,
-		// 	desire,
-		// 	capacity,
-		// 	distance,
-		// 	energy,
-		// 	health,
-		// 	satiety,
-		// 	overall,
-		// }
 	}
 
 	calculateRestingValue(knowledge) {
@@ -229,8 +208,7 @@ export default class TileRelationship {
 	}
 
 	calculateVendingValue(knowledge) {
-		return this.calculateActionValue(CONTEXT_VENDING, knowledge.vending, this.values.vending)
-		
+		return this.calculateActionValue(CONTEXT_VENDING, knowledge.vending, this.values.vending)		
 	}
 	// #endregion Calculate Tile Values
 

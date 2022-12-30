@@ -22,5 +22,8 @@ press key to start
     flex-direction: column;
 
     font-size: x-small;
+
+    padding-bottom: 5vh;
+    padding-left: 5vh;
 }
 </style>

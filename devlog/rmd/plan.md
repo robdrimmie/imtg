@@ -2677,3 +2677,73 @@ const tileScoreForAdventuring = /*tileRelationship.scores.overall * */tileRelati
 back and forth between -101 and -202, left right left right left right. 
 
 1432 so figure out why that is.
+
+1637 some of it perhaps is that the context stuff still isn't really being used for decision making? 
+
+1637 so right now on the sheet I want to be able to hide the tile relationship details and then I have to actually show them, too.
+
+1638 oh I do the visibility in the header. that's fine oh but I can't - it's all or nothing. that's not fine. 
+
+1700 math is hard
+
+```
+Adventuring overall: 
+0.6655000000000002
+
+    attribute: 1.2100000000000002
+    capacity: 1
+    distance: 1
+    energy: 1.1
+    health: 1
+    satiety: 1
+
+        1.2100000000000002 * 1 * 1 * 1.1 * 1 * 1 = 1.331
+```
+
+so that seems inconsistent. 
+1704 this is the next turn:
+
+```
+Adventuring overall: 1.3310000000000004
+
+    attribute: 1.2100000000000002
+    capacity: 1
+    distance: 0.5
+    energy: 0.55
+    health: 1
+    satiety: 1
+
+      1.2100000000000002 * 1 * 0.5 * 0.55 * 1 * 1 = 0.33275
+```
+so the overall score is from the previous turn? what is overall next turn (6): 
+
+```
+Adventuring overall: 0.6655000000000002
+
+    attribute: 1.2100000000000002
+    capacity: 1
+    distance: 1
+    energy: 1.1
+    health: 1
+    satiety: 1
+```
+
+that is not as expected.
+
+1705 okay, time to sort out dinner and things. The next step is to figure out why adventuring overall in the sheet is not the result of all the scores multiplied together. Is it average by chance? check that. 
+
+1747 dinner things have been sorted for the most part, oven will ding eventually. 
+
+```
+1.2100000000000002 + 1 + 0.5 + 0.55 + 1 + 1 = 5.26
+5.26 / 6 = 0.8766666667
+```
+
+but adventuring score for that set of scores was 1.331...whatever, two blocks up
+
+1750 so it isn't averages either. and it isn't looking to the next one. so what the heck overall?
+
+oh and I still have desire. 
+
+1751 desire score wasn't being displayed and doesn't appear to be changing at all? always 1 that seems.. not good?
+
