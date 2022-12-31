@@ -2830,3 +2830,13 @@ Higher energy means higher adventure score.
 if .5 is neutral then it should become 1 right? 
 
 1012 finally started math.md. 
+
+1218 so the character doesn't just wander aimlessly, it does eventually have an encounter 5 or 6 turns in. It just doesn't make sense to wait that long really but things are still not in tweak it til it is right state but in still transitioning state.
+
+1219 I guess one way to do this in an always releasable way is to implement the systems in different methods and then flip a switch at some point to use the new style in production too. That's worth considering maybe but that would lead to so much stuff going weird.
+
+anyway.
+
+1220 during the encounter there's an error because getAttribute doesn't work because it is being given null that's in encounterScores which I'm refactoring.
+
+1221 oh I see I'm using it sort of weird in that I'm using it in a reduce which expects a certain encapsulation so it is kind of all a gross mess right now so I'm not going to try functionalizing it. just keep doing what you're doing. 

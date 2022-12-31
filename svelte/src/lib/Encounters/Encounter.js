@@ -18,14 +18,25 @@ export default class Encounter {
 			description: 'An encounter that tests the dominant attributes of this region',
 			name: 'Attribute test',
 			run: (params) => {
+				console.log("Encounter running with params", params)
 				const {characters, chests} = params
 
 				const currentTile = characters[0].currentTile
 
 				const encounterScore = (score, character)  => {
+					console.log("escore", score, character)
+
+					const personalityScore = currentTile.region.personality === null 
+						? character.getPersonalityAverage()
+						: character.getAttribute(currentTile.region.personality).apparent
+
+					const physicalityScore = currentTile.region.physicality === null 
+						? character.getPhysicalityAverage()
+						: character.getAttribute(currentTile.region.physicality).apparent
+
 					return Math.ceil((score
-						+ character.getAttribute(currentTile.region.personality).apparent
-						+ character.getAttribute(currentTile.region.physicality).apparent
+						+ personalityScore
+						+ physicalityScore
 					) / 3)
 				}
 

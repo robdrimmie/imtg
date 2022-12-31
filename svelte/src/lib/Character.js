@@ -190,7 +190,7 @@ export default class Character {
 		})
 	}
 	
-	progressBestTiles() {
+	progressTileRelationships() {
 		this.tiles = this.bestTilesForActions()
 	}
 
@@ -621,7 +621,7 @@ export default class Character {
 	// to rest. High neuroticism will encourage resting sooner. High concientousness should also.
 	// So the threshold is (1 - (neuroAs%)) * (1 - (concientAs%))) ?
 	calculateRestingScore() {
-		let restingDesireScore = 1;
+		let restingActionScore = 1;
 
 		const threshold =
 			(1 - this.getCurrentConscientousness() * 0.01) * (1 - this.getCurrentNeuroticism() * 0.01);
@@ -633,11 +633,11 @@ export default class Character {
 		// but if they have no energy they _must_ rest!
 		const energy = this.getEnergy();
 		if (energy.current === 0) {
-			restingDesireScore *= 100;
+			restingActionScore *= 100;
 		} else if (energy.current / energy.base <= threshold) {
-			restingDesireScore *= Modifiers.INCREASE;
+			restingActionScore *= Modifiers.INCREASE;
 		} else {
-			restingDesireScore *= Modifiers.DECREASE;
+			restingActionScore *= Modifiers.DECREASE;
 		}
 
 		// eg cons.1 * neuro.1 = threshold.01
@@ -647,31 +647,31 @@ export default class Character {
 		// I'm going to say that when they're down to 10 hit point they MUST rest
 		const health = this.getHealth();
 		if (health.current < 2) {
-			restingDesireScore *= 100;
+			restingActionScore *= 100;
 		}
 		if (health.current / health.base <= threshold) {
-			restingDesireScore *= Modifiers.INCREASE;
+			restingActionScore *= Modifiers.INCREASE;
 		} else {
-			restingDesireScore *= Modifiers.DECREASE;
+			restingActionScore *= Modifiers.DECREASE;
 		}
 
 		const satiety = this.getSatiety();
 		// desperate hunger, like with adventuring
 		if (satiety.current === 0) {
-			restingDesireScore *= 100;
+			restingActionScore *= 100;
 		}
 		if (satiety.current / satiety.base <= threshold) {
-			restingDesireScore *= Modifiers.INCREASE;
+			restingActionScore *= Modifiers.INCREASE;
 		} else {
-			restingDesireScore *= Modifiers.DECREASE;
+			restingActionScore *= Modifiers.DECREASE;
 		}
 
-		return restingDesireScore;
+		return restingActionScore;
 	}
 
 	// A character wants to vend (dump gear at minimum) if they have low capacity
 	calculateVendingScore() {
-		let vendingDesireScore = 1
+		let vendingActionScore = 1
 
 		const capacity = {
 			base: this.backpack().capacity,
@@ -680,12 +680,12 @@ export default class Character {
 
 		// _really_ wants to vend if there's no capacity
 		if(capacity.current === 0) {
-			vendingDesireScore = 2
+			vendingActionScore = 2
 		} else {
-			vendingDesireScore = (capacity.base - capacity.current) * .2
+			vendingActionScore = (capacity.base - capacity.current) * .2
 		}
 
-		return vendingDesireScore
+		return vendingActionScore
 	}
 	// #endregion calculate Desire methods
 
@@ -763,17 +763,17 @@ export default class Character {
 		const actionScores = new Map();
 
 		actionScores.set('adventure', {
-			score: this.desires.adventuring,
+			score: this.actionScores.adventuring,
 			tile: this.tiles.adventure.tile
 		});
 
 		actionScores.set('rest', {
-			score: this.desires.resting,
+			score: this.actionScores.resting,
 			tile: this.tiles.rest.tile
 		});
 
 		actionScores.set('vend', {
-			score: this.desires.vending,
+			score: this.actionScores.vending,
 			tile: this.tiles.vend.tile
 		});
 
