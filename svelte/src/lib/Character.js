@@ -189,10 +189,6 @@ export default class Character {
 			)
 		})
 	}
-	
-	progressTileRelationships() {
-		this.tiles = this.bestTilesForActions()
-	}
 
 	progress() {
 		Logger.debug(`Progressing ${this.name}...`)
@@ -213,10 +209,14 @@ export default class Character {
 		Logger.debug(`Finished progressing ${this.name}.`)
 	}
 	
-	progressTileScores() {
+	progressTileRelationships() {
 		this.tileRelationships.forEach( (tileRelationship) => {
 			tileRelationship.progress(this)
-		})
+		})	
+	}
+
+	progressTileScores() {
+		this.tiles = this.bestTilesForActions()
 	}
 	
 	// #endregion progress
@@ -589,32 +589,14 @@ export default class Character {
 			return 0
 		}
 
-		let adventuringScore = 1;
-
-		// 90 * .01 = 9% so an exremely neurotic person 
-		const threshold = this.getCurrentNeuroticism() * 0.01;
-
-		// higher energy = higher desire to adventure
-		if (energy.current / energy.base >= threshold) {
-			adventuringScore *= Modifiers.INCREASE;
-		} else {
-			adventuringScore *= Modifiers.DECREASE;
+		// if the character cannot carry more gear they really really don't want to adventure
+		console.log("getcap", this.getCapacity())
+		if (this.getCapacity() <= 0) {
+			return 0.1
 		}
 
-
-		if (health.current / health.base >= threshold) {
-			adventuringScore *= Modifiers.INCREASE;
-		} else {
-			adventuringScore *= Modifiers.DECREASE;
-		}
-
-		if (satiety.current / satiety.base >= threshold) {
-			adventuringScore *= Modifiers.INCREASE;
-		} else {
-			adventuringScore *= Modifiers.DECREASE;
-		}
-
-		return adventuringScore;
+		console.log("return advscore", energy.asScore(), health.asScore(), satiety.asScore())
+		return energy.asScore() * health.asScore() * satiety.asScore()
 	}
 
 	// A character who is getting low on health, energy and satiety is going to want

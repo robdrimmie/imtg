@@ -237,6 +237,11 @@ export default class Attributes {
 		this.wounds = []
 	}
 
+	asScore() {
+		console.log("asscore", this)
+		return this.current / this.base * 2
+	}
+
 	modified() {
 		return this.current;
 	}

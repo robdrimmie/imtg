@@ -2840,3 +2840,22 @@ anyway.
 1220 during the encounter there's an error because getAttribute doesn't work because it is being given null that's in encounterScores which I'm refactoring.
 
 1221 oh I see I'm using it sort of weird in that I'm using it in a reduce which expects a certain encapsulation so it is kind of all a gross mess right now so I'm not going to try functionalizing it. just keep doing what you're doing. 
+
+1226 okay fixed that encounter. Need to continue reviewing progress flow though I guess, including the thinking about the math I was doing. 
+
+1229 shuffled some of the character progress logic and now they are back to moving between -101 and -202 again. 
+
+1345 so progress action and tile scores are questionable. Need to work through those steps and figure out if things are going okay. 
+
+1349 okay I have a place with the math problem. 
+
+```
+		return 1
+			* ((energy.current / energy.base) * 2)
+			* ((health.current / health.base) * 2)
+			* ((satiety.current / satiety.base) * 2)
+```
+
+that feels good, so nice and tidy compared to all the if/elses and Modifiers.INCREASE and whatnot. 
+
+Maybe `Attribute.asScore()` returns its own (current / base * 2) then it's just energy.asScore(). I like that.
