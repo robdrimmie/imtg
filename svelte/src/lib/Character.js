@@ -103,8 +103,8 @@ export default class Character {
 			this.tileRelationships.set(originTile.id, originRelationship);
 		}
 
-		// desires are absolute, so 0 is a baseline
-		this.desires = {
+		// scores are absolute, so 0 is a baseline
+		this.actionScores = {
 			adventuring: 0,
 			resting: 0,
 			vending: 0
@@ -112,6 +112,12 @@ export default class Character {
 	}
 
 	// #region progress
+	progressActionScores() {
+		this.actionScores.adventuring = this.calculateAdventuringScore()
+		this.actionScores.resting = this.calculateRestingScore()
+		this.actionScores.vending = this.calculateVendingScore()
+	}
+
 	progressAttributes() {
 		Logger.debug('Progressing attributes')
 
@@ -188,12 +194,6 @@ export default class Character {
 		this.tiles = this.bestTilesForActions()
 	}
 
-	progressDesires() {
-		this.desires.adventuring = this.calculateAdventuringDesire()
-		this.desires.resting = this.calculateRestingDesire()
-		this.desires.vending = this.calculateVendingDesire()
-	}
-
 	progress() {
 		Logger.debug(`Progressing ${this.name}...`)
 		
@@ -203,16 +203,17 @@ export default class Character {
 		// update tile relationships
 		this.progressTileRelationships()
 
-		// pick the best tiles for each action
-		this.progressBestTiles()
+		// update the character's scores for each action
+		this.progressActionScores() 
 
-		this.progressDesires()
+		// update the character's scores for each tile
+		this.progressTileScores()
 
 		// choose the character's preferred action
 		Logger.debug(`Finished progressing ${this.name}.`)
 	}
 	
-	progressTileRelationships() {
+	progressTileScores() {
 		this.tileRelationships.forEach( (tileRelationship) => {
 			tileRelationship.progress(this)
 		})
@@ -574,52 +575,52 @@ export default class Character {
 	}
 	// #endregion Attribute setters
 
-	// #region calculate Desire methods
+	// #region calculate Action Score methods
 
 	// A character wants to go adventuring if they are healthy, energetic and satiated
 	// A character with high neuroticism has a high threshold, so that is the threshold for now
-	calculateAdventuringDesire() {
-		let adventuringDesireScore = 1;
+	calculateAdventuringScore() {
+		const energy = this.getEnergy();
+		const health = this.getHealth();
+		const satiety = this.getSatiety();
 
+		// if any resource is zero the character is not able to adventure
+		if (energy.current === 0 || health.current === 0 || satiety.current === 0) {
+			return 0
+		}
+
+		let adventuringScore = 1;
+
+		// 90 * .01 = 9% so an exremely neurotic person 
 		const threshold = this.getCurrentNeuroticism() * 0.01;
 
-		const energy = this.getEnergy();
-
-		// No energy means no desire to adventure
-		if (energy.current === 0) {
-			adventuringDesireScore *= 0;
-		} else if (energy.current / energy.base >= threshold) {
-			adventuringDesireScore *= Modifiers.INCREASE;
+		// higher energy = higher desire to adventure
+		if (energy.current / energy.base >= threshold) {
+			adventuringScore *= Modifiers.INCREASE;
 		} else {
-			adventuringDesireScore *= Modifiers.DECREASE;
+			adventuringScore *= Modifiers.DECREASE;
 		}
 
-		const health = this.getHealth();
 
-		if (health.current === 0) {
-			adventuringDesireScore *= 0;
-		} else if (health.current / health.base >= threshold) {
-			adventuringDesireScore *= Modifiers.INCREASE;
+		if (health.current / health.base >= threshold) {
+			adventuringScore *= Modifiers.INCREASE;
 		} else {
-			adventuringDesireScore *= Modifiers.DECREASE;
+			adventuringScore *= Modifiers.DECREASE;
 		}
 
-		const satiety = this.getSatiety();
-		if (satiety.current === 0) {
-			adventuringDesireScore *= 0;
-		} else if (satiety.current / satiety.base >= threshold) {
-			adventuringDesireScore *= Modifiers.INCREASE;
+		if (satiety.current / satiety.base >= threshold) {
+			adventuringScore *= Modifiers.INCREASE;
 		} else {
-			adventuringDesireScore *= Modifiers.DECREASE;
+			adventuringScore *= Modifiers.DECREASE;
 		}
 
-		return adventuringDesireScore;
+		return adventuringScore;
 	}
 
 	// A character who is getting low on health, energy and satiety is going to want
 	// to rest. High neuroticism will encourage resting sooner. High concientousness should also.
 	// So the threshold is (1 - (neuroAs%)) * (1 - (concientAs%))) ?
-	calculateRestingDesire() {
+	calculateRestingScore() {
 		let restingDesireScore = 1;
 
 		const threshold =
@@ -669,7 +670,7 @@ export default class Character {
 	}
 
 	// A character wants to vend (dump gear at minimum) if they have low capacity
-	calculateVendingDesire() {
+	calculateVendingScore() {
 		let vendingDesireScore = 1
 
 		const capacity = {

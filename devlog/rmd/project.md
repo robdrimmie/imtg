@@ -5,7 +5,9 @@
 *NOTE:* This list is not a commitment to you, it is a reference for me. There is no guarantee that any of these items will be implemented.
 
 ## big tasks (not prioritized, but a little bit preference-ized)
-- * party gets stuck on tile down-leftwards
+- * party gets stuck going back and forth between -101 and -202
+- use context in the calculateWhateverScore methods
+- ✅ party gets stuck on tile down-leftwards
 - ✅ associate regions with attributes
   - 20221210 entries hold detail
   - ✅ deal attributes to regions
@@ -28,10 +30,10 @@
 - ✅ probably need to remove everything about the vendor action
   - this was wrong. the vendor action gets characters into OriginTown and eventually other vend locations
 - character jobs should probably be removed entirely but I'm keeping that particular darling on life support
-- Combat needs to be replaced with a generic encounter type that tests the strongest attributes or something based on 
+- 🟠 Combat needs to be replaced with a generic encounter type that tests the strongest attributes or something based on 
   - handle party loss
   - ✅ tile relationships updated with loss and victory changes
-
+- figure out how to derive resources from attributes and how to differentiate resources, revisit how to deplete and renew them, etc. see entry 20221231 timestamp 0912 for some vague thoughts
 - ✅ give player something to do (perhaps something that is fun?)
  - ✅ single character starts with no gear
  - ✅ early fights acquire gear but can only ~equip or hold in hands~ put in 1-slot sack

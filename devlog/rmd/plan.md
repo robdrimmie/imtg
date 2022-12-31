@@ -2747,3 +2747,86 @@ oh and I still have desire.
 
 1751 desire score wasn't being displayed and doesn't appear to be changing at all? always 1 that seems.. not good?
 
+1753 alright. so.. step through all the shit again? 
+
+check in on that desire score first.
+
+20221231 0856 so, scores in the sheet seem to be inconsistent, or at least it isn't understandable to me where and how they are being generated and what they are being used for. 
+
+There is desire which is supposed to indicate how much a character wants to do each action and there is overall which is a summary of the 6 scores and it indicates how good the tile is 
+
+wait if desire is about the character why is it in the tile relationship? Is it? yes. Hrm. So desire is about something else? 
+
+Back and forth and back and forth I go. 
+
+0904 I made `[project root]/docs/character progress workflow.md` and made this list:
+
+```
+just a bulleted list of everything that happens.
+
+character.progress()
+-  progressAttributes()
+    - reset character attributes
+    - aggregate item modifications
+    - apply modifications to character attributes
+-  progressTileRelationships()
+    - see tileRelationship.progress
+-  progressBestTiles()
+    - using the overall score for each action in a tile relationship, 
+      choose which tile is best for each action
+-  progressDesires()
+    - for each action
+      - using appropriate resource and capacity scores
+      - score each possible action
+```
+
+Looking at it like this there is definitely things out of order. 
+
+So, first the character needs to get themself in order. Ensure that all item effects are being applied and that apparent and current resources are correct. 
+
+Once the character's attributes are known, the character should decide which action to take probably? It should be (I think?) based on character state entirely? How much a character wants to adventure is based on how healthy they are etc, and that threshold is currently based on how neurotic they are which I think makes sense but there's not a lot of places for attributes in this process yet which is, I think, unfortunate and an argument in favour of resources being derived from attributes. Energy is dependent on satiety and some physical and mental factors probably right? that makes sense, etc etc. 
+
+So progress should include updates to resources. Energy might get spent during encounters as well, that is something to consider, but I guess initially it is more a measure of .. something else I lost what.
+
+brain!
+
+I got distracted because energy is also theoreticaly a resource that is spent for special attacks. mana for magic is energy, many games have an energy meter for like rogues and shit, there's some resource that is spent for powerful attacks but there aren't any such things in this game right now though energy could very well boost a character's performance in an encounter? 
+
+But for now energy is expended each turn just by living. 
+
+Satiety is also drained each turn just by living. So why are there two resources doing the same thing? That's worth considering more as well. 
+
+Health at present isn't being consumed becuase encounters don't reduce it. 
+
+Aw crap here we go killing something don't we? The resources - I guess currency is one as well but it is a different type of resource - don't matter enough right now because they aren't connected to attributes and therefore aren't influencable by the player. 
+
+0912 This isn't something to do now but it - 
+0914 there, added it to project. 
+
+0915 so the character's attributes and resources get sorted out first. 
+
+then that character's relationship with all tiles in the board is updated
+
+then that character's state determines what action they will take
+
+then that character decides which tiles are best for it for each action
+
+"My preference is to adventure on tile -101 but if the party decides to rest then I vote to do so on -202"
+
+(note that this is unrelated to the party moving back and forth between those tiles behaviour, they are just ids that are top of mind for this sort of example)
+
+0954 morning derailed. not sure how far I can get. alternating between feeling completely stuck and that I'm making good process through a large scale refactor - which most of the time feels fucking stuuuuck. 
+
+So I think I need to readjust the character progression workflow. I think I will take time to rename the methods doing so as well. 
+
+1000 and I guess I need to audit all the scoring things to make sure that they're going well? 
+
+1004 this math again. 
+
+so it is the 1 + x or 1 - x problem again? 
+
+Higher energy means higher adventure score. 
+
+if .5 is neutral then it should become 1 right? 
+
+1012 finally started math.md. 

@@ -242,14 +242,14 @@ export default class TileRelationship {
 
 		const retval = (distance === 0) ? 1 : 1 / (distance + 1)
 
-		console.log("calculateDistanceScore", this.tile.hex, this.currentTile.hex, distance, retval)
+		// console.log("calculateDistanceScore", this.tile.hex, this.currentTile.hex, distance, retval)
 
 		return retval
 	}
 
 	calculateEnergyScore(context, distance) {
 		const tileToConsider = this.tile
-		console.log("calculateEnergyScore - tileToConsider, distance", tileToConsider,distance)
+		// console.log("calculateEnergyScore - tileToConsider, distance", tileToConsider,distance)
 
 		const energy = this.resources.get(Attributes.RESOURCES_ENERGY)
 		const percentAvailable = energy.current / energy.base
