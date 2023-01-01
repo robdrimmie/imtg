@@ -6,6 +6,8 @@ import Prando from 'prando'
 the Dice class is where all randomization stuff must take place 
 because this is where the seeded instance of randoma is, so that 
 way everything that needs randomization must be supported
+
+https://anydice.com/ is a good dice outcome probability graphing tool
 */
 
 let _instance;

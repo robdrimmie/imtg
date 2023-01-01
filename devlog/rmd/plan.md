@@ -2859,3 +2859,120 @@ anyway.
 that feels good, so nice and tidy compared to all the if/elses and Modifiers.INCREASE and whatnot. 
 
 Maybe `Attribute.asScore()` returns its own (current / base * 2) then it's just energy.asScore(). I like that.
+
+1404 The formula above is fine, consistent even but what if I don't want 50% to equal 1, what if I want 90% to equal 1?
+
+5 / 5 * 2 = 2
+
+Does the 2 come from 100/50? If so then what is 100/90 ? 1.111111...
+
+5 / 5 * 1.111
+
+So this isn't going to be that simple. In theory, 5/5 should still equal 2 becuase it is as good as can be. 
+
+But the range of goodness between 90 and 100 has just as much space (from 1.00000...1 to 2.0) for its 10 units as 0 to 90 does (from 0.0 to 9.999...).
+
+So 91 is 1.1, 99 is 1.9. 89 is less obviousu to me but it's going to be that each 1 on that side gets like 1.00001 units of space? I don't even know what I'm trying to say really, but `4 / 5 * _factor_ < 1` should be true. 
+
+5 / 5 * _factor_ = 2.0
+4 / 5 * _factor_ = 1.0 \
+3 / 5 * _factor_ < 1.0  \__ the mystery zone
+2 / 5 * _factor_ < 1.0  /
+1 / 5 * _factor_ < 1.0 /
+0 / 5 * _factor_ = 0.0
+
+so I just changed 4/5 to be = to 1 to express what I'm trying to do maybe better, and so this is where the set point is at 80%. 
+
+100 / 80 = 1.25
+4   /  5 * 1.25 = 1
+
+but 
+
+5   /  5 * 1.25 = 1.25, not 2.
+
+So it obviously can only be a static number when it is 50%. 
+
+100 / 60 = 1.6666666667
+  3 /  5 * 1.6666666667 = 1
+
+100 / 20 = 5
+  2 /  5 * 5   = 2          < this is weird-ish.
+  2 /  5 * 2.5 = 1
+
+  1 /  5 * 5   = 1
+
+1417 these details aren't really helping me. 
+
+So I will try to rephrase and maybe I can search for something or maybe I can ask some friends. 
+
+I am working on a system that applies a score to something. Ugh I hate it already. 
+
+I want to convert a percentage to a multiplier from 0.0 - 2.0, such that everything that is below 50% lowers the value being multiplied, and everything above it increases it. 
+
+This version of things is easy, it is * 2. So if I have 80%, .8 * 2 = 1.6. 
+
+So in this scenario, 50% tranlates to 1. But I am looking for a formula where I can arbitrarily indicate which percent value gets output from the function as 1. 
+
+So for example, if I set 90% to 1, then 91% would output as 1.1, 99% as 1.9, but all the values below 90% would output as some < 1.0 value. 
+
+0-90 get plotted as 0.0 to 1.0 values, and 90-100 get plotted as 1.1 to 1.9ss
+
+
+I think something is blocking my s key.
+
+sssssssssssssssssss
+
+okay maybe it is better. yes.
+
+1424 I am strugling to articulate a math question.
+
+I can use 2x = y to convert from a percentage value to a value between 0.0 and 2.0. For example, 80% is 2(.8) = 1.6. Anything that I multiply 1.6 by will have its value increased. If I have 40%, 2(.4) = .8. Anything that I multiply by .8 will have its value decreased. I am describing this situation poorly by calling it "50% = 1".
+
+I am looking for a formula where I can set any percentage point as equal to 1, and it will return a multplier that increases or decreases accordingly. So if I sent it 90% to equal to 1, then 90% becomes the "break even" multiplier. 91% would multiply by 1.1 and 89% would multiply but some value just a bit lower than .99.
+
+1433 in an online grapher I saw that 2x = y is also x = y/2. And it feels like I need a formula to change that denominator. 
+
+So if the 2 comes from 100/50 because 50 is the set point, what about x = y / (100/90)
+
+1435 stumbled across https://anydice.com/ which isn't the thing I need now but is an interesting looking tool.
+
+1445 okay sent that question to some friends, perhaps it is clear enough? 
+
+20230101 0927 nope, it was not especially clear and didn't come through. But I'm thinking now that I might be able to do something where I bisect at the point and then do the other two parts seperately 
+
+so like, if 90 is the setpoint and I give 80, then 0 - 90 = 0.0 - 1.0 which is standard percent, and 90 - 100 is 1.0 - 2.0 which is the standard 2x formula maybe? 
+
+Anyway something like that. Do the two parts seperately and plot them as a percent or a 1 + percent or something like that?
+
+0935 wrote this in response and I think it is good thoughts:
+
+```
+What I am going to try next is to break it into two separate calculations. Continuing to articulate poorly, if the setpoint is 90 and the value being input is between 0-90 then I can figure out the value I want as a basic percent. So like, 80/90 = .888...
+
+And if the input is between 91 - 100 then it might be 1 + ([input - set point] / [100 - set point]) (92-90) / (100-90) + 1 = 1.2
+
+I don't know yet if it generalizes as well as I hope it does
+```
+
+0936 so where do I put this logic? It might make sense in Modifiers. But where in the current flow can I put that logic to experiment with it? 
+
+0938 it is where I am returning all the asSCore values
+
+0939 so Attribute.asScore() is a thing that returns itself as the score. It is locked into the 50% model. But does it not need to be? Was this all an unneeded hypothetical exploration? I have thoughts in math.md if so but I'm sort of curious about this function now. 
+
+convertToScore(toConvert, setPoint = .5, base = 1.0) {
+  if(toConvert > setPoint) {
+    // top half so ([input - set point] / [100 - set point]) (92-90) / (100-90) + 1 = 1.2
+    return 1 + ((toConvert - setPoint) / (base - setPoint))
+  }
+
+  // bottom half, so input / set point
+  return toConvert / setPoint
+}
+
+1558 this worked okay in the thing. the console in firefox. but where to incorporate it in the game? 
+
+Modifiers. 
+
+1606 okay so that is in there and I'm using it to complicate the basic functioning formulat but now I have a thing somewhere to do other things eventually maybe.
+

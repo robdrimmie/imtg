@@ -1,4 +1,5 @@
 import Deck from '$lib/Deck'
+import Modifiers from '$lib/Modifiers'
 
 export default class Attributes {
 	// #region attributes
@@ -238,8 +239,7 @@ export default class Attributes {
 	}
 
 	asScore() {
-		console.log("asscore", this)
-		return this.current / this.base * 2
+		return Modifiers.convertPercentageToScore(this.current / this.base)
 	}
 
 	modified() {

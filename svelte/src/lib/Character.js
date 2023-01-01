@@ -590,12 +590,10 @@ export default class Character {
 		}
 
 		// if the character cannot carry more gear they really really don't want to adventure
-		console.log("getcap", this.getCapacity())
 		if (this.getCapacity() <= 0) {
 			return 0.1
 		}
 
-		console.log("return advscore", energy.asScore(), health.asScore(), satiety.asScore())
 		return energy.asScore() * health.asScore() * satiety.asScore()
 	}
 

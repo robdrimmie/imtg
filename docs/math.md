@@ -22,6 +22,15 @@ This is an averages, so values are added together and the sum is divided by the 
 
 for scoring. values are multiplied throughout. 1 is neutral because it doesn't change the value. 0 is bad because it is extreme. There are no negatives and no upper limit.
 
+## from percentage to score
+in Modifiers.js@convertPercentageToScore
+
+most of the time just send in the percent, that is the typical 50% = 1.0 behaviour. but the setpoint can change, with the example I've been using a lot being a setpoint of 90 spreads 1-90 across 0.0 - 0.9999..., and 91 - 100 across [1.1, 1.2, .., 1.9, 2.0]
+
+it's a graph, two lines with different slops at the set point.
+
+it might be possible to generalize into an arbitrary number of set points to make a variety of interesting curves for future tasks
+
 ## Challenges
 
 Express "higher energy = higher desire to adventure"
@@ -50,3 +59,24 @@ I guess then just the percent * 2 right?
 
 So that doesn't give me that adjustable neutral point but it gets me through this specific situation. 
 
+had this thought elsewehere:
+
+```
+What I am going to try next is to break it into two separate calculations. Continuing to articulate poorly, if the setpoint is 90 and the value being input is between 0-90 then I can figure out the value I want as a basic percent. So like, 80/90 = .888...
+
+And if the input is between 91 - 100 then it might be 1 + ([input - set point] / [100 - set point]) (92-90) / (100-90) + 1 = 1.2
+
+I don't know yet if it generalizes as well as I hope it does
+```
+
+convertToScore(toConvert, setPoint = .5, base = 1.0) {
+  if(toConvert > setPoint) {
+    // top half so ([input - set point] / [100 - set point]) (92-90) / (100-90) + 1 = 1.2
+    return 1 + ((toConvert - setPoint) / (base - setPoint))
+  }
+
+  // bottom half, so input / set point
+  return toConvert / setPoint
+}
+
+in Modifiers.js@convertPercentageToScore
