@@ -2976,3 +2976,11 @@ Modifiers.
 
 1606 okay so that is in there and I'm using it to complicate the basic functioning formulat but now I have a thing somewhere to do other things eventually maybe.
 
+1610 that doesn't actually change any behaviour still it's just a good exploration of a common problem I've had and thought about and maybe I just saved myself a lot of back and forth again in the future. There is a way to convert from scoreToPercent probably and that is worth doing some day but I don't know that I actually need such a thing.
+
+I am going to do some dishes. When I get back I need to revisit the questionable character progress bits, especially progressActionScores. that's what got me to that percentage as score thing. 
+
+1802 progressActionScores then.
+
+1808 I made a note in the math doc. I think that Score should always be the 0.0 -> 2.0+ scale. I guess I am using percentage for the 0-100 range of attributes and d100 rolls but perhaps that should be Value? Attribute value, roll value. That works but I mean, saying "the score value" suggests it is too generic a term so I'm going to keep a hold on it for a bit. 
+

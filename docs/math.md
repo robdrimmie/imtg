@@ -1,4 +1,14 @@
+# Math
+
 This is not a great doc or anything but I keep coming across the same two basic math problems and forgetting how to do them.
+
+## Terminology
+
+Score: 0.0 - 2.0+ type value. 0 is bad, 2 is good more than 2 is great. < 0 is impossible
+
+TBD: something to call attribute values. It might be "values". 0 - 100, whole numbers. Attributes, d100 rolls, etc.
+
+## Notes
 
 So in one circumstance I am trying to get a modifier that makes something more likely to happen the more it increases.. those words don't make sense and thus my problems here.
 

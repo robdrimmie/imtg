@@ -594,6 +594,12 @@ export default class Character {
 			return 0.1
 		}
 
+		console.log("adv score"
+			, energy.asScore()
+			, health.asScore()
+			, satiety.asScore()
+			, energy.asScore() * health.asScore() * satiety.asScore()
+		)
 		return energy.asScore() * health.asScore() * satiety.asScore()
 	}
 
