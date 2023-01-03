@@ -584,6 +584,9 @@ export default class Character {
 		const health = this.getHealth();
 		const satiety = this.getSatiety();
 
+		// rmd todo consider personality - how does neuroticism affect the set point
+		// and perhaps physicality but I'm not sure for the scores, for example?
+
 		// if any resource is zero the character is not able to adventure
 		if (energy.current === 0 || health.current === 0 || satiety.current === 0) {
 			return 0
@@ -594,24 +597,26 @@ export default class Character {
 			return 0.1
 		}
 
-		console.log("adv score"
-			, energy.asScore()
-			, health.asScore()
-			, satiety.asScore()
-			, energy.asScore() * health.asScore() * satiety.asScore()
-		)
+		// console.log("adv score"
+		// 	, energy.asScore()
+		// 	, health.asScore()
+		// 	, satiety.asScore()
+		// 	, energy.asScore() * health.asScore() * satiety.asScore()
+		// )
 		return energy.asScore() * health.asScore() * satiety.asScore()
 	}
 
-	// A character who is getting low on health, energy and satiety is going to want
-	// to rest. High neuroticism will encourage resting sooner. High concientousness should also.
-	// So the threshold is (1 - (neuroAs%)) * (1 - (concientAs%))) ?
 	calculateRestingScore() {
+		// rmd todo consider personality - how does neuroticism affect the set point
+		// and perhaps physicality but I'm not sure for the scores, for example?
+		// A character who is getting low on health, energy and satiety is going to want
+		// to rest. High neuroticism will encourage resting sooner. High concientousness should also.
+		// So the threshold is (1 - (neuroAs%)) * (1 - (concientAs%))) ?
+		// const threshold =
+		// 	(1 - this.getCurrentConscientousness() * 0.01) * (1 - this.getCurrentNeuroticism() * 0.01);
+
 		let restingActionScore = 1;
-
-		const threshold =
-			(1 - this.getCurrentConscientousness() * 0.01) * (1 - this.getCurrentNeuroticism() * 0.01);
-
+		
 		// eg cons.9 * nuero.9 = threshold.81
 		// energy = 9/10 = .9. Energy > threshold, so desire to rest Modifiers.DECREASEs
 		// energy = 8/10 = .8. Energy < threshold, so desire to rest Modifiers.INCREASEs

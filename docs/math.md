@@ -2,6 +2,32 @@
 
 This is not a great doc or anything but I keep coming across the same two basic math problems and forgetting how to do them.
 
+graphing calculator tool that seems good: https://www.desmos.com/calculator
+
+```
+2x = y
+| 
+|  /
+| /
+|/______
+ 
+-2x = y 
+\   |
+ \  |
+  \ |
+__ \|__
+    |  
+
+-2x + 2 = y 
+ |\   
+ | \  
+ |  \ 
+_|___\__
+ |       
+```
+
+
+
 ## Terminology
 
 Score: 0.0 - 2.0+ type value. 0 is bad, 2 is good more than 2 is great. < 0 is impossible
@@ -43,7 +69,67 @@ it might be possible to generalize into an arbitrary number of set points to mak
 
 ## Challenges
 
-Express "higher energy = higher desire to adventure"
+in most of this stuff, x is the percent/value, y is the score
+### Express "low resources = higher desire to rest"
+the `Express "higher energy = higher desire to adventure"` section was written first. This document is kind of a mess to me because I'm not being chronological but it should be a reference document not a log so eventually this messiness will be edited out. 
+
+So I wonder if this is adding some form of directionality or something to the percentageToScore thing. Stating only "50% = 1" includes the assumption that 0% = 0.0 and 100% = 2.0, but what if 100% = 0.0 and 0% = 2.0? Directionality.
+
+`higherIsBetter = true` is an unexpressed assumption. 
+
+So the logic of the conversion when higher is better is to break the scale into two scales, graph two lines with different slopes based on the set point. The same thing has to happen but in this case if the set point is 90, then `99% = 0.1` and `91% = 0.9` and then everything below 90 gets spread across 1.00000..1 to 2.0
+
+so is it like, a complete logic inversion? just going to write that
+
+that didn't work. 
+
+so, flipped around the function comment:
+
+```
+	  convert from a percentage/average type thing to a 2.0+ - 0.0 score modifier type thing
+
+	  if set point is .5 then 50% becomes 1.0 0% becomes 2.0. 100% becomes 1.0. etc along the scale.
+
+	  that's the standard so defaults support it but the setpoint can be changes so that for example
+	  90% becomes 1.0. 91 - 100 then are [0.9, 0.8, .., 0.1, 0.0] and 89 - 0 are spread across 1.0 - 2.0
+```
+
+so what's the logic for the basic thing. higher is better is 2x = y. so is it 1/2x = y? 
+
+2(.5) = 1
+1/2(.5) = 0.25
+
+so... no.
+
+.25 = 1.5
+.75 = 0.5
+
+Or think about it from a graph perspective. y axis is "goodness" so in the normal case the y value increases as it goes left to right. In this case it should decrease as it goes left to right. 
+
+So we can decrease x by doing -2x = y right? 
+
+-2(.25) = -0.5
+-2(.75) = -1.5
+
+-2(.25) + 2 = 1.5
+-2(.75) + 2 = 0.5
+
+I mean that's kind of a shitty way to do it. That is like the line descending along the left-side of the y axis and then just shifting it over 2 units to achieve a line that is going up? Or? no it would be like a V shape thing, the left side going down as it approaches 0 and the right side going up, and then just shifting the center point of that V along the x-axis so that it lookes like it is coming down but it would go weird I think?
+
+I want 
+
+Okay I have since convinced myself that that is actually exactly correct. That is a line with a slope that goes from y (score) = 2.0 to y = 0.0 while x (percent/value) increases from 0 to 1. 
+
+So that's going to be like the... bottom half of this function I think? And then the top half. 
+
+it isn't just x = y at that point?
+
+no it is different than that and relatively early-on algebra that I don't understand well any more. 
+
+So come at this from another angle then
+
+
+### Express "higher energy = higher desire to adventure"
 
 Higher energy is relative to the character's max. If their max is 3 and they are at 3, they are good to go. 
 

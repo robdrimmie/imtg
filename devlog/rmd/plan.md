@@ -2984,3 +2984,85 @@ I am going to do some dishes. When I get back I need to revisit the questionable
 
 1808 I made a note in the math doc. I think that Score should always be the 0.0 -> 2.0+ scale. I guess I am using percentage for the 0-100 range of attributes and d100 rolls but perhaps that should be Value? Attribute value, roll value. That works but I mean, saying "the score value" suggests it is too generic a term so I'm going to keep a hold on it for a bit. 
 
+1812 I think calculateAdventureScore is working okay. I eventually want to consider personality at minimum so I added a todo to track that, too. 
+
+1814 pulling away from this. Starting to noodle on calculateEnergyScore, first step upon return is figuring out what attributes of the character should contribute to the scoring
+
+20230102 0913 some time until 10 or so. calculateEnergyScore. 
+
+Resting score, actually. We are still choosing between actions.
+
+So a character should rest when their resources are low. So at its most basic it is the exact opposite of the adventuring score. This is a good example of the other math problem I guess? 
+
+And then attributes. I want attributes to affect these scores that's part of the point. Might make it hard to go into the highly neurotic region for example and I _think_ that's a good thing? I'm not sure though. 
+
+Anyway, low resources mean high rest desirability.
+
+0920 attributes affect the setpoint
+
+I am writing math things but maybe this is how attributes contribute and how the setpoint stuff get used. If a middling concientiousness person 
+
+0927 so a middlingly conscientous person rests at 50% but a highly conscientous person might rest at 40% and a low conscientous person might rest at 60%. Just shifts things around enough.
+
+This feels good, this feels like I found a key mechanic. Might not be but I like this feeling. 
+
+0930 but this doesn't make sense:
+```
+	static convertPercentageToScoreLowerIsBetter(percentageToConvert, setPoint = .5, base = 1.0) {
+		if(percentageToConvert < setPoint) {
+		  // top half so ([input - set point] / [100 - set point]) (92-90) / (100-90) + 1 = 1.2
+		  return 1 - ((percentageToConvert - setPoint) / (base - setPoint))
+		}
+	  
+		// bottom half, so input / set point
+		return 1 + percentageToConvert / setPoint
+	  }
+```
+
+that's an attempt at a complete inversion of the %2score logic. 
+
+without having worked through any logic. 
+
+so yeah this is garbage thoughts. well, a fast elimination of the wrong path. 
+
+0956 I am not able to determine how much closer to figuring this out I am. I think I made some progress in my understanding but it is still all over the place, with the shifting of graphs and stuff and I spent a bit of time in wolfram alpha to try to draw something and that I don't think really helped it just confused me a bit more. 
+
+it is about how much space each point gets in the line sort of. that doesn't make sense because there's infinite points but when translating whole number percentages (which I don't think is necessarily an actual constraint but is what I'm doing) then it goes from each number getting 1/100 ------ oh but it is 1/200 that's part of what keeps getting me. Anyway, 2x = y gives each number two "units" on the line. But if it some of it is ...
+
+argh. anyway the whole number of the percent gets a little bit more than the usual space on one side and a bit less than the usual space on the other. 
+
+So if 2x = y is the basic slope that... is it some combination of x=y space and 2x=y space? So if that is what it is then I need the slope that goes from up to down at the same rate 2x = y goes from down to up. 
+
+1003 but 2x = y 
+
+1005 this is a good graphic tool: https://www.desmos.com/calculator a little more flexibility than what wolfram will let me do in that I can see all the way to x and y = 2 on the graph so I can see how the lines behave
+oh and multiple lines on the same graph, that's nice
+
+so x is the percent
+
+1020 oh I wanted to go clean my office around now. boo hiss maybe I can ponder this while I am up there.
+
+20230103 0736 I didn't, and work resumes this week so I expect to likely not spend much time in here for a while as I rebalance my days again
+
+```
+2x = y
+| 
+|  /
+| /
+|/______
+ 
+-2x = y 
+\   |
+ \  |
+  \ |
+__ \|__
+    |  
+
+-2x + 2 = y 
+ |\   
+ | \  
+ |  \ 
+_|___\__
+ |       
+```
+

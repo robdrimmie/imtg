@@ -33,12 +33,33 @@ export default class Modifiers {
 	  if set point is .5 then 50% becomes 1.0 0% becomes 0.0. 100% becomes 2.0. etc along the scale.
 
 	  that's the standard so defaults support it but the setpoint can be changes so that for example
-	  90% becomes 1.0. 91 - 100 then are [1.1, 1.2, .., 1.9, 2.0] and 1 - 89 are spread across 0.0 - 1.0,
-	  so themselves a percent because I apparently like to go circular and confuse myself
+	  90% becomes 1.0. 91 - 100 then are [1.1, 1.2, .., 1.9, 2.0] and 1 - 89 are spread across 0.0 - 1.0
 	*/
 	static convertPercentageToScore(percentageToConvert, setPoint = .5, base = 1.0) {
 		if(percentageToConvert > setPoint) {
 		  // top half so ([input - set point] / [100 - set point]) (92-90) / (100-90) + 1 = 1.2
+		  return 1 + ((percentageToConvert - setPoint) / (base - setPoint))
+		}
+	  
+		// bottom half, so input / set point
+		return percentageToConvert / setPoint
+	}
+
+		/*
+	  convert from a percentage/average type thing to a 2.0+ - 0.0 score modifier type thing
+
+	  if set point is .5 then 50% becomes 1.0 0% becomes 2.0. 100% becomes 1.0. etc along the scale.
+
+	  that's the standard so defaults support it but the setpoint can be changes so that for example
+	  90% becomes 1.0. 91 - 100 then are [0.9, 0.8, .., 0.1, 0.0] and 89 - 0 are spread across 1.0 - 2.0
+	*/
+	static convertPercentageToScoreLowerIsBetter(percentageToConvert, setPoint = .5, base = 1.0) {
+
+		if(percentageToConvert < setPoint) {
+		  // bottom half so ([input - set point] / [100 - set point]) (92-90) / (100-90) + 1 = 1.2
+
+		  (91 - 90) / (100 - 90) + 1
+
 		  return 1 + ((percentageToConvert - setPoint) / (base - setPoint))
 		}
 	  
