@@ -597,16 +597,28 @@ export default class Character {
 			return 0.1
 		}
 
-		// console.log("adv score"
-		// 	, energy.asScore()
-		// 	, health.asScore()
-		// 	, satiety.asScore()
-		// 	, energy.asScore() * health.asScore() * satiety.asScore()
-		// )
-		return energy.asScore() * health.asScore() * satiety.asScore()
+		// rmd to do use attributes to adjust setpoint
+		const setPoint = .5
+
+		return energy.asScore(true, setPoint) 
+			* health.asScore(true, setPoint) 
+			* satiety.asScore(true, setPoint)
 	}
 
 	calculateRestingScore() {
+		const energy = this.getEnergy();
+		const health = this.getHealth();
+		const satiety = this.getSatiety();
+
+		// rmd to do use attributes to adjust setpoint
+		const setPoint = .5
+
+		return energy.asScore(false, setPoint) 
+			* health.asScore(false, setPoint) 
+			* satiety.asScore(false, setPoint)
+	}
+
+	calculateRestingScoreOld() {
 		// rmd todo consider personality - how does neuroticism affect the set point
 		// and perhaps physicality but I'm not sure for the scores, for example?
 		// A character who is getting low on health, energy and satiety is going to want
@@ -673,7 +685,7 @@ export default class Character {
 		if(capacity.current === 0) {
 			vendingActionScore = 2
 		} else {
-			vendingActionScore = (capacity.base - capacity.current) * .2
+			vendingActionScore = Modifiers.convertPercentageToScore(capacity.current / capacity.base)
 		}
 
 		return vendingActionScore

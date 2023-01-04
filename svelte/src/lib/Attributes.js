@@ -238,8 +238,10 @@ export default class Attributes {
 		this.wounds = []
 	}
 
-	asScore() {
-		return Modifiers.convertPercentageToScore(this.current / this.base)
+	asScore(higherIsBetter = true, setPoint = .5) {
+		return higherIsBetter
+			? Modifiers.convertPercentageToScore(this.current / this.base, setPoint)
+			: Modifiers.convertPercentageToScoreLowerIsBetter(this.current / this.base, setPoint)
 	}
 
 	modified() {

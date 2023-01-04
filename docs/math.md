@@ -59,7 +59,7 @@ This is an averages, so values are added together and the sum is divided by the 
 for scoring. values are multiplied throughout. 1 is neutral because it doesn't change the value. 0 is bad because it is extreme. There are no negatives and no upper limit.
 
 ## from percentage to score
-in Modifiers.js@convertPercentageToScore
+in Modifiers.js@convertPercentageToScore, Modifiers.js@convertPercentageToScoreLowerIsBetter
 
 most of the time just send in the percent, that is the typical 50% = 1.0 behaviour. but the setpoint can change, with the example I've been using a lot being a setpoint of 90 spreads 1-90 across 0.0 - 0.9999..., and 91 - 100 across [1.1, 1.2, .., 1.9, 2.0]
 

@@ -3120,3 +3120,7 @@ this is a thing!
 
 Oh so it is probably going into the wrong half!
 no, switching from < to <= was not the thing.
+
+2145 huzzah! I think I got it. We can see how it ultimately pans out but I think this is reliable to start with at least. And it's even under test though it's unlikely I'll mess this up.
+
+Alrighty then, so now I did this math stuff, what was it all in service of? Scores. Specifically action scores I think, right? 

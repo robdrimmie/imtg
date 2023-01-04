@@ -52,12 +52,6 @@ export default class Modifiers {
 
 	  that's the standard so defaults support it but the setpoint can be changes so that for example
 	  90% becomes 1.0. 91 - 100 then are [0.9, 0.8, .., 0.1, 0.0] and 89 - 0 are spread across 1.0 - 2.0
-	  
-	  -2x + 2 = y
-	  -2(.09) + 2 = 1.82
-	  -2(.01) + 2 = 1.98
-
-
 	*/
 	static convertPercentageToScoreLowerIsBetter(percentageToConvert, setPoint = .5, base = 1.0) {
 		// bottom half -2x + 2 but is x the set point
