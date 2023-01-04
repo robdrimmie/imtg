@@ -128,6 +128,53 @@ no it is different than that and relatively early-on algebra that I don't unders
 
 So come at this from another angle then
 
+it is `-2x + 2 = y` that is the part I need for probably the below-the-threshold (I've been saying "bottom" which is fine but I wanted to be explicit at least once) side and then it's something something about percentages for the top side. 
+
+So for higher-is-better, 82/90 is how the bottom value is calculated. Hmm this might not actually be right, I'm looking at it now - oh the thing that tricked me is that 90/90 is 100% but this is the 0.0 - 2.0 scale. That's what I want it to be. 
+
+So then in this case I need to do 82/ hmm. It's always going to be higher. 
+
+Like if the threshold is 10, then the bottom half is `-2(.1) + 2 = 1.8` well actually 10 would equal 1, 9 would be `-2(.09) + 2 = 1.82` and `-2(.01) + 2 = 1.98` so that's working out just fine. 
+
+So then how do I get the value of x with the setpoint involved?
+
+for the higher is better way, it is `1 + ([input - set point] / [100 - set point]) (92-90) / (100-90) + 1 = 1.2`
+
+so set point is 10 in example above. input is 9 (.09) and 1 (.01)
+
+```
+9 - 10 / 100 - 10
+1 / 90 = 0.011111...
+```
+
+that isn't looking like something that is helpful. 
+
+So if bottom is best and threshold is 10, 0-9% are scored in the 1-2 range so something needs to be inverted somewhere and I'm struggling with that.
+
+0 = 2.0
+1 = 1.9
+..
+9 = 1.1
+
+big steps, units take up a lot of space. 
+
+the stuff above is not working out just fine, it's not the right range at all. because the .09 isn't x. Oh yes it is, but the -2 isn't because the setpoint is different. 
+
+so 1/10, the percent / setpoint is 0.1. 2-0.1 = 1.9.
+
+9/10 = .9. 2.0 - .9 = 1.1. That is what I want. How do I express that? This is bottom half. 
+
+for top half, working out for 11, just slightly worse than 1, right? so I need the 1 from there and the 90 from the 10-100 space. 
+
+(input - set point) / (base - threshold)
+
+(11 - 10) / (100 - 10) = 0.01111111111
+
+1 - (11 - 10) / (100 - 10) = 0.9888888889
+
+this is a thing!
+
+
 
 ### Express "higher energy = higher desire to adventure"
 

@@ -3066,3 +3066,57 @@ _|___\__
  |       
 ```
 
+2052 so I've settled on -2x + 2 = y which I guess is for the bottom half and then I need to sort out what the percentage looks like for the top half? 
+
+2102 I am being too rambly in math.md, that's what here is for. from there:
+
+
+Like if the threshold is 10, then the bottom half is `-2(.1) + 2 = 1.8` well actually 10 would equal 1, 9 would be `-2(.09) + 2 = 1.82` and `-2(.01) + 2 = 1.98` so that's working out just fine. 
+
+So then how do I get the value of x with the setpoint involved?
+
+for the other way, it is `1 + ([input - set point] / [100 - set point]) (92-90) / (100-90) + 1 = 1.2`
+
+so set point is 10 in example above. input is 9 (.09) and 1 (.01)
+
+```
+9 - 10 / 100 - 10
+1 / 90 = 0.011111...
+```
+
+that isn't looking like something that is helpful. 
+
+so how do I .. hrm. 
+
+2104 how does 2x = y relate to the input - setpoint stuff above. 
+
+2111 made a spec file for Modifiers. 
+
+still not sure what to do here. So -2x + 2 = y and 2x = y. The 2 is because of the .5 setpoint?
+
+2124 ok now I feel okay about the bottom half. Need to sort out the top half. 
+
+So if the threshold is 10, 11% must be just slightly worse than 1, and 99% must be just about 0 and 100% must be exactly 0.
+
+so it's still that whole thing, there's all that space. that's base - set point. base is always 1.0 right now so that's 1.0 - .1, which is .9.  or 100% - 10% = 90%. so 1/90 is still the right size I just need to figure out how to sort out which direction to add it or something? 
+
+so working out for 11, just slightly worse than 1, right? so I need the 1 from there and the 90 from the 10-100 space. 
+
+(input - set point) / (base - threshold)
+
+(11 - 10) / (100 - 10) = 0.01111111111
+
+1 - (11 - 10) / (100 - 10) = 0.9888888889
+
+this is a thing!
+
+2132 prety much bedtime. when I pick it up next I am still working on lowerIsBetter conversion and I am close but the spec is failing 
+```
+    > 21 |      expect(Modifiers.convertPercentageToScoreLowerIsBetter(2)).toBe(0)
+
+    Expected: 0
+    Received: -2
+```
+
+Oh so it is probably going into the wrong half!
+no, switching from < to <= was not the thing.
