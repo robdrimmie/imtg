@@ -69,22 +69,31 @@ export default class Modifiers {
 		, {x: 1, y: 2}
 	]
 
+	static validateSetPoints(setPoints) {
+		const orderedPoints = setPoints.slice().sort((a,b) => a.x - b.x)
+
+		
+	}
+
 	static working(
 		percentageToConvert, 
 		setPoints = Modifiers.defaultSetPoints(), 
 		base = 1.0
 	) {
-		// figure out which line segment percentageToConvert is on
-		// sort points by x
-		const orderedPoints = setPoints.slice().sort(
-			(a,b) => {
-				console.log("order", a.x, b.x, a.x - b.x)
-				return a.x - b.x
-			}
-		)
+		let score = 1.0
 
-		return orderedPoints
+		// sort points by x
+		const orderedPoints = setPoints.slice().sort((a,b) => a.x - b.x)
+
+		// figure out which line segment percentageToConvert is on
+		// percentageToConvert is the x value we are looking for
+		const indexOfLowBoundary = orderedPoints.findIndex(point => point.x < percentageToConvert)
+
+		console.log("here", percentageToConvert, indexOfLowBoundary)
+
 		// use slope intercept stuff to get the y value
+
+		return indexOfLowBoundary
 	}
 
 	static labelForModifer(modifier) {

@@ -28,6 +28,11 @@
 - interface
   - images need to exist for all item types
     - 🟠 missing Win Condition and Food
+  - the thing that matters is character inventories and the impact of equipped items. So that should be emphasized
+    - Also I think I want eventually to have something that plots these setPoint arrays and the character's current value on them or something, it seems like that is interesting information to have perhaps? I don't know for sure. 
+    - But any game that these systems contain has to be around the tradeoffs of the different pieces of gear so swapping around all of it is the most important part of things. 
+    - Maybe I do need to make a bunch of data tables visible at some point. Selecting a tile and seeing the Character's relationship with it and how that changes given different pieces of gear. 
+    - Something that is a big list of all the possible values and attributes but then only shows the ones where a piece of gear has an impact maybe. 
 - flitting
   - flitting from vendors to characters should work
   - when win condition is flitted from chest to mannequin, something breaks

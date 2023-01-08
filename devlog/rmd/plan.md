@@ -3385,3 +3385,38 @@ so setPoint needs to be an array, and I need to figure out which line segment pe
 1043 there was something in the paper - which I left  upstairs I should snap a pic and add it to notes here - about having the series of points but I think I - ohhhh, to get a "curve" that goes up then down I need all the points because it doesn't necessarily start at 0,0 and end at 1,2 which was a constraint that was helpful to get me to where I am but now I think I figured out how to generalize past that.
 
 So like.. 
+
+1106 okay so have starts of the generalized thing in Modifers.working, have a couple of tests to keep things going well too. So the current task is converting these thoughts and such into a workable function
+
+1221 afk for a bit. had an interface thought, similar to the swipe interface but the thing that matters is character inventories and the impact of equipped items. So that should be emphasized
+
+Also I think I want eventually to have something that plots these setPoint arrays and the character's current value on them or something, it seems like that is interesting information to have perhaps? I don't know for sure. 
+
+But any game that these systems contain has to be around the tradeoffs of the different pieces of gear so swapping around all of it is the most important part of things. 
+
+Maybe I do need to make a bunch of data tables visible at some point. Selecting a tile and seeing the Character's relationship with it and how that changes given different pieces of gear. 
+
+Something that is a big list of all the possible values and attributes but then only shows the ones where a piece of gear has an impact maybe. 
+
+Lots of interface shit to experiment with but I do need to get the system in place first because a half broken whatever state this is at present does no one favours. 
+
+And arguable getting state tidied up and managed in a proper functional fashion would make a lot of interface work so very much easier too. So I don't know. Anyway, wanted to capture this stuff. 
+
+1227 the task at hand is Modifiers. 
+
+1235 so I have the sorted-by-x array of points that make up the line segments we will be interpolating from.
+
+so as soon as point.x is greater than  - I probably want the index. Because I want the boundaries of percentageToConvert. 
+
+1242 ohhhh I'm not testing with a valid set of lines right now. so I need to sort and validate it before trying to find it
+
+1244 I'm not sure how to handle the invalid case. I sort of think it should be an exception that's really what it is. but also I am not really doing exceptions? am i? well, yeah I throw Error here and there so fine, do that.
+
+1246 so what is a valid set of points. 
+- it is ordered 
+- 0.0 <= x <= 1.0
+- 0.0 <= y <= 2.0
+- the first x value must be 0.0
+- the last x value must be 1.0
+- each x value must be larger than the one previous
+

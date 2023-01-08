@@ -44,8 +44,95 @@ it('working sorts array by x', async () => {
 			{x: .5, y: 1},
 		]
 	)
-	
-	expect(actual[0].x).toBe(.25)
-	expect(actual[1].x).toBe(.5)
-	expect(actual[2].x).toBe(.75)
-});
+
+	// these tested orderedPoints but the actual thing just returns a score
+	// expect(actual[0].x).toBe(.25)
+	// expect(actual[1].x).toBe(.5)
+	// expect(actual[2].x).toBe(.75)
+
+	expect(actual).toBe(.5)
+})
+
+it('validateSetPoints enforces ordered', async() => {
+	const actual = Modifiers.validateSetPoints([
+		[
+			{x: .75, y: 1.5},
+			{x: .25, y: .5},
+			{x: .5, y: 1},
+		]		
+	])
+
+	expect(actual).toBe(false)
+})
+
+it('validateSetPoints enforces 0.0 <= x <= 1.0', async() => {
+	const actual = Modifiers.validateSetPoints([
+		[
+			{x: .75, y: 1.5},
+			{x: .25, y: .5},
+			{x: .5, y: 1},
+		]		
+	])
+
+	expect(actual).toBe(false)
+})
+
+it('validateSetPoints enforce 0.0 <= y <= 2.0', async() => {
+	const actual = Modifiers.validateSetPoints([
+		[
+			{x: .75, y: 1.5},
+			{x: .25, y: .5},
+			{x: .5, y: 1},
+		]		
+	])
+
+	expect(actual).toBe(false)
+})
+
+it('validateSetPoints enforces point[0].x === 0.0', async() => {
+	const actual = Modifiers.validateSetPoints([
+		[
+			{x: .75, y: 1.5},
+			{x: .25, y: .5},
+			{x: .5, y: 1},
+		]		
+	])
+
+	expect(actual).toBe(false)
+})
+
+it('validateSetPoints enforces point[point.length -1].x === 0.0', async() => {
+	const actual = Modifiers.validateSetPoints([
+		[
+			{x: .75, y: 1.5},
+			{x: .25, y: .5},
+			{x: .5, y: 1},
+		]		
+	])
+
+	expect(actual).toBe(false)
+})
+
+it('validateSetPoints enforces current.x > previous.x', async() => {
+	const actual = Modifiers.validateSetPoints([
+		[
+			{x: .75, y: 1.5},
+			{x: .25, y: .5},
+			{x: .5, y: 1},
+		]		
+	])
+
+	expect(actual).toBe(false)
+})
+
+it('validateSetPoints approves valid arrays', async() => {
+	const actual = Modifiers.validateSetPoints([
+		[
+			{x: .75, y: 1.5},
+			{x: .25, y: .5},
+			{x: .5, y: 1},
+		]		
+	])
+
+	expect(actual).toBe(true)
+})
