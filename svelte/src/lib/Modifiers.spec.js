@@ -35,22 +35,23 @@ it('defaultSetPoints default behaviour', async () => {
 	expect(actual[1].y).toBe(2)
 })
 
-it('working sorts array by x', async () => {
-	const actual = Modifiers.working(
-		.2, 
-		[
-			{x: .75, y: 1.5},
-			{x: .25, y: .5},
-			{x: .5, y: 1},
-		]
-	)
+// rmd todo refactor - Jest has expect().toThrow() but I couldn't figure out what I was doing wrong
+it('working validates setpoints', async () => {	
+	try {
+		Modifiers.working(
+			.2, 
+			[
+				{x: .75, y: 1.5},
+				{x: .25, y: .5},
+				{x: .5, y: 1},
+			]
+		)
+	} catch (e) {
+		expect(e.message).toBe("Invalid setpoints!")
+		return
+	}
 
-	// these tested orderedPoints but the actual thing just returns a score
-	// expect(actual[0].x).toBe(.25)
-	// expect(actual[1].x).toBe(.5)
-	// expect(actual[2].x).toBe(.75)
-
-	expect(actual).toBe(.5)
+	expect(false).toBe(true)
 })
 
 it('validateSetPoints enforces 0.0 <= x <= 1.0', async() => {
@@ -123,7 +124,7 @@ it('validateSetPoints approves valid arrays', async() => {
 		Modifiers.validateSetPoints([
 			{x: 0.0, y: 0.0},
 			{x: 1.0, y: 2.0},
-		], true)
+		])
 	).toBe(true)
 
 	// always going up
@@ -133,7 +134,7 @@ it('validateSetPoints approves valid arrays', async() => {
 			{x: .18, y: 0.3},
 			{x: .75, y: 0.9},
 			{x: 1.0, y: 1.0},
-		], true)
+		])
 	).toBe(true)
 
 	// up down up down
@@ -143,7 +144,7 @@ it('validateSetPoints approves valid arrays', async() => {
 			{x: .18, y: 0.9},
 			{x: .75, y: 0.3},
 			{x: 1.0, y: 1.0},
-		], true)
+		])
 	).toBe(true)
 
 	// always going down
@@ -153,6 +154,6 @@ it('validateSetPoints approves valid arrays', async() => {
 			{x: .18, y: 0.9},
 			{x: .75, y: 0.3},
 			{x: 1.0, y: 0.0},
-		], true)
+		])
 	).toBe(true)
 })

@@ -3420,3 +3420,8 @@ so as soon as point.x is greater than  - I probably want the index. Because I wa
 - the last x value must be 1.0
 - each x value must be larger than the one previous
 
+1429 I don't know how to test that exceptions are thrown and I'm throwing an exception so the test just fails
+1430 and I can't remember which test library I'm using. Jest? 
+1431 yes, jest
+1432 `expect(func()).toThrow(Error)`
+1435 however that is not working. I can do the try catch in the test if I can't figure out how to do it

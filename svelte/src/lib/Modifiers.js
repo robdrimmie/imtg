@@ -81,43 +81,25 @@ export default class Modifiers {
 				- each x value must be small than the one next
 	*/
 	static validateSetPoints(setPoints, verbose = false) {
-		const msg = l => {
-			if(verbose) {
-				console.log(l)
-			} 
-		}
-
 		// - the first x value must be 0.0
-		msg('setPoints[0].x !== 0.0')
 		if(setPoints[0].x !== 0.0) return false	
 		
 		// - the last x value must be 1.0
-		msg('setPoints[setPoints.length - 1].x !== 1.0')
 		if(setPoints[setPoints.length - 1].x !== 1.0) return false
 
 		return setPoints.every( (point, index, points) => {
 			// - 0.0 <= x <= 1.0
-			msg('point.x < 0')
 			if(point.x < 0) return false
-			msg('point.x > 1')
 			if(point.x > 1) return false
 			
 			// - 0.0 <= y <= 2.0
-			msg('point.y < 0')
 			if(point.y < 0) return false
-			msg('point.y < 2')
 			if(point.y > 2) return false
 
 			// - each x value must be larger than the one previous
-			msg('index > 0 && point.x <= points[index-1].x')
 			if(index > 0 && point.x <= points[index-1].x) return false
 
 			return true
-			// // - each x value must be smaller than the one next
-			// msg('index < points.length && point.x >= points[index+1].x')
-			// if(index < points.length && point.x >= points[index+1].x) return false
-
-			// those two things are probably the same thing?
 		})
 	}
 
@@ -130,6 +112,9 @@ export default class Modifiers {
 
 		// sort points by x
 		const orderedPoints = setPoints.slice().sort((a,b) => a.x - b.x)
+		if(!Modifiers.validateSetPoints(orderedPoints)) {
+			throw new Error("Invalid setpoints!")
+		}
 
 		// figure out which line segment percentageToConvert is on
 		// percentageToConvert is the x value we are looking for
