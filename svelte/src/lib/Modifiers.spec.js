@@ -53,86 +53,106 @@ it('working sorts array by x', async () => {
 	expect(actual).toBe(.5)
 })
 
-it('validateSetPoints enforces ordered', async() => {
-	const actual = Modifiers.validateSetPoints([
-		[
-			{x: .75, y: 1.5},
-			{x: .25, y: .5},
-			{x: .5, y: 1},
-		]		
-	])
-
-	expect(actual).toBe(false)
-})
-
 it('validateSetPoints enforces 0.0 <= x <= 1.0', async() => {
-	const actual = Modifiers.validateSetPoints([
-		[
-			{x: .75, y: 1.5},
-			{x: .25, y: .5},
-			{x: .5, y: 1},
-		]		
-	])
+	expect(
+		Modifiers.validateSetPoints([{x: -0.1, y: 1.0}])
+	).toBe(false)
 
-	expect(actual).toBe(false)
+	expect(
+		Modifiers.validateSetPoints([{x: 1.01, y: 1.0}])
+	).toBe(false)
 })
 
 it('validateSetPoints enforce 0.0 <= y <= 2.0', async() => {
-	const actual = Modifiers.validateSetPoints([
-		[
-			{x: .75, y: 1.5},
-			{x: .25, y: .5},
-			{x: .5, y: 1},
-		]		
-	])
+	expect(
+		Modifiers.validateSetPoints([{x: 0.0, y: -0.1}])
+	).toBe(false)
 
-	expect(actual).toBe(false)
+	expect(
+		Modifiers.validateSetPoints([{x: 0.0, y: 2.01}])
+	).toBe(false)
 })
 
 it('validateSetPoints enforces point[0].x === 0.0', async() => {
-	const actual = Modifiers.validateSetPoints([
-		[
-			{x: .75, y: 1.5},
-			{x: .25, y: .5},
-			{x: .5, y: 1},
-		]		
-	])
-
-	expect(actual).toBe(false)
+	expect(
+		Modifiers.validateSetPoints([{x: .5, y: 1.0}])
+	).toBe(false)
 })
 
-it('validateSetPoints enforces point[point.length -1].x === 0.0', async() => {
-	const actual = Modifiers.validateSetPoints([
-		[
-			{x: .75, y: 1.5},
-			{x: .25, y: .5},
-			{x: .5, y: 1},
-		]		
-	])
-
-	expect(actual).toBe(false)
+it('validateSetPoints enforces point[point.length -1].x === 1.0', async() => {
+	expect(
+		Modifiers.validateSetPoints([{x: .5, y: 1.0}])
+	).toBe(false)
 })
 
 it('validateSetPoints enforces current.x > previous.x', async() => {
+	expect(
+		Modifiers.validateSetPoints([
+			{x: 0.0, y: 1.0},
+			{x: .75, y: 1.0},
+			{x: .25, y: 1.0},
+			{x: 1.0, y: 1.0},
+		])
+	).toBe(false)
+})
+
+it('validateSetPoints enforces current.x < next.x', async() => {
 	const actual = Modifiers.validateSetPoints([
-		[
-			{x: .75, y: 1.5},
-			{x: .25, y: .5},
-			{x: .5, y: 1},
-		]		
+			{x: 0.00, y: 1.0},
+			{x: 0.75, y: 1.0},
+			{x: 0.50, y: 1.0},
+			{x: 1.00, y: 1.0},
+	])
+
+	expect(actual).toBe(false)
+})
+
+it('validateSetPoints enforces no duplicate x', async() => {
+	const actual = Modifiers.validateSetPoints([
+			{x: 0.00, y: 1.0},
+			{x: 0.75, y: 1.0},
+			{x: 0.75, y: 1.0},
+			{x: 1.00, y: 1.0},
 	])
 
 	expect(actual).toBe(false)
 })
 
 it('validateSetPoints approves valid arrays', async() => {
-	const actual = Modifiers.validateSetPoints([
-		[
-			{x: .75, y: 1.5},
-			{x: .25, y: .5},
-			{x: .5, y: 1},
-		]		
-	])
+	expect(
+		Modifiers.validateSetPoints([
+			{x: 0.0, y: 0.0},
+			{x: 1.0, y: 2.0},
+		], true)
+	).toBe(true)
 
-	expect(actual).toBe(true)
+	// always going up
+	expect(
+		Modifiers.validateSetPoints([
+			{x: 0.0, y: 0.0},
+			{x: .18, y: 0.3},
+			{x: .75, y: 0.9},
+			{x: 1.0, y: 1.0},
+		], true)
+	).toBe(true)
+
+	// up down up down
+	expect(
+		Modifiers.validateSetPoints([
+			{x: 0.0, y: 0.0},
+			{x: .18, y: 0.9},
+			{x: .75, y: 0.3},
+			{x: 1.0, y: 1.0},
+		], true)
+	).toBe(true)
+
+	// always going down
+	expect(
+		Modifiers.validateSetPoints([
+			{x: 0.0, y: 1.0},
+			{x: .18, y: 0.9},
+			{x: .75, y: 0.3},
+			{x: 1.0, y: 0.0},
+		], true)
+	).toBe(true)
 })
