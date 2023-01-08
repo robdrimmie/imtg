@@ -3124,3 +3124,264 @@ no, switching from < to <= was not the thing.
 2145 huzzah! I think I got it. We can see how it ultimately pans out but I think this is reliable to start with at least. And it's even under test though it's unlikely I'll mess this up.
 
 Alrighty then, so now I did this math stuff, what was it all in service of? Scores. Specifically action scores I think, right? 
+
+2155 so I've updated that to use those things and still the -101 to -202 and back behaviour persists. 
+
+So when the party is on -101 why isn't it the best tile to adventure on? Back into best tiles logic? Yes, because I haven't really gotten into "progressTileScores" yet because I was sorting out workflow and all those other things. Right then, that's where I'm working now. progressTileScores.
+
+2159 some updates to project file, clarifying this work. I feel like I'm approaching another release point but also I don't think that sorting out this last bit is going to be fast and it probably isn't the last of what needs doing to get to a stable (ideally winnable) point again
+
+20230104 0702 up early today. farted around online enough, don't want to ruin my normal day warm up scenario too much. maybe put some math to use? 
+
+0703 might not be storing best tiles properly? 
+0705 oh yes I am: 		this.tiles = this.bestTilesForActions()
+
+0706 so one refactor is to move best tiles into progressTileScores and write shit out in it etc. Just copy logic from best tiles up or something to start. 
+
+20230105 0726 likely not doing much but I'm looking. 
+
+2116 ditto
+
+distance and energy alternate between 
+distance: 0.5 
+energy: 0.55
+
+and 
+
+distance: 1
+energy: 1.1
+
+it looks like distance and energy scores are lower for the tile the character is on? And 1.1 is clearly 0.55 * 2 so something something. relatedness.
+
+those are tilerelationship scores
+
+2120
+```
+				, tileRelationship.values.adventuring
+				, tileRelationship.values.resting
+				, tileRelationship.values.vending
+```
+
+2125
+```
+distance 
+Object { id: id()
+, q: -1, r: 0, s: 1 }
+ 
+Object { id: id()
+, q: -1, r: 0, s: 1 }
+ 0 1
+```
+
+so distance is one when they are on -101 and looking at -101 according to this output.
+
+and 
+```
+distance 
+Object { id: id()
+, q: -2, r: 0, s: 2 }
+ 
+Object { id: id()
+, q: -2, r: 0, s: 2 }
+ 0 1 TileRelationship.js:245:11
+distance 
+Object { id: id()
+, q: -2, r: 0, s: 2 }
+ 
+Object { id: id()
+, q: -2, r: 0, s: 2 }
+ 0 1 TileRelationship.js:245:11
+distance 
+Object { id: id()
+, q: -2, r: 0, s: 2 }
+ 
+Object { id: id()
+, q: -2, r: 0, s: 2 }
+ 0 1
+```
+
+2127 but here: 
+
+```
+Considering tile with ID -101 
+Object { attribute: 1.2100000000000002, desire: 1, capacity: 1, distance: 0.5, energy: 0.55, health: 1, satiety: 1, overall: 1.3310000000000004 }
+ 
+Object { attribute: 1.2100000000000002, desire: 1, capacity: 1, distance: 0.5, energy: 0.55, health: 1, satiety: 1, overall: 1.3310000000000004 }
+ 
+Object { attribute: 1.2100000000000002, desire: 1, capacity: 0, distance: 0.5, energy: 0.55, health: 1, satiety: 1, overall: 0 }
+```
+
+2129
+```
+distance 
+Object { id: id()
+, q: -1, r: 0, s: 1 }
+ 
+Object { id: id()
+, q: -2, r: 0, s: 2 }
+ 1 0.5 TileRelationship.js:249:11
+
+calculateActionValue returning 
+Object { attribute: 1.2100000000000002, desire: 1, capacity: 1, distance: 0.5, energy: 0.55, health: 1, satiety: 1, overall: 1.3310000000000004 }
+TileRelationship.js:200:11
+
+distance 
+Object { id: id()
+, q: -1, r: 0, s: 1 }
+ 
+Object { id: id()
+, q: -2, r: 0, s: 2 }
+ 1 0.5 TileRelationship.js:249:11
+
+calculateActionValue returning 
+Object { attribute: 1.2100000000000002, desire: 1, capacity: 1, distance: 0.5, energy: 0.55, health: 1, satiety: 1, overall: 1.3310000000000004 }
+TileRelationship.js:200:11
+
+distance 
+Object { id: id()
+, q: -1, r: 0, s: 1 }
+ 
+Object { id: id()
+, q: -2, r: 0, s: 2 }
+ 1 0.5 TileRelationship.js:249:11
+
+calculateActionValue returning 
+Object { attribute: 1.2100000000000002, desire: 1, capacity: 0, distance: 0.5, energy: 0.55, health: 1, satiety: 1, overall: 0 }
+
+
+...
+
+distance 
+Object { id: id()
+, q: -2, r: 0, s: 2 }
+ 
+Object { id: id()
+, q: -2, r: 0, s: 2 }
+ 0 1 TileRelationship.js:249:11
+
+calculateActionValue returning 
+Object { attribute: 1.2100000000000002, desire: 1, capacity: 1, distance: 1, energy: 1.1, health: 1, satiety: 1, overall: 0.6655000000000002 }
+TileRelationship.js:200:11
+
+distance 
+Object { id: id()
+, q: -2, r: 0, s: 2 }
+ 
+Object { id: id()
+, q: -2, r: 0, s: 2 }
+ 0 1 TileRelationship.js:249:11
+
+calculateActionValue returning 
+Object { attribute: 1.2100000000000002, desire: 1, capacity: 1, distance: 1, energy: 1.1, health: 1, satiety: 1, overall: 0.6655000000000002 }
+TileRelationship.js:200:11
+
+distance 
+Object { id: id()
+, q: -2, r: 0, s: 2 }
+ 
+Object { id: id()
+, q: -2, r: 0, s: 2 }
+ 0 1 TileRelationship.js:249:11
+
+calculateActionValue returning 
+Object { attribute: 1.2100000000000002, desire: 1, capacity: 0, distance: 1, energy: 1.1, health: 1, satiety: 1, overall: 0 }
+```
+
+So distance returns a 1 on -202 here which is the tile the character is on.
+
+```
+distance 
+Object { id: id()
+, q: -1, r: 0, s: 1 }
+ 
+Object { id: id()
+, q: -2, r: 0, s: 2 }
+ 1 0.5 TileRelationship.js:249:11
+
+calculateActionValue returning 
+Object { attribute: 1.2100000000000002, desire: 1, capacity: 1, distance: 0.5, energy: 0.55, health: 1, satiety: 1, overall: 1.3310000000000004 }
+TileRelationship.js:200:11
+
+distance 
+Object { id: id()
+, q: -2, r: 0, s: 2 }
+ 
+Object { id: id()
+, q: -2, r: 0, s: 2 }
+ 0 1 TileRelationship.js:249:11
+
+calculateActionValue returning 
+Object { attribute: 1.2100000000000002, desire: 1, capacity: 1, distance: 1, energy: 1.1, health: 1, satiety: 1, overall: 0.6655000000000002 }
+TileRelationship.js:200:11
+```
+
+the overall scores don't make sense. whatever figures that out must be the problem
+
+2141 calculateOverallScore fundamentally works from different scores than the ones being output there. it's weird and I don't entirely understand what I'm trying to do with it all. 
+
+2157 calculateHealthScore in TileRelationships is kind of an outdated mess. I need to audit these functions too. Time to start doing merge requests for myself or something, though .. ugh. That requires a bit more discipline around task management. Or better diff tooling for locally. A better diff before a commit could bring over some of the MR-vision benefits. We use GitLab at work, thus "Merge Request" terminology. 
+
+2201 so TileRelationship.progress has:
+
+```
+this.values.adventuring = this.calculateAdventuringValue(knowledge)
+```
+
+calculateAdventuringValue flows into `calculateActionValue(context, knowledgeForAction, value)` - value ultimately is this.values.adventuring
+
+wait, is this a kind of logical loop? did I really do this to myself? So old values for adventuring are used to figure out new values for adventuring perhaps? shit.
+
+So the scores should not be based on the values, because the values are based on scores!
+
+So yes, I need to review and probably rework the calculate???Score methods
+
+2208 Modifiers.INCREASE and DECREASE had their purpose but they are a smell now. 
+
+2209 added a thing to projects
+
+2211 so calculateAttribute. Formerly known as Gear, this is a big part of the big overhaul. Does the character desire to go to this tile because they are well-equipped for the challenges (their attribute score exceeds the threadholds) or do they fear this tile because they have been defeated before, perhaps more than once, and they must have a certain amout of [some attribute or another, the region's two] before they return.
+
+But okay so that threshold should be like a setpoint in the score or something. To make it more gradient-y instead of INCREASE and DECREASE-y I want the threshold to... something. 
+
+So if the threshold is 15 BRAWN say, 0-15 is the 0.0-0.999.. side and 15-100 then great.
+
+Now here is the case for multiple setpoints though. If I add a third setpoint I then introduce diminishing returns. I guess each setpoint toggles the direction. can they go up and up and up with decreasing whatevers? yes.
+
+I guess the lines between setpoints approach each other. There's an implict 0.0 as the first setpoint and 1.0 as the last and then it is a curve with increasing resolution
+
+2218 bedtime soon. So next action is deciding whether or not I need to have the functions work on an array of setpoints and how that might work. 
+
+setpoints = [15,30]
+
+so a line is drawn from (0,0) to (1/3y, 15) and then 
+
+points:
+(0,0)             (1/3y, 15)
+(1/3y, 15)        (2/3y, 30)
+(2/3y, 30)        (   y, 100)
+
+so setpoints.length + 1 = number of lines to be drawn
+
+20230106 0655 is it a matter of caluclating the slope for each segment? Not entirely but like... somewhat? 
+
+there's a relationship between x (15, 30, 100) and y? That's sort of backwards though or I've ordered my variables wrong or something. 
+
+I need to draw things by hand on graph paper. I've tried some online tools and they aren't helping me.
+
+20230108 1038 I spent some time on Friday doing that. What I think I've realized is that I am creating a collection of line segments, and I know the slope of each one so I need to interpolate the x value (the 0.0 - 1.0) from the y value (0.0 - 2.0) which now I realize is backwards.
+
+Also how did I not see the 2x = y in that for so long? In part for sure because I was thinking of it as 0 - 100%, not 0.0 to 0.1.
+
+1040 in part because I haven't thought about algebra in quite some time. 
+
+1040 so okay my general function definiton follows the pattern established with:
+
+```
+static convertPercentageToScore(percentageToConvert, setPoint = .5, base = 1.0)
+```
+
+so setPoint needs to be an array, and I need to figure out which line segment percentageToConvert fits in. 
+
+1043 there was something in the paper - which I left  upstairs I should snap a pic and add it to notes here - about having the series of points but I think I - ohhhh, to get a "curve" that goes up then down I need all the points because it doesn't necessarily start at 0,0 and end at 1,2 which was a constraint that was helpful to get me to where I am but now I think I figured out how to generalize past that.
+
+So like.. 

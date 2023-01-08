@@ -61,7 +61,31 @@ export default class Modifiers {
 	  
 		// top half, so input / set point or something? 
 		return (1 - (percentageToConvert - setPoint) / (base - setPoint))
-	  }
+	}
+
+	static defaultSetPoints = (midPoints = []) => [
+		{x: 0, y: 0}
+		, ...midPoints
+		, {x: 1, y: 2}
+	]
+
+	static working(
+		percentageToConvert, 
+		setPoints = Modifiers.defaultSetPoints(), 
+		base = 1.0
+	) {
+		// figure out which line segment percentageToConvert is on
+		// sort points by x
+		const orderedPoints = setPoints.slice().sort(
+			(a,b) => {
+				console.log("order", a.x, b.x, a.x - b.x)
+				return a.x - b.x
+			}
+		)
+
+		return orderedPoints
+		// use slope intercept stuff to get the y value
+	}
 
 	static labelForModifer(modifier) {
 		switch (modifier) {

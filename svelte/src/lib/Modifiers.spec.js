@@ -28,3 +28,24 @@ it('lower is better works as expected', async () => {
 	expect(Modifiers.convertPercentageToScoreLowerIsBetter(0.10, .1)).toBe(1)
 	expect(Modifiers.convertPercentageToScoreLowerIsBetter(1.00, .1)).toBe(0)
 });
+
+it('defaultSetPoints default behaviour', async () => {
+	const actual = Modifiers.defaultSetPoints()
+	expect(actual[0].x).toBe(0)
+	expect(actual[1].y).toBe(2)
+})
+
+it('working sorts array by x', async () => {
+	const actual = Modifiers.working(
+		.2, 
+		[
+			{x: .75, y: 1.5},
+			{x: .25, y: .5},
+			{x: .5, y: 1},
+		]
+	)
+	
+	expect(actual[0].x).toBe(.25)
+	expect(actual[1].x).toBe(.5)
+	expect(actual[2].x).toBe(.75)
+});

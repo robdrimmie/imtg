@@ -805,11 +805,9 @@ export default class Character {
 		this.tileRelationships.forEach((tileRelationship, key, map) => {
 			const tileUnderConsideration = tileRelationship.tile
 			console.log(`Considering tile with ID ${tileUnderConsideration.id}`
-
-// ,			tileRelationship.scores.overall
-,			tileRelationship.values.adventuring
-,			tileRelationship.values.resting
-,			tileRelationship.values.vending
+				, tileRelationship.values.adventuring
+				, tileRelationship.values.resting
+				, tileRelationship.values.vending
 			)
 
 			const tileScoreForAdventuring = /*tileRelationship.scores.overall * */tileRelationship.values.adventuring.overall
@@ -820,14 +818,14 @@ export default class Character {
 
 			// update best tiles
 			if (tileScoreForAdventuring > bestTiles.adventure.score) {
-				console.log("Replacing score", tileScoreForAdventuring, bestTiles.adventure.score)
+				console.log("Replacing adv score", tileScoreForAdventuring, bestTiles.adventure.score)
 				// replace if score is higher
 				bestTiles.adventure = {
 					score: tileScoreForAdventuring,
 					contenders: [tileUnderConsideration]
 				};
 			} else if (tileScoreForAdventuring == bestTiles.adventure.score) {
-				console.log("adding contender")
+				console.log("adding adv contender")
 				// combine if score is equal
 				bestTiles.adventure = {
 					score: tileScoreForAdventuring,
@@ -877,7 +875,6 @@ export default class Character {
 				// tileScoreForVending, 
 				// tileScoreForVending > bestTiles.vending.score
 			)
-
 		});
 
 		console.log('adventure', bestTiles.adventure.contenders)
@@ -934,7 +931,6 @@ export default class Character {
 		this.updateRelationshipWithTile(tile)
 	}
 
-	
 	shouldIncreaseKnowledgeLevel() {
 		// conscientiousness and awareness
 		return 50 < this.testAttributes([

@@ -103,7 +103,7 @@ export default class TileRelationship {
 		this.values.resting = this.calculateRestingValue(knowledge)
 		this.values.vending = this.calculateVendingValue(knowledge)
 
-		console.log("tile values", this.tile.id, this.values)
+		// console.log("tile values", this.tile.id, this.values)
 	}
 
 	// #region Encounter results
@@ -121,7 +121,7 @@ export default class TileRelationship {
 
 	// #region Calculate Tile Values
 	calculateDesire(knowledge) {
-		console.log("calculating value for knowledge and tile.id", knowledge, this.tile.id)
+		// console.log("calculating value for knowledge and tile.id", knowledge, this.tile.id)
 		let value = 1
 
 		if (knowledge.deckSize) {
@@ -186,7 +186,7 @@ export default class TileRelationship {
 
 		const overall = this.calculateOverallScore(value)		
 
-		return {
+		const retval = {
 			attribute,
 			desire,
 			capacity,
@@ -196,6 +196,10 @@ export default class TileRelationship {
 			satiety,
 			overall,
 		}
+
+		console.log("calculateActionValue returning", retval)
+
+		return retval
 	}
 
 	calculateAdventuringValue(knowledge) {
@@ -212,10 +216,41 @@ export default class TileRelationship {
 	}
 	// #endregion Calculate Tile Values
 
-	// #region Calculate Action Scores
-	// #endregion Calculate Action Scores
 
 	// #region Calculate Motivator Scores
+	/*
+		Scores the tile based on how well the character's Attributes exceed the threshold
+		created by winning and losing encounters on this tile
+	*/
+	calculateAttributeScore(context) {
+		let attributeScore = 1
+
+		if (this.tile.isOrigin()) return attributeScore
+
+		const characterPersonality = (this.tile.region.personality === null)
+			? this.personality.get(this.getBestPersonality()).apparent
+			: this.personality.get(this.tile.region.personality).apparent
+		
+		// if the character's attribute is higher than the relationship, then it is good.
+		if (characterPersonality >= this.attributes.personalityThreshold) {
+			attributeScore *= Modifiers.INCREASE
+		} else {
+			attributeScore *= Modifiers.DECREASE
+		}
+
+		const characterPhysicality = (this.tile.region.physicality === null)
+			? this.physicality.get(this.getBestPhysicality()).apparent
+			: this.physicality.get(this.tile.region.physicality).apparent
+			
+		if (characterPhysicality >= this.attributes.physicalityThreshold) {
+			attributeScore *= Modifiers.INCREASE
+		} else {
+			attributeScore *= Modifiers.DECREASE
+		}
+
+		return attributeScore
+	}
+
 	calculateCapacityScore(context) {
 		const percentAvailable = this.backpack().availableCapacity() / this.backpack().capacity
 
@@ -241,6 +276,8 @@ export default class TileRelationship {
 		// in the same way so maybe that balances out? :shrug:
 
 		const retval = (distance === 0) ? 1 : 1 / (distance + 1)
+
+		console.log("distance", this.tile.hex, this.currentTile.hex, distance, retval)
 
 		// console.log("calculateDistanceScore", this.tile.hex, this.currentTile.hex, distance, retval)
 
@@ -288,56 +325,7 @@ export default class TileRelationship {
 		return energyScore
 	}
 
-	getBestAttributeOfTrait(trait) {
-		let bestScore = 0
-		let bestAttribute
 
-		for (const [attribute, value] of trait) {
-			if(value.apparent > bestScore) {
-				bestScore = value.apparent
-				bestAttribute = attribute
-			}
-		}
-
-		return bestAttribute
-	}
-	
-	getBestPersonality() {
-		return this.getBestAttributeOfTrait(this.personality)
-	}
-
-	getBestPhysicality() {
-		return this.getBestAttributeOfTrait(this.physicality)
-	}
-
-	calculateAttributeScore(context) {
-		let attributeScore = 1
-
-		if (this.tile.isOrigin()) return attributeScore
-
-		const characterPersonality = (this.tile.region.personality === null)
-		? this.personality.get(this.getBestPersonality()).apparent
-		: this.personality.get(this.tile.region.personality).apparent
-		
-		// if the character's attribute is higher than the relationship, then it is good.
-		if (characterPersonality >= this.attributes.personalityThreshold) {
-			attributeScore *= Modifiers.INCREASE
-		} else {
-			attributeScore *= Modifiers.DECREASE
-		}
-
-		const characterPhysicality = (this.tile.region.physicality === null)
-			? this.physicality.get(this.getBestPhysicality()).apparent
-			: this.physicality.get(this.tile.region.physicality).apparent
-			
-		if (characterPhysicality >= this.attributes.physicalityThreshold) {
-			attributeScore *= Modifiers.INCREASE
-		} else {
-			attributeScore *= Modifiers.DECREASE
-		}
-
-		return attributeScore
-	}
 
 	// RMD TODO improve calculate health score
 	// can get a lot more nuanced here, get a bit of a curve that plateaus around 90 or something.
@@ -409,9 +397,10 @@ export default class TileRelationship {
 		// console.log("calculated capacity [score] for [tile] with [multiplier]", tileScore, tileToConsider, multiplier)
 		return tileScore
 	}
-	// #endregion Calculate Motivator Scores
 
 	calculateOverallScore(value) {
+		console.log("calculateOverallScore", value)
+		
 		return 1 * 
 			value.attribute * 
 			value.capacity * 
@@ -419,4 +408,29 @@ export default class TileRelationship {
 			value.health * 
 			value.satiety
 	}
+	// #endregion Calculate Motivator Scores
+
+	// #region getBestAttribute 
+	getBestAttributeOfTrait(trait) {
+		let bestScore = 0
+		let bestAttribute
+
+		for (const [attribute, value] of trait) {
+			if(value.apparent > bestScore) {
+				bestScore = value.apparent
+				bestAttribute = attribute
+			}
+		}
+
+		return bestAttribute
+	}
+	
+	getBestPersonality() {
+		return this.getBestAttributeOfTrait(this.personality)
+	}
+
+	getBestPhysicality() {
+		return this.getBestAttributeOfTrait(this.physicality)
+	}
+	// #endregion getBestAttribute 
 }

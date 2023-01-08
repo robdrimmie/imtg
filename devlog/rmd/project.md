@@ -5,7 +5,17 @@
 *NOTE:* This list is not a commitment to you, it is a reference for me. There is no guarantee that any of these items will be implemented.
 
 ## big tasks (not prioritized, but a little bit preference-ized)
-- * party gets stuck going back and forth between -101 and -202
+- 🟠 audit character progress workflow
+ - ✅ reorder and revisit flow
+ - ✅ get progressTileScores using the new Modifier percentToScore methods
+- party gets stuck going back and forth between -101 and -202
+     - in TileRelationship calculate?????Score methods need to be updated
+      - * calculateAttributeScore
+      - calculateCapacityScore
+      - calculateDistanceScore - probably okay
+      - calculateEnergyScore
+      - calculateHealthScore
+      - calculateSatietyScore
 - use context in the calculateWhateverScore methods
 - ✅ party gets stuck on tile down-leftwards
 - ✅ associate regions with attributes
@@ -66,6 +76,7 @@
 
 
 ### near future - I need to do this stuff but am putting it off because it's less fun
+- ensure that all uses of Modifiers.INCREASE and DECREASE are replaced with score calculations
 - once the party discovers the rightful place for a win condition, they should _really_ want to go there if they have it equipped. Like, beeline win the game woot! so like, some tile knowledge stuff here.
 - devopsy things
   - these days it's a pretty simple scp pattern which I should be able to script up pretty easily if and when I want to get around to it

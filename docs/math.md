@@ -223,3 +223,26 @@ convertToScore(toConvert, setPoint = .5, base = 1.0) {
 }
 
 in Modifiers.js@convertPercentageToScore
+
+### Work with an array of setpoints of unknown length
+
+
+Now here is the case for multiple setpoints though. If I add a third setpoint I then introduce diminishing returns. I guess each setpoint toggles the direction. can they go up and up and up with decreasing whatevers? yes.
+
+I guess the lines between setpoints approach each other. There's an implict 0.0 as the first setpoint and 1.0 as the last and then it is a curve with increasing resolution
+
+setpoints = [15,30]
+
+so a line is drawn from (0,0) to (1/3y, 15) and then 
+
+points:
+(0,0)             (1/3y, 15)
+(1/3y, 15)        (2/3y, 30)
+(2/3y, 30)        (   y, 100)
+
+so setpoints.length + 1 = number of lines to be drawn
+
+do returns diminish though if y is evenly split? 
+
+so all my logic above is built on the setpoint being... something. But I'm not sure what. 
+
