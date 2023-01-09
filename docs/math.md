@@ -246,3 +246,4 @@ do returns diminish though if y is evenly split?
 
 so all my logic above is built on the setpoint being... something. But I'm not sure what. 
 
+see: plan.md entry 20230108 1038

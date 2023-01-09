@@ -54,6 +54,56 @@ it('working validates setpoints', async () => {
 	expect(false).toBe(true)
 })
 
+const TWO_X_EQUALS_Y = Modifiers.defaultSetPoints([
+	{x: .25, y: .5},
+	{x: .5, y: 1},
+	{x: .75, y: 1.5},
+])
+
+it('indexOfHighBoundary expected behaviour', async () => {
+	expect(Modifiers.indexOfHighBoundary(TWO_X_EQUALS_Y, .3)).toBe(2)
+	expect(Modifiers.indexOfHighBoundary(TWO_X_EQUALS_Y, .9)).toBe(4)
+})
+
+const linearHigherBetter = x => Modifiers.defaultSetPoints()
+
+const linearLowerBetter = x => Modifiers.defaultSetPoints().splice.reverse()
+
+const twoSegmentHigherBetter = Modifiers.defaultSetPoints([
+	{x: .9, y: 1},
+])
+
+const threeSegmentHigherBetter = Modifiers.defaultSetPoints([
+	{x: .3, y: 0.4},
+	{x: .9, y: 1.4}
+])
+
+const threeSegmentLowerBetter = Modifiers.defaultSetPoints([
+	{x: .3, y: 1.4},
+	{x: .9, y: 0.4}
+])
+
+const fourSegmentZigZag = [
+	{x: 0, y: .8}, 
+	{x: .2, y: 1.4}, 
+	{x: .3, y: 0}, 
+	{x: .9, y: 1.9}, 
+	{x: 1, y: 2}
+]
+
+it('working works', async () => {
+	expect(Modifiers.working(.3, linearHigherBetter)).toBeCloseTo(.6)
+	expect(Modifiers.working(.3, linearLowerBetter)).toBeCloseTo(1.4)
+	
+	expect(Modifiers.working(.9, twoSegmentHigherBetter)).toBeCloseTo(1)
+	expect(Modifiers.working(.1, twoSegmentHigherBetter)).toBeCloseTo(0.11111111111111112)
+	expect(Modifiers.working(.82, twoSegmentHigherBetter)).toBeCloseTo(0.911111111111111)
+	expect(Modifiers.working(.91, twoSegmentHigherBetter)).toBeCloseTo(1.1)
+	expect(Modifiers.working(1, twoSegmentHigherBetter)).toBeCloseTo(2)
+
+	// rmd todo more test cases for different types of line patterns
+})
+
 it('validateSetPoints enforces 0.0 <= x <= 1.0', async() => {
 	expect(
 		Modifiers.validateSetPoints([{x: -0.1, y: 1.0}])

@@ -3425,3 +3425,40 @@ so as soon as point.x is greater than  - I probably want the index. Because I wa
 1431 yes, jest
 1432 `expect(func()).toThrow(Error)`
 1435 however that is not working. I can do the try catch in the test if I can't figure out how to do it
+
+1445 I have written and am about to write tests for `indexOfLowBoundary` for set of points and a value and I think I might be going a little too much at this point. I am okay with having some work to do tidying and such after I get this whole thing working in general again
+
+1452 
+1539 so it isn't working as I want because I'm going the wrong way through the array. point.x < value will be true until it is false and the first false is the upper boundary. So I'll just do that. 
+
+1650 okay so, huh? oh, `Modifiers.indexOfLowBoundary is not a function` I changed the name but not everywhere.
+
+1656 slope intercept stuff
+https://www.khanacademy.org/math/algebra/x2f8bb11595b61c86:forms-of-linear-equations/x2f8bb11595b61c86:intro-to-slope-intercept-form/a/introduction-to-slope-intercept-form
+
+> What is the slope of the line represented by y = 5x − 7
+
+so I know the y, that is the point? no I'm not getting to the right information I think
+
+y = mx + b
+
+m = (y2 - y1) / (x2 - x1)
+
+I don't know the y, the percentToConvert is x, and the two points come from the setpoints. 
+
+1824 in a certain circumstance, relating I think to the digit 1 for percentageToConvert, the high boundary index is -1 so that's not working right. It is .. I don't know why it is I guess that's the point.
+
+1841 so I want more test cases for this. and then I need to convert some of the other functions to use this behind the scenes probably so that it is all consistent and whatnot. 
+
+so test cases I can think of that should be set up are: 
+- normal linear higher is better 2x = y
+- three segment higher is better, atypical xes = [.3, .9] 
+- normal linear lower is better -2x + 2 = y
+- three segment lower is better, atypical xes = [.3, .9]
+- four segment, both directions atypical xes = [.2, .3, .9]
+- four segment zig zag, 
+  points = [{x: 0, y: .8}, {x: .2, y: 1.4}, {x: .3, y: 0}, {x: .9, y: 1.9}, {x: 1, y: 2}]
+
+  1852 I'm colliding some terminology setting up these tests. I made a const named `linearHigherBetter` but it was something else before that maybe I should revert.
+
+  1903 getting drifty. dishes soon anyway. working on setting up the test data arrays of points for those cases

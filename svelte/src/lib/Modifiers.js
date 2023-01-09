@@ -103,28 +103,56 @@ export default class Modifiers {
 		})
 	}
 
+	static indexOfHighBoundary(points, value) {
+		return points.findIndex(point => point.x > value)
+	}
+
 	static working(
 		percentageToConvert, 
-		setPoints = Modifiers.defaultSetPoints(), 
-		base = 1.0
+		setPoints = Modifiers.defaultSetPoints()
 	) {
-		let score = 1.0
-
 		// sort points by x
 		const orderedPoints = setPoints.slice().sort((a,b) => a.x - b.x)
 		if(!Modifiers.validateSetPoints(orderedPoints)) {
 			throw new Error("Invalid setpoints!")
 		}
 
-		// figure out which line segment percentageToConvert is on
-		// percentageToConvert is the x value we are looking for
-		const indexOfLowBoundary = orderedPoints.findIndex(point => point.x < percentageToConvert)
+		// rules of valid setpoints state that last point must always have x of 1
+		if(percentageToConvert === 1) return setPoints[setPoints.length - 1].y
 
-		// console.log("here", percentageToConvert, indexOfLowBoundary)
+		// figure out which line segment percentageToConvert is on
+		const indexOfHighBoundary = Modifiers.indexOfHighBoundary(
+			orderedPoints
+			, percentageToConvert
+		)
+
+		const indexOfLowBoundary = indexOfHighBoundary === 0
+			? 0
+			: indexOfHighBoundary - 1
+
+		console.log("working-a", percentageToConvert, setPoints, indexOfHighBoundary, indexOfHighBoundary)
 
 		// use slope intercept stuff to get the y value
+		// y = mx + b
+		// y1 = m(x1) + b
+		// m = (y2 - y1) / (x2 - x1)
+		// y1 = (((y2 - y1) / (x2 - x1)) * x1) + b
+		// y1 = ((m) * x1) + b
+		// b = y1 - m(x1)
+		const x1 = setPoints[indexOfLowBoundary].x
+		const y1 = setPoints[indexOfLowBoundary].y
 
-		return indexOfLowBoundary
+		const x2 = setPoints[indexOfHighBoundary].x
+		const y2 = setPoints[indexOfHighBoundary].y
+
+		const m = (y2 - y1) / (x2 - x1)
+		const b = y1 - (m * x1)
+
+		const x = percentageToConvert
+		const y = m * x + b
+		
+		console.log("working-b", x1, y1, x2, y2, m, b, x, y)
+		return y
 	}
 
 	static labelForModifer(modifier) {
