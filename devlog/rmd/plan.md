@@ -3462,3 +3462,14 @@ so test cases I can think of that should be set up are:
   1852 I'm colliding some terminology setting up these tests. I made a const named `linearHigherBetter` but it was something else before that maybe I should revert.
 
   1903 getting drifty. dishes soon anyway. working on setting up the test data arrays of points for those cases
+
+  1911 dishes time. pick up at `// rmd here`. for some reason `setPoints[0].x` is undefined or something and breaking the test.
+
+  2114 did a .splice instead of .slice, probably
+
+  2128 bedtime soon. I got it working and under test. When I get back I need 
+  - better name than `working`
+  - use this behind some of the other functions
+  - figure out better names for the different tests that build on this one
+
+  

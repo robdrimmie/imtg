@@ -65,9 +65,9 @@ it('indexOfHighBoundary expected behaviour', async () => {
 	expect(Modifiers.indexOfHighBoundary(TWO_X_EQUALS_Y, .9)).toBe(4)
 })
 
-const linearHigherBetter = x => Modifiers.defaultSetPoints()
+const linearHigherBetter = Modifiers.defaultSetPoints()
 
-const linearLowerBetter = x => Modifiers.defaultSetPoints().splice.reverse()
+const linearLowerBetter = [ { x: 0, y: 2 }, { x: 1, y: 0 } ]
 
 const twoSegmentHigherBetter = Modifiers.defaultSetPoints([
 	{x: .9, y: 1},
@@ -78,10 +78,12 @@ const threeSegmentHigherBetter = Modifiers.defaultSetPoints([
 	{x: .9, y: 1.4}
 ])
 
-const threeSegmentLowerBetter = Modifiers.defaultSetPoints([
-	{x: .3, y: 1.4},
-	{x: .9, y: 0.4}
-])
+const threeSegmentLowerBetter = [
+	{ x: 0, y: 2 },
+	{ x: 0.3, y: 1.4 },
+	{ x: 0.9, y: 0.4 },
+	{ x: 1, y: 0 }
+  ]
 
 const fourSegmentZigZag = [
 	{x: 0, y: .8}, 
@@ -93,15 +95,32 @@ const fourSegmentZigZag = [
 
 it('working works', async () => {
 	expect(Modifiers.working(.3, linearHigherBetter)).toBeCloseTo(.6)
+
 	expect(Modifiers.working(.3, linearLowerBetter)).toBeCloseTo(1.4)
 	
-	expect(Modifiers.working(.9, twoSegmentHigherBetter)).toBeCloseTo(1)
+	expect(Modifiers.working(0, twoSegmentHigherBetter)).toBeCloseTo(0)
 	expect(Modifiers.working(.1, twoSegmentHigherBetter)).toBeCloseTo(0.11111111111111112)
 	expect(Modifiers.working(.82, twoSegmentHigherBetter)).toBeCloseTo(0.911111111111111)
+	expect(Modifiers.working(.9, twoSegmentHigherBetter)).toBeCloseTo(1)
 	expect(Modifiers.working(.91, twoSegmentHigherBetter)).toBeCloseTo(1.1)
 	expect(Modifiers.working(1, twoSegmentHigherBetter)).toBeCloseTo(2)
+	
+	expect(Modifiers.working(0, threeSegmentHigherBetter)).toBeCloseTo(0)
+	expect(Modifiers.working(.4, threeSegmentHigherBetter)).toBeCloseTo(.566666)
+	expect(Modifiers.working(.9, threeSegmentHigherBetter)).toBeCloseTo(1.4)
+	expect(Modifiers.working(1, threeSegmentHigherBetter)).toBeCloseTo(2)
 
-	// rmd todo more test cases for different types of line patterns
+	expect(Modifiers.working(0, threeSegmentLowerBetter)).toBeCloseTo(2)
+	expect(Modifiers.working(.4, threeSegmentLowerBetter)).toBeCloseTo(1.23333)
+	expect(Modifiers.working(.9, threeSegmentLowerBetter)).toBeCloseTo(0.39999)
+	expect(Modifiers.working(1, threeSegmentLowerBetter)).toBeCloseTo(0)
+	
+	expect(Modifiers.working(0, fourSegmentZigZag)).toBeCloseTo(.8)
+	expect(Modifiers.working(.1, fourSegmentZigZag)).toBeCloseTo(1.1)
+	expect(Modifiers.working(.21, fourSegmentZigZag)).toBeCloseTo(1.26)
+	expect(Modifiers.working(.66, fourSegmentZigZag)).toBeCloseTo(1.14)
+	expect(Modifiers.working(.97, fourSegmentZigZag)).toBeCloseTo(1.97)
+	expect(Modifiers.working(1, fourSegmentZigZag)).toBeCloseTo(2)
 })
 
 it('validateSetPoints enforces 0.0 <= x <= 1.0', async() => {

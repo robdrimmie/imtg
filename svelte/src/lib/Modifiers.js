@@ -80,7 +80,15 @@ export default class Modifiers {
 				- each x value must be larger than the one previous
 				- each x value must be small than the one next
 	*/
-	static validateSetPoints(setPoints, verbose = false) {
+	static validateSetPoints(setPoints) {
+		// rmd here
+		console.log("vSP", setPoints)
+		console.log('zero', setPoints[0])
+		// console.log('zero x', setPoints[0].x)
+		const foo = setPoints[0]
+		console.log('foo', foo)
+		console.log('foo x', foo.x)
+
 		// - the first x value must be 0.0
 		if(setPoints[0].x !== 0.0) return false	
 		
@@ -113,6 +121,7 @@ export default class Modifiers {
 	) {
 		// sort points by x
 		const orderedPoints = setPoints.slice().sort((a,b) => a.x - b.x)
+
 		if(!Modifiers.validateSetPoints(orderedPoints)) {
 			throw new Error("Invalid setpoints!")
 		}
