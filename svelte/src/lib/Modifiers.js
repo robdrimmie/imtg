@@ -27,6 +27,20 @@ export default class Modifiers {
 
 	static OPPONENT_DIFFICULT_MODIFIER = 1;
 
+	static percentToScore(percentToConvert, higherIsBetter = true) {
+		const setPoints = higherIsBetter
+			? [
+				{ x: 0, y: 0 },
+				{ x: 1, y: 2 }
+			]
+			: [
+				{ x: 0, y: 2 },
+				{ x: 1, y: 0 }
+			]
+				
+		return percentToScoreBySetpoints(percentToConvert, setPoints)
+	}
+
 	/*
 	  convert from a percentage/average type thing to a 0.0 - 2.0+ score modifier type thing
 
@@ -35,7 +49,7 @@ export default class Modifiers {
 	  that's the standard so defaults support it but the setpoint can be changes so that for example
 	  90% becomes 1.0. 91 - 100 then are [1.1, 1.2, .., 1.9, 2.0] and 1 - 89 are spread across 0.0 - 1.0
 	*/
-	static convertPercentageToScore(percentageToConvert, setPoint = .5, base = 1.0) {
+	static convertPercentageToScoreHigherIsBetter(percentageToConvert, setPoint = .5, base = 1.0) {
 		// top portion, so ([input - set point] / [100 - set point]) (92-90) / (100-90) + 1 = 1.2
 		if(percentageToConvert > setPoint) {
 		  return 1 + ((percentageToConvert - setPoint) / (base - setPoint))
@@ -115,7 +129,7 @@ export default class Modifiers {
 		return points.findIndex(point => point.x > value)
 	}
 
-	static working(
+	static percentToScoreBySetpoints(
 		percentageToConvert, 
 		setPoints = Modifiers.defaultSetPoints()
 	) {

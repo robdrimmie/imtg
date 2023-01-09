@@ -597,12 +597,9 @@ export default class Character {
 			return 0.1
 		}
 
-		// rmd to do use attributes to adjust setpoint
-		const setPoint = .5
-
-		return energy.asScore(true, setPoint) 
-			* health.asScore(true, setPoint) 
-			* satiety.asScore(true, setPoint)
+		return energy.asScore() 
+			* health.asScore() 
+			* satiety.asScore()
 	}
 
 	calculateRestingScore() {
@@ -610,12 +607,9 @@ export default class Character {
 		const health = this.getHealth();
 		const satiety = this.getSatiety();
 
-		// rmd to do use attributes to adjust setpoint
-		const setPoint = .5
-
-		return energy.asScore(false, setPoint) 
-			* health.asScore(false, setPoint) 
-			* satiety.asScore(false, setPoint)
+		return energy.asScore(false) 
+			* health.asScore(false) 
+			* satiety.asScore(false)
 	}
 
 	calculateRestingScoreOld() {
@@ -685,7 +679,7 @@ export default class Character {
 		if(capacity.current === 0) {
 			vendingActionScore = 2
 		} else {
-			vendingActionScore = Modifiers.convertPercentageToScore(capacity.current / capacity.base)
+			vendingActionScore = Modifiers.convertPercentageToScoreHigherIsBetter(capacity.current / capacity.base)
 		}
 
 		return vendingActionScore

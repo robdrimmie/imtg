@@ -3472,4 +3472,47 @@ so test cases I can think of that should be set up are:
   - use this behind some of the other functions
   - figure out better names for the different tests that build on this one
 
+  2145 need general .. something. 
+
+  2151 this one probably should be the base convertPercentageToScore
+
+  then there are the higher/lower is better and then.. I would have to go and look the thing up
+
+  2155 `convertPercentageToScoreHigherIsBetter` is not the thing. 
+
+  I guess very few places are going straight to that one, most stuff is asScore which is wrapping it. but that's still no good. 
+
+  ptsAsc
+  ptsDesc
+
+  I had found the case where I wanted multiple points, when and where was that? Before friday
+
+  2157 here it is 2211 some day or another but I am not working it out well
+
+  > Now here is the case for multiple setpoints though. If I add a third setpoint I then introduce diminishing returns. I guess each setpoint toggles the direction. can they go up and up and up with decreasing whatevers? yes.
+
+  The diminishing returns have value when considering the best tile. If brawn threshold is 15 and I have brawn 20 great but if I have brawn 80 like what am I going to get from that tile? not much so why bother. just move on. 
+
+  2200 so next steps are going to be.. converting the other things to use this. 
+  - convertPercentageToScoreHigherIsBetter
+  - convertPercentageToScoreLowerIsBetter
+  - convertPercentageToScoreHigherIsBetterWithDiminishingReturns
+  - convertPercentageToScoreLowerIsBetterWithDiminishingReturns
+
+  these are unnnnnweildy method names, that's for sure. 
+
+  `percentToScore(percentToConvert, higherIsBetter = true, returnsDiminishAfter = 1.0)`
+
+  and that leads to a set of reasonable defaults and some setpoints. 
+  
+  2210 leaving off tonight trying to figure out that implementation. I keep hoping I can make it not bumpy but I don't think I can.
+
+  20230109 1708 I'm not sure that I can do diminishing returns just as like a boilerplate like that
+
+  take the diminishing returns out, maybe do it as a separate method entirely, percentToScore.. I don't know. Something about passing the pattern in. 
+
+  I want a consistent form of diminishing returns for eg like the tile relationship threshold scenario above but there needs to be mechanisms to pass in the setpoints and stuff so maybe just `percentToScoreBySetPoint(percentToConvert, setPoints)` and then if I get into a regular pattern I can encapsulate that or something. 
+
+  and `percentToScoreBySetPoints` is the thing I have already. Need to change how the test works.
+
   
