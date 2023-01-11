@@ -233,12 +233,13 @@ export default class Attributes {
 		this.current = base
 		this.apparent = this.current
 
-2
+		this.label = label
+
 		this.wounds = []
 	}
 
 	asScore(higherIsBetter = true) {
-		return Modifiers.percentToScore(this.current / this.base, higherIsBetter)
+		return percentToScore(this.current / this.base, higherIsBetter)
 	}
 
 	modified() {
