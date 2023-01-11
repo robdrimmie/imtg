@@ -27,6 +27,7 @@ export default class Modifiers {
 
 	static OPPONENT_DIFFICULT_MODIFIER = 1;
 
+	// Basic linear version
 	static percentToScore(percentToConvert, higherIsBetter = true) {
 		const setPoints = higherIsBetter
 			? [
@@ -38,43 +39,7 @@ export default class Modifiers {
 				{ x: 1, y: 0 }
 			]
 				
-		return percentToScoreBySetpoints(percentToConvert, setPoints)
-	}
-
-	/*
-	  convert from a percentage/average type thing to a 0.0 - 2.0+ score modifier type thing
-
-	  if set point is .5 then 50% becomes 1.0 0% becomes 0.0. 100% becomes 2.0. etc along the scale.
-
-	  that's the standard so defaults support it but the setpoint can be changes so that for example
-	  90% becomes 1.0. 91 - 100 then are [1.1, 1.2, .., 1.9, 2.0] and 1 - 89 are spread across 0.0 - 1.0
-	*/
-	static convertPercentageToScoreHigherIsBetter(percentageToConvert, setPoint = .5, base = 1.0) {
-		// top portion, so ([input - set point] / [100 - set point]) (92-90) / (100-90) + 1 = 1.2
-		if(percentageToConvert > setPoint) {
-		  return 1 + ((percentageToConvert - setPoint) / (base - setPoint))
-		}
-	  
-		// bottom portion, so input / set point
-		return percentageToConvert / setPoint
-	}
-
-	/*
-	  convert from a percentage/average type thing to a 2.0+ - 0.0 score modifier type thing
-
-	  if set point is .5 then 50% becomes 1.0 0% becomes 2.0. 100% becomes 1.0. etc along the scale.
-
-	  that's the standard so defaults support it but the setpoint can be changes so that for example
-	  90% becomes 1.0. 91 - 100 then are [0.9, 0.8, .., 0.1, 0.0] and 89 - 0 are spread across 1.0 - 2.0
-	*/
-	static convertPercentageToScoreLowerIsBetter(percentageToConvert, setPoint = .5, base = 1.0) {
-		// bottom half -2x + 2 but is x the set point
-		if(percentageToConvert < setPoint) {
-		  return 2 - percentageToConvert / setPoint
-		}
-	  
-		// top half, so input / set point or something? 
-		return (1 - (percentageToConvert - setPoint) / (base - setPoint))
+		return Modifiers.percentToScoreBySetpoints(percentToConvert, setPoints)
 	}
 
 	static defaultSetPoints = (midPoints = []) => [
@@ -82,7 +47,6 @@ export default class Modifiers {
 		, ...midPoints
 		, {x: 1, y: 2}
 	]
-
 
 	/*
 		only valid if:

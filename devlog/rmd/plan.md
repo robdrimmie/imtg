@@ -3515,4 +3515,14 @@ so test cases I can think of that should be set up are:
 
   and `percentToScoreBySetPoints` is the thing I have already. Need to change how the test works.
 
+  1723 there is currently a bug in Mob.spec, the name is undefined. 
+
+  20230111 1842 I removed the label property from attributes. Why did I do that? That's what this failure is about, thank goodness for tests. Yes I am trying to positive reinforce myself into better work. 
+
+  1843 Probably I was falling asleep at the keyboard and thought I typed some garbage or did and deleted the whole line instead of just the fffsdlfdf part or whatever.
+
+  oh I put a 2 in there too. goodness.
+
+  1845 there I committed it and reverted just because? I don't know. anyway now the tests pass.
+
   

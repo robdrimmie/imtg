@@ -1,42 +1,33 @@
 import Modifiers from '$lib/Modifiers.js'
 
-it('higher is better works as expected', async () => {
-	expect(Modifiers.convertPercentageToScoreHigherIsBetter(.5)).toBe(1)
-	expect(Modifiers.convertPercentageToScoreHigherIsBetter(.25)).toBe(0.5)
-	expect(Modifiers.convertPercentageToScoreHigherIsBetter(.75)).toBe(1.5)
-	expect(Modifiers.convertPercentageToScoreHigherIsBetter(1)).toBe(2)
-
-	expect(Modifiers.convertPercentageToScoreHigherIsBetter(.1, .9)).toBe(0.11111111111111112)
-	expect(Modifiers.convertPercentageToScoreHigherIsBetter(.9, .9)).toBe(1)
-	expect(Modifiers.convertPercentageToScoreHigherIsBetter(.82, .9)).toBe(0.911111111111111)
-	expect(Modifiers.convertPercentageToScoreHigherIsBetter(.91, .9)).toBe(1.1)
-	expect(Modifiers.convertPercentageToScoreHigherIsBetter(1, .9)).toBe(2)
+it('percentToScore does higherIsBetter correctly', async () => {
+	expect(Modifiers.percentToScore(.5)).toBe(1)
+	expect(Modifiers.percentToScore(.25)).toBe(0.5)
+	expect(Modifiers.percentToScore(.75)).toBe(1.5)
+	expect(Modifiers.percentToScore(1)).toBe(2)
 });
 
-it('lower is better works as expected', async () => {
-	expect(Modifiers.convertPercentageToScoreLowerIsBetter(0.00)).toBe(2)
-	expect(Modifiers.convertPercentageToScoreLowerIsBetter(0.25)).toBe(1.5)
-	expect(Modifiers.convertPercentageToScoreLowerIsBetter(0.50)).toBe(1)
-	expect(Modifiers.convertPercentageToScoreLowerIsBetter(0.75)).toBe(0.5)
-	expect(Modifiers.convertPercentageToScoreLowerIsBetter(1.00)).toBe(0)
-	
-	expect(Modifiers.convertPercentageToScoreLowerIsBetter(0.00, .1)).toBe(2)
-	expect(Modifiers.convertPercentageToScoreLowerIsBetter(0.01, .1)).toBe(1.9)
-	expect(Modifiers.convertPercentageToScoreLowerIsBetter(0.09, .1)).toBe(1.1)
-	expect(Modifiers.convertPercentageToScoreLowerIsBetter(0.11, .1)).toBe(0.9888888888888889)
-	expect(Modifiers.convertPercentageToScoreLowerIsBetter(0.99, .1)).toBe(0.011111111111111072)
-	expect(Modifiers.convertPercentageToScoreLowerIsBetter(0.10, .1)).toBe(1)
-	expect(Modifiers.convertPercentageToScoreLowerIsBetter(1.00, .1)).toBe(0)
+it('percentToScore does lowerIsBetter correctly', async () => {
+	expect(Modifiers.percentToScore(0.00, false)).toBe(2)
+	expect(Modifiers.percentToScore(0.25, false)).toBe(1.5)
+	expect(Modifiers.percentToScore(0.50, false)).toBe(1)
+	expect(Modifiers.percentToScore(0.75, false)).toBe(0.5)
+	expect(Modifiers.percentToScore(1.00, false)).toBe(0)
 });
 
 it('defaultSetPoints default behaviour', async () => {
-	const actual = Modifiers.defaultSetPoints()
-	expect(actual[0].x).toBe(0)
-	expect(actual[1].y).toBe(2)
+	const basic = Modifiers.defaultSetPoints()
+	expect(basic[0].x).toBe(0)
+	expect(basic[1].y).toBe(2)
+
+	const withInsert = Modifiers.defaultSetPoints([{x:.5,y:1}])
+	expect(withInsert[0].x).toBe(0)
+	expect(withInsert[1].x).toBe(.5)
+	expect(withInsert[2].y).toBe(2)
 })
 
 // rmd todo refactor - Jest has expect().toThrow() but I couldn't figure out what I was doing wrong
-it('working validates setpoints', async () => {	
+it('percentToScoreBySetpoints validates setpoints', async () => {	
 	try {
 		Modifiers.percentToScoreBySetpoints(
 			.2, 
