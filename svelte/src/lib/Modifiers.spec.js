@@ -114,6 +114,23 @@ it('percentToScoreBySetpoints works', async () => {
 	expect(Modifiers.percentToScoreBySetpoints(1, fourSegmentZigZag)).toBeCloseTo(2)
 })
 
+it('percentToScoreDiminishing works', async() => {
+	// percentToScoreDiminishing(percentToConvert, threshold, higherIsBetter = true) {
+
+	expect(Modifiers.percentToScoreDiminishing(0, .1, true)).toBeCloseTo(0)
+	expect(Modifiers.percentToScoreDiminishing(.1, .1, true)).toBeCloseTo(1)
+	expect(Modifiers.percentToScoreDiminishing(.5, .1, true)).toBeCloseTo(1.8888888)
+	expect(Modifiers.percentToScoreDiminishing(.6, .1, true)).toBeCloseTo(1.77777)
+	expect(Modifiers.percentToScoreDiminishing(1, .1, true)).toBeCloseTo(0)
+
+
+	expect(Modifiers.percentToScoreDiminishing(0, .1, false)).toBeCloseTo(2)
+	expect(Modifiers.percentToScoreDiminishing(.1, .1, false)).toBeCloseTo(1)
+	expect(Modifiers.percentToScoreDiminishing(.5, .1, false)).toBeCloseTo(0.1111111111111)
+	expect(Modifiers.percentToScoreDiminishing(.6, .1, false)).toBeCloseTo(0.22222222)
+	expect(Modifiers.percentToScoreDiminishing(1, .1, false)).toBeCloseTo(2)
+})
+
 it('validateSetPoints enforces 0.0 <= x <= 1.0', async() => {
 	expect(
 		Modifiers.validateSetPoints([{x: -0.1, y: 1.0}])
@@ -124,7 +141,7 @@ it('validateSetPoints enforces 0.0 <= x <= 1.0', async() => {
 	).toBe(false)
 })
 
-it('validateSetPoints enforce 0.0 <= y <= 2.0', async() => {
+it('validateSetPoints enforces 0.0 <= y <= 2.0', async() => {
 	expect(
 		Modifiers.validateSetPoints([{x: 0.0, y: -0.1}])
 	).toBe(false)

@@ -3525,4 +3525,62 @@ so test cases I can think of that should be set up are:
 
   1845 there I committed it and reverted just because? I don't know. anyway now the tests pass.
 
-  
+  1847 okay so the last change I made got rid of the need for HigherIsBetter function. I should be able to migrate `percentToScoreBySetpoints` to the same function with `higherIsBetter = false` probably.
+
+  1849 ha no that's the foundational function of it all don't change that one dude.
+
+  1851 I feel like Modifiers might be done right now then? Oh not really I need to do the diminishing returns thing. This math stuff is important and ultimately to be used for scoring tile relationships, just as the reminder of what the stack is looking like
+
+  1856 dishes soon then school related stuff then evening snack. probably not coming back.
+
+  2217 much too late to do much, but the diminishing returns stuff.
+
+  I want to use this for tile relationships and attribute thresholds. If the tile physicality is brawn and the character has the threshold set at 15, when their 
+
+  the threshold is going to drop every time they win, too. It's going to go negative pretty quickly? maybe thresholds should never go down? that will be something to consider strongly. In which case probably it should increase a little slower? maybe not. that will be some dials. 
+
+  would be nice to have a thing that ran like a bunch of scenarios with different values and showed a lot of results. uhhh, good description late night Rob. 
+
+  anyway, thresholds maybe shouldn't go down.
+
+  2222 ohhh neat numbers. 
+  2222 so the brawn threshold is 15. once the character's brawn is like past 30 would they find being there interesting? Thus, diminishing returns.
+
+  do diminishing returns always have to keep increasing? no, google search shows lots of the curves I think of.
+
+  So I guess start with the set points at the threshold and at 2x threshold? Or at the halfway point between the threshold and 100? 
+
+  So like if threshold is 90, then diminishing returns start at 95 perhaps? sharp arc. and if thre
+
+  threshold   | diminishing starts
+  90              95
+  40              70
+
+  ((max - threshold) / 2) + threshold?
+
+  ((100 - 90) / 2) + 90
+
+  10/2 + 90
+  5+90 = 95
+
+  probably works
+
+  (100-40)/2 + 40
+  60/2 + 40
+  30 + 40
+
+  yeah seems right. 
+
+  So the diminishing returns function can accept a setpoint, work out the new one, and call that foundational function with 0,0,
+
+  hmm. setpoint = 1.0 on y axis? no I need to figure out what "neutral" is. I guess it probably is the threshold and then it plateaus at 1 until the drop point? maybe.
+
+  20230113 1926 will help with making banana bread soon
+
+  20230114 0913 I got pretty good into it last night, it might - oh I was going to say it might even be implemented but immediately below this editor pane is the terminal pane with a red failed test indicator, so. 
+
+  But I think the error is in the test data, not the method under test. Which might be problematic.
+
+  I'm noticing too that this Modifiers class is like, all static functions. So why bother with the class? I need to understand module stuff a bit better I could just be exporting functions directly. 
+
+0921 yeah, I'm using the method to setup the test data so it will be done soon I think this is the last one

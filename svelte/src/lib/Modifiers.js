@@ -42,6 +42,42 @@ export default class Modifiers {
 		return Modifiers.percentToScoreBySetpoints(percentToConvert, setPoints)
 	}
 
+	static percentToScoreDiminishing(percentToConvert, threshold, higherIsBetter = true) {
+		// expects to figure out the score of percentToConvert when plotted on a graph
+		// where the line goes up for a while - typically a tile relationship attribute threshold
+		// and then down to 0 after that  
+
+		/*
+			\    /
+			 \__/
+		*/
+
+		// 
+		// and the percentToConvert is the character's attribute value
+		// 
+		// I guess if higherIsBetter == false then it is diminishingPenalties or something
+		
+		//   ((max - threshold) / 2) + threshold?
+
+		const peakAmplitude = ((1.0 - threshold) / 2) + threshold
+
+		const setPoints = higherIsBetter
+		? [
+			{ x: 0, y: 0 },
+			{ x: threshold, y: 1 }, 
+			{ x: peakAmplitude, y: 2 }, 
+			{ x: 1, y: 0 }
+		]
+		: [
+			{ x: 0, y: 2 },
+			{ x: threshold, y: 1 }, 
+			{ x: peakAmplitude, y: 0 }, 
+			{ x: 1, y: 2 }
+		]
+
+		return Modifiers.percentToScoreBySetpoints(percentToConvert, setPoints)
+	}
+
 	static defaultSetPoints = (midPoints = []) => [
 		{x: 0, y: 0}
 		, ...midPoints
@@ -59,14 +95,6 @@ export default class Modifiers {
 				- each x value must be small than the one next
 	*/
 	static validateSetPoints(setPoints) {
-		// rmd here
-		console.log("vSP", setPoints)
-		console.log('zero', setPoints[0])
-		// console.log('zero x', setPoints[0].x)
-		const foo = setPoints[0]
-		console.log('foo', foo)
-		console.log('foo x', foo.x)
-
 		// - the first x value must be 0.0
 		if(setPoints[0].x !== 0.0) return false	
 		
@@ -117,7 +145,7 @@ export default class Modifiers {
 			? 0
 			: indexOfHighBoundary - 1
 
-		console.log("working-a", percentageToConvert, setPoints, indexOfHighBoundary, indexOfHighBoundary)
+		// console.log("working-a", percentageToConvert, setPoints, indexOfHighBoundary, indexOfHighBoundary)
 
 		// use slope intercept stuff to get the y value
 		// y = mx + b
@@ -138,7 +166,7 @@ export default class Modifiers {
 		const x = percentageToConvert
 		const y = m * x + b
 		
-		console.log("working-b", x1, y1, x2, y2, m, b, x, y)
+		// console.log("working-b", x1, y1, x2, y2, m, b, x, y)
 		return y
 	}
 

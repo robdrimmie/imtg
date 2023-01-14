@@ -10,12 +10,16 @@
  - ✅ get progressTileScores using the new Modifier percentToScore methods
 - party gets stuck going back and forth between -101 and -202
      - in TileRelationship calculate?????Score methods need to be updated
-      - * calculateAttributeScore
+      - calculateAttributeScore (ON DECK - left this to work on math that this will use)
       - calculateCapacityScore
       - calculateDistanceScore - probably okay
       - calculateEnergyScore
       - calculateHealthScore
       - calculateSatietyScore
+- finally figure out the math to convert percentages to scores consistently
+  - ✅ figure out the actual math
+  - ✅ make methods that make use of the math
+  - * make a method that scores with diminishing returns (line goes up then up slowly then down then down quickly)
 - use context in the calculateWhateverScore methods
 - ✅ party gets stuck on tile down-leftwards
 - ✅ associate regions with attributes
@@ -129,6 +133,9 @@
  - this might be worth creating to help me flesh out my own content anyway, although a json file is kind of easy enough. I guess the who thing could be a json config file basically, people can put one in or see the one generated for whatever seed
 
 ### make contributing easier
+#### functional
+- start with classes like Modifiers and probably Dice (except for the singleton aspect but maybe that isn't necessary? I guess if I persist the seed anyway, you figure it out that's why I'm writing it down) but others too
+- ditch the class and just export functions. learn more about module stuff to do that
 #### structure
 - make more use of svelte's EventDispatcher, especially for flit and things that bubble up to SpreadLayout
 #### tests
