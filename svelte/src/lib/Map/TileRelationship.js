@@ -197,7 +197,7 @@ export default class TileRelationship {
 			overall,
 		}
 
-		console.log("calculateActionValue returning", retval)
+		// console.log("calculateActionValue returning", retval)
 
 		return retval
 	}
@@ -223,6 +223,7 @@ export default class TileRelationship {
 		created by winning and losing encounters on this tile
 	*/
 	calculateAttributeScore(context) {
+		// RMD TODO consider context. Does it matter if it is for adventure, resting or vending? 
 		let attributeScore = 1
 
 		if (this.tile.isOrigin()) return attributeScore
@@ -231,23 +232,23 @@ export default class TileRelationship {
 			? this.personality.get(this.getBestPersonality()).apparent
 			: this.personality.get(this.tile.region.personality).apparent
 		
-		// if the character's attribute is higher than the relationship, then it is good.
-		if (characterPersonality >= this.attributes.personalityThreshold) {
-			attributeScore *= Modifiers.INCREASE
-		} else {
-			attributeScore *= Modifiers.DECREASE
-		}
+		attributeScore *= Modifiers.percentToScoreDiminishing(
+			characterPersonality/100, 
+			this.attributes.personalityThreshold/100
+		)
+		console.log("per", characterPersonality, attributeScore)
 
 		const characterPhysicality = (this.tile.region.physicality === null)
 			? this.physicality.get(this.getBestPhysicality()).apparent
 			: this.physicality.get(this.tile.region.physicality).apparent
 			
-		if (characterPhysicality >= this.attributes.physicalityThreshold) {
-			attributeScore *= Modifiers.INCREASE
-		} else {
-			attributeScore *= Modifiers.DECREASE
-		}
-
+		attributeScore *= Modifiers.percentToScoreDiminishing(
+			characterPhysicality/100, 
+			this.attributes.physicalityThreshold/100
+		)
+		console.log("phys", characterPhysicality, attributeScore)
+	
+		console.log("attrscore", attributeScore, context)
 		return attributeScore
 	}
 
@@ -256,9 +257,11 @@ export default class TileRelationship {
 
 		// for adventuring, we want a high score if we have a lot of capacity and a low score otherwise
 		if(context == CONTEXT_ADVENTURING) {
-			return percentAvailable
-		} else if(context == CONTEXT_VENDING) {
-			return 1 - percentAvailable
+			return Modifiers.percentToScore(percentAvailable)
+		} 
+		
+		if(context == CONTEXT_VENDING) {
+			return Modifiers.percentToScore(percentAvailable, false)
 		} 
 
 		// capacity doesn't really matter when resting
@@ -277,7 +280,7 @@ export default class TileRelationship {
 
 		const retval = (distance === 0) ? 1 : 1 / (distance + 1)
 
-		console.log("distance", this.tile.hex, this.currentTile.hex, distance, retval)
+		// console.log("distance", this.tile.hex, this.currentTile.hex, distance, retval)
 
 		// console.log("calculateDistanceScore", this.tile.hex, this.currentTile.hex, distance, retval)
 
@@ -399,7 +402,7 @@ export default class TileRelationship {
 	}
 
 	calculateOverallScore(value) {
-		console.log("calculateOverallScore", value)
+		// console.log("calculateOverallScore", value)
 		
 		return 1 * 
 			value.attribute * 

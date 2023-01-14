@@ -239,7 +239,7 @@ export default class Attributes {
 	}
 
 	asScore(higherIsBetter = true) {
-		return percentToScore(this.current / this.base, higherIsBetter)
+		return Modifiers.percentToScore(this.current / this.base, higherIsBetter)
 	}
 
 	modified() {

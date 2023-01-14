@@ -3584,3 +3584,48 @@ so test cases I can think of that should be set up are:
   I'm noticing too that this Modifiers class is like, all static functions. So why bother with the class? I need to understand module stuff a bit better I could just be exporting functions directly. 
 
 0921 yeah, I'm using the method to setup the test data so it will be done soon I think this is the last one
+
+0931 so now, okay, in theory with that done holy fuck we are finally ready to calculate a score for a tile relationship. This has been a divergence inside of the attribute factor which is itself a divergence but this is also I am really pretty excited for this finishing up 
+
+1003 okay, back in TileRelationship@calculateAttributeScore
+
+1005 so what I have now is this pretty typical convention:
+```
+		// if the character's attribute is higher than the relationship, then it is good.
+		if (characterPersonality >= this.attributes.personalityThreshold) {
+			attributeScore *= Modifiers.INCREASE
+		} else {
+			attributeScore *= Modifiers.DECREASE
+		}
+```
+
+it was a simple way to do what this function should be doing for me now. So I'm going to want to do something like
+
+`attributeScore = Modifiers.blah(charPers, persThresh)`
+
+probably?
+
+1010 working away on it. getting `attrscore NaN CONTEXT_ADVENTURING` so that's not great. There's a lot of console log clutter right now too. 
+
+1016 tidied that up, the clutter. 
+
+1030 oh `this.tile.region.personalityThreshold` is NaN. 
+1036 okay, so calculateAttributeScore does seem to kind of make sense how it is right now. I need to think on how it uses context but it actually is kind of doing something right in all that anyway because the numbers are different in the same tile for different actions. are they? I think so. confirm that.
+
+1038 no, they are not. So, okay. That work is described in project already so I will come back to it then. I guess. No I don't want to, doing context here too. They may be intertwined and I clearly don't want to leave it right now so fine. Pair up friends.
+
+1039 So. 5 more minutes until helping a child clean their room. coffee is almost brewed, so wrapping up for the next bit. 
+
+When I come back keep thinking about calculateAttributeScore. Right now I don't think the context matters because the threshold doesn't matter and that's probably fine. This is really about encounters and stuff and while a character isn't forced into an encounter at present they can move through tiles freely, it is okay with me if attribute score applies to all action contexts equally.
+
+1223 back briefly, interlude between others. I continue to agree that calculateAttributeScore doesn't need to consider context.
+
+1224 so calculateCapacityScore. At present straight up returns capacity percent as a score so I can probably just run it through the converter instead
+
+1228 error in browser in Party.js selectedTile is undefined. So one of these changed functions is breaking something.
+
+1230 it isn't obvious in the sheet whats causing the error so some digging diffing or reverting should be necessary
+
+1426 dishes at 3. I feel like the diff is going to be big and therefore not helpful. 
+
+1428 the diff is not that different. nothing obvious beyond the fact that I've been messing with scoring things.

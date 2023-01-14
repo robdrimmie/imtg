@@ -10,7 +10,14 @@
  - ✅ get progressTileScores using the new Modifier percentToScore methods
 - party gets stuck going back and forth between -101 and -202
      - in TileRelationship calculate?????Score methods need to be updated
-      - calculateAttributeScore (ON DECK - left this to work on math that this will use)
+      - ✅ calculateAttributeScore
+      - calculateCapacityScore
+      - calculateDistanceScore - probably okay
+      - calculateEnergyScore
+      - calculateHealthScore
+      - calculateSatietyScore
+- should I use context in the calculateWhateverScore methods?
+      - ✅ calculateAttributeScore - doesn't need it
       - calculateCapacityScore
       - calculateDistanceScore - probably okay
       - calculateEnergyScore
@@ -19,8 +26,8 @@
 - finally figure out the math to convert percentages to scores consistently
   - ✅ figure out the actual math
   - ✅ make methods that make use of the math
-  - * make a method that scores with diminishing returns (line goes up then up slowly then down then down quickly)
-- use context in the calculateWhateverScore methods
+  - ✅ make a method that scores with diminishing returns (line goes up then up slowly then down then down quickly)
+
 - ✅ party gets stuck on tile down-leftwards
 - ✅ associate regions with attributes
   - 20221210 entries hold detail
