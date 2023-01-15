@@ -3629,3 +3629,101 @@ When I come back keep thinking about calculateAttributeScore. Right now I don't 
 1426 dishes at 3. I feel like the diff is going to be big and therefore not helpful. 
 
 1428 the diff is not that different. nothing obvious beyond the fact that I've been messing with scoring things.
+
+1430 so something something scoring tiles.
+
+1430 rest and vend are not getting tiles returned in scoreActionsAndTiles stuff. 
+
+1432 `partyMemberVotes` seems to be into something. it's getting data back, tiles for each of the actions are in there for the one character that exists.
+
+1435 so then the tallying is fucked again? or something for the tallying?
+no, the call to `party.chooseActionAndTile` comes back with undefined tile but `scoredActionsAndTiles` looks okay? no, that's where tiles are missing. 
+
+so `scoreActionsAndTiles` is returning something without the right stuff. k. `scoreActionsAndTiles` is what collects `partyMemberVotes`
+
+the tile in question, which is 000, has no adventuring cards. so it doesn't get pushed
+
+1442 so. shit. there shoyuldn't be a tile there. 
+
+1443 ohhhh okay I'm closing in. The character is scoring adventure 8 and choosing 000 as the best tile for adventuring. My friend, that is _not_ the best tile for adventuring. Okay so that's what's up here, the character is choosing the wrong tile for adventuring which makes sense since I've been messing with the scoring mechanism. 
+
+So work through character progression a bit? Or like, look over the scores and see if they are sensible?
+
+1445 sensable is actually what I meant, though I do hope they are also sensible. I looked it up, that's not something I'd put together previously. 
+
+that they're different words not just spellings. 
+
+anyway
+
+1446 do the scores make sense, not can they be sensed I'm not even in the right area of word. Ah well.
+
+2001 hello perhaps more will come. snacktime at 2015ish. scores, what's up? 
+
+2005 only 000 gets added to the contender's array when scoring tiles. is it because it starts there and never gets swapped?
+
+2007 its adventuring score is 1.8. This place is great for adventuring! That's what this character things. But this character is grievously misinformed. _but how_
+
+2008 what value drives Adventuring Overall. Is this now getting super circular again? it's calculated by the time of the "here" output.
+
+2009 
+```
+const tileScoreForAdventuring = /*tileRelationship.scores.overall * */tileRelationship.values.adventuring.overall
+```
+
+the debate and confusion about what makes a good score for each of the actions continues. 
+
+so tileRelationship Scores or Values? 
+
+Scores comes from calculateAttribute, calculate blah blah blah. Now with the context stuff this is part of the path I took to find the divergences for graphs and such. and finding score methods lacking in general. 
+
+Values come come from.. ? 
+
+2012 argh I'm fucking confused again already. Okay, scores vs values what is up!
+
+the scores are coming from inside the values:
+
+```
+		this.values = {
+			adventuring: {
+				// desires are absolute, so 0 is a baseline
+				desire: 0,
+
+				// Scores are modifiers, so 1 is neutral
+				attribute: 1,
+				capacity: 1,
+				distance: 1,
+				energy: 1,
+				health: 1,
+				satiety: 1,
+				overall: 1
+			},
+```
+
+so the commented out scores.overall stuff should be deleted.
+
+```
+		const overall = this.calculateOverallScore(value)		
+```
+
+I don't think it's using all the stuff I calculate immediately above it
+
+2017 okay I found the loop, perhaps: 
+
+```
+  progress() {
+    ...
+		this.values.adventuring = this.calculateAdventuringValue(knowledge)
+    ...
+  }
+  ...
+  calculateAdventuringValue(knowledge) {
+		return this.calculateActionValue(CONTEXT_ADVENTURING, knowledge.adventuring, this.values.adventuring)
+	}
+```
+
+I pass in this.values.adventuring to use it to set this.values.adventuring. 
+
+2020 okay, unravelled that and...
+... selectedTile is undefined still
+
+2021 adventuring overall for 000 is still 1.8

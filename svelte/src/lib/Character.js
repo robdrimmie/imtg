@@ -799,11 +799,11 @@ export default class Character {
 		// find the best tiles for each type of action based on this character's knowledge
 		this.tileRelationships.forEach((tileRelationship, key, map) => {
 			const tileUnderConsideration = tileRelationship.tile
-			// console.log(`Considering tile with ID ${tileUnderConsideration.id}`
-			// 	, tileRelationship.values.adventuring
-			// 	, tileRelationship.values.resting
-			// 	, tileRelationship.values.vending
-			// )
+			console.log(`Considering tile with ID ${tileUnderConsideration.id}`
+				, tileRelationship.values.adventuring
+				, tileRelationship.values.resting
+				, tileRelationship.values.vending
+			)
 
 			const tileScoreForAdventuring = /*tileRelationship.scores.overall * */tileRelationship.values.adventuring.overall
 			const tileScoreForResting = /*tileRelationship.scores.overall * */tileRelationship.values.resting.overall

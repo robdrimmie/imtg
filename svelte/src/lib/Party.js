@@ -46,7 +46,7 @@ export default class Party {
 console.log("scoredActionsAndTiles", scoredActionsAndTiles)
 		// Figure out the best tile for that action
 		const { selectedAction, selectedTile } = this.chooseActionAndTile(scoredActionsAndTiles);
-
+console.log("selected ones", selectedAction, selectedTile)
 		// If there already, do it!
 		if (this.tile.id === selectedTile.id) {
 			// RMD TODO This breaks increasing tile knowledge since moveintotile is only called if they move
@@ -152,6 +152,7 @@ console.log("scoredActionsAndTiles", scoredActionsAndTiles)
 			
 			const memberAdventure = thisMemberVote.get('adventure');
 			tally.adventure.score += memberAdventure.score;
+console.log("A", tally.adventure.score, tally.adventure.tiles.length, memberAdventure.tile)
 
 			if (
 				memberAdventure.tile !== null &&
@@ -159,6 +160,7 @@ console.log("scoredActionsAndTiles", scoredActionsAndTiles)
 			) {
 				tally.adventure.tiles.push(memberAdventure.tile);
 			}
+console.log("B", tally.adventure.score, tally.adventure.tiles.length)
 
 			const memberRest = thisMemberVote.get('rest');
 			tally.rest.score += memberRest.score;
@@ -173,20 +175,20 @@ console.log("scoredActionsAndTiles", scoredActionsAndTiles)
 				tally.vend.tiles.push(memberVend.tile);
 			}
 		}
-// console.log('bef', tally.adventure.score)
+console.log('bef', tally.adventure.score)
 		tally.adventure.score /= partyMemberVotes.length;
 		tally.rest.score /= partyMemberVotes.length;
 		tally.vend.score /= partyMemberVotes.length;
 
-// console.log('aft', tally.adventure.score)
-// console.log(
-	// 	"tally preprune", 
-	// 	tally, 
-	//  	tally.adventure,
-	//  	tally.adventure.tiles, 
-	//  	tally.adventure.tiles[0], 
-	//  	tally.adventure.tiles.length
-	// )
+console.log('aft', tally.adventure.score)
+console.log(
+		"tally preprune", 
+		tally, 
+	 	tally.adventure,
+	 	tally.adventure.tiles, 
+	 	tally.adventure.tiles[0], 
+	 	tally.adventure.tiles.length
+	)
 	
 		// If there are no tiles suitable for the action, we don't actually want to do it!
 		if (tally.adventure.tiles.length === 0) {

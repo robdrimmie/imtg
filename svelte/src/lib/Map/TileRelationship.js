@@ -103,7 +103,7 @@ export default class TileRelationship {
 		this.values.resting = this.calculateRestingValue(knowledge)
 		this.values.vending = this.calculateVendingValue(knowledge)
 
-		// console.log("tile values", this.tile.id, this.values)
+		// console.log("Character@progress set tile values to", this.tile.id, this.values)
 	}
 
 	// #region Encounter results
@@ -174,7 +174,7 @@ export default class TileRelationship {
 		return value
 	}
 
-	calculateActionValue(context, knowledgeForAction, value) {
+	calculateActionValue(context, knowledgeForAction) {
 		const desire = this.calculateDesire(knowledgeForAction)
 		
 		const attribute = this.calculateAttributeScore(context)
@@ -184,9 +184,7 @@ export default class TileRelationship {
 		const health = this.calculateHealthScore(context)
 		const satiety = this.calculateSatietyScore(context)
 
-		const overall = this.calculateOverallScore(value)		
-
-		const retval = {
+		const actionValue = {
 			attribute,
 			desire,
 			capacity,
@@ -194,25 +192,26 @@ export default class TileRelationship {
 			energy,
 			health,
 			satiety,
-			overall,
 		}
 
-		// console.log("calculateActionValue returning", retval)
+		actionValue.overall = this.calculateOverallScore(actionValue)
 
-		return retval
+		console.log("calculateActionValue returning", actionValue)
+
+		return actionValue
 	}
 
 	calculateAdventuringValue(knowledge) {
-		return this.calculateActionValue(CONTEXT_ADVENTURING, knowledge.adventuring, this.values.adventuring)
+		return this.calculateActionValue(CONTEXT_ADVENTURING, knowledge.adventuring)
 	}
 
 	calculateRestingValue(knowledge) {
-		return this.calculateActionValue(CONTEXT_RESTING, knowledge.resting, this.values.resting)
+		return this.calculateActionValue(CONTEXT_RESTING, knowledge.resting)
 		
 	}
 
 	calculateVendingValue(knowledge) {
-		return this.calculateActionValue(CONTEXT_VENDING, knowledge.vending, this.values.vending)		
+		return this.calculateActionValue(CONTEXT_VENDING, knowledge.vending)		
 	}
 	// #endregion Calculate Tile Values
 
@@ -401,15 +400,15 @@ export default class TileRelationship {
 		return tileScore
 	}
 
-	calculateOverallScore(value) {
+	calculateOverallScore(actionValue) {
 		// console.log("calculateOverallScore", value)
 		
 		return 1 * 
-			value.attribute * 
-			value.capacity * 
-			value.energy * 
-			value.health * 
-			value.satiety
+			actionValue.attribute * 
+			actionValue.capacity * 
+			actionValue.energy * 
+			actionValue.health * 
+			actionValue.satiety
 	}
 	// #endregion Calculate Motivator Scores
 
