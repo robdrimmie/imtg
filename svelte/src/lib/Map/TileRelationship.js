@@ -247,24 +247,28 @@ export default class TileRelationship {
 		)
 		console.log("phys", characterPhysicality, attributeScore)
 	
-		console.log("attrscore", attributeScore, context)
+		console.log("attrscore", this.tile.id, attributeScore, context)
 		return attributeScore
 	}
 
 	calculateCapacityScore(context) {
+		let capacityScore = 1
 		const percentAvailable = this.backpack().availableCapacity() / this.backpack().capacity
 
 		// for adventuring, we want a high score if we have a lot of capacity and a low score otherwise
 		if(context == CONTEXT_ADVENTURING) {
-			return Modifiers.percentToScore(percentAvailable)
-		} 
-		
-		if(context == CONTEXT_VENDING) {
-			return Modifiers.percentToScore(percentAvailable, false)
+			// want lots of space in bags
+			// that's the only criteria it doesn't really matter what's possible just that there's space
+			capacityScore = Modifiers.percentToScore(percentAvailable)
+		} else if(context == CONTEXT_VENDING) {
+			// but when thinking about vending whether or not vending is available should? matter? 
+			capacityScore = Modifiers.percentToScore(percentAvailable, false)
 		} 
 
+		console.log("capacityScore", this.tile.id, percentAvailable, capacityScore)
+
 		// capacity doesn't really matter when resting
-		return 1
+		return capacityScore
 	}
 
 	calculateDistanceScore(context) {
@@ -401,14 +405,17 @@ export default class TileRelationship {
 	}
 
 	calculateOverallScore(actionValue) {
-		// console.log("calculateOverallScore", value)
+		console.log("calculateOverallScore", actionValue)
 		
 		return 1 * 
 			actionValue.attribute * 
+			actionValue.desire *
 			actionValue.capacity * 
+			actionValue.distance *
 			actionValue.energy * 
 			actionValue.health * 
 			actionValue.satiety
+
 	}
 	// #endregion Calculate Motivator Scores
 

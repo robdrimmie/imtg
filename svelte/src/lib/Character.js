@@ -116,6 +116,8 @@ export default class Character {
 		this.actionScores.adventuring = this.calculateAdventuringScore()
 		this.actionScores.resting = this.calculateRestingScore()
 		this.actionScores.vending = this.calculateVendingScore()
+
+		console.log("action scores progressed", this.actionScores)
 	}
 
 	progressAttributes() {
@@ -196,7 +198,7 @@ export default class Character {
 		// update current and apparent stats based on gear
 		this.progressAttributes()
 		
-		// update tile relationships
+		// update tile relationships based on something
 		this.progressTileRelationships()
 
 		// update the character's scores for each action
@@ -597,9 +599,12 @@ export default class Character {
 			return 0.1
 		}
 
-		return energy.asScore() 
+		const score = energy.asScore() 
 			* health.asScore() 
 			* satiety.asScore()
+
+		console.log("adventuring score", score)
+		return score
 	}
 
 	calculateRestingScore() {
@@ -679,10 +684,11 @@ export default class Character {
 		if(capacity.current === 0) {
 			vendingActionScore = 2
 		} else {
-			// vendingActionScore = Modifiers.convertPercentageToScoreHigherIsBetter(capacity.current / capacity.base)
-			vendingActionScore = Modifiers.percentToScore(capacity.current / capacity.base)
+			vendingActionScore = Modifiers.percentToScore(capacity.current / capacity.base, false)
 		}
-
+		
+		
+		console.log("calcvendscore return", vendingActionScore)
 		return vendingActionScore
 	}
 	// #endregion calculate Desire methods
@@ -805,15 +811,16 @@ export default class Character {
 				, tileRelationship.values.vending
 			)
 
-			const tileScoreForAdventuring = /*tileRelationship.scores.overall * */tileRelationship.values.adventuring.overall
-			const tileScoreForResting = /*tileRelationship.scores.overall * */tileRelationship.values.resting.overall
-			const tileScoreForVending = /*tileRelationship.scores.overall * */tileRelationship.values.vending.overall
+			const tileScoreForAdventuring = tileRelationship.values.adventuring.overall
+			const tileScoreForResting = tileRelationship.values.resting.overall
+			const tileScoreForVending = tileRelationship.values.vending.overall
 			
 			console.log("tile scores", tileScoreForAdventuring, tileScoreForResting, tileScoreForVending)
 
 			// update best tiles
 			if (tileScoreForAdventuring > bestTiles.adventure.score) {
-				console.log("Replacing adv score", tileScoreForAdventuring, bestTiles.adventure.score)
+				// console.log("Replacing adv score old new", tileScoreForAdventuring, bestTiles.adventure.score)
+				
 				// replace if score is higher
 				bestTiles.adventure = {
 					score: tileScoreForAdventuring,
@@ -841,34 +848,40 @@ export default class Character {
 			}
 
 			if (tileScoreForVending > bestTiles.vend.score) {
+				console.log("Replacing vend score old new", tileScoreForVending, bestTiles.vend.score)
+
 				bestTiles.vend = {
 					score: tileScoreForVending,
 					contenders: [tileUnderConsideration]
 				};
 			} else if (tileScoreForVending == bestTiles.vend.score) {
+				console.log("adding vend contender")
 				bestTiles.vend = {
 					score: tileScoreForVending,
 					contenders: [...bestTiles.vend.contenders, tileUnderConsideration]
 				};
 			}
 
-			console.log("here", 
+			console.log("bestTilesForActionsConcluding", 
 				tileRelationship.values, 
-				bestTiles.adventure,
-				bestTiles.adventure.score, 
-				bestTiles.adventure.contenders, 
-				tileScoreForAdventuring, 
-				tileScoreForAdventuring > bestTiles.adventure.score,
+				// bestTiles.adventure,
+				// bestTiles.adventure.score, 
+				// bestTiles.adventure.contenders, 
+				// tileScoreForAdventuring, 
+				// tileScoreForAdventuring > bestTiles.adventure.score,
 
 				// bestTiles.resting.score, 
 				// bestTiles.resting.tile, 
 				// tileScoreForResting, 
 				// tileScoreForResting > bestTiles.resting.score,
 
-				// bestTiles.vending.score, 
-				// bestTiles.vending.tile, 
-				// tileScoreForVending, 
-				// tileScoreForVending > bestTiles.vending.score
+				"outputting vend details",
+				bestTiles.vend,
+				bestTiles.vend.score, 
+				bestTiles.vend.tile, 
+				bestTiles.vend.contenders, 
+				tileScoreForVending, 
+				tileScoreForVending > bestTiles.vend.score
 			)
 		});
 

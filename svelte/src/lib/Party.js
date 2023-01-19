@@ -153,25 +153,30 @@ console.log("selected ones", selectedAction, selectedTile)
 			const memberAdventure = thisMemberVote.get('adventure');
 			tally.adventure.score += memberAdventure.score;
 console.log("A", tally.adventure.score, tally.adventure.tiles.length, memberAdventure.tile)
-
+console.log("A2", memberAdventure.tile, memberAdventure.tile.decks.adventuring.cards.length)
 			if (
-				memberAdventure.tile !== null &&
-				memberAdventure.tile.decks.adventuring.cards.length > 0
+				memberAdventure.tile !== null
+				 && memberAdventure.tile.decks.adventuring.cards.length > 0
 			) {
+				console.log("A3 - inside")
 				tally.adventure.tiles.push(memberAdventure.tile);
 			}
 console.log("B", tally.adventure.score, tally.adventure.tiles.length)
 
 			const memberRest = thisMemberVote.get('rest');
 			tally.rest.score += memberRest.score;
-			if (memberRest.tile !== null && memberRest.tile.decks.resting.cards.length > 0) {
+			if (memberRest.tile !== null 
+				&& memberRest.tile.decks.resting.cards.length > 0
+			) {
 				tally.rest.tiles.push(memberRest.tile);
 			}
 			tally.rest.tiles.push(memberRest.tile);
 
 			const memberVend = thisMemberVote.get('vend');
 			tally.vend.score += memberVend.score;
-			if (memberVend.tile !== null && memberVend.tile.decks.vending.cards.length > 0) {
+			if (memberVend.tile !== null
+				 && memberVend.tile.decks.vending.cards.length > 0
+			) {
 				tally.vend.tiles.push(memberVend.tile);
 			}
 		}
@@ -191,17 +196,17 @@ console.log(
 	)
 	
 		// If there are no tiles suitable for the action, we don't actually want to do it!
-		if (tally.adventure.tiles.length === 0) {
-			tally.adventure.score = 0;
-		}
+		// if (tally.adventure.tiles.length === 0) {
+		// 	tally.adventure.score = 0;
+		// }
 		
-		if (tally.rest.tiles.length === 0) {
-			tally.rest.score = 0;
-		}
+		// if (tally.rest.tiles.length === 0) {
+		// 	tally.rest.score = 0;
+		// }
 		
-		if (tally.vend.tiles.length === 0) {
-			tally.vend.score = 0;
-		}
+		// if (tally.vend.tiles.length === 0) {
+		// 	tally.vend.score = 0;
+		// }
 
 		// console.log ("tally postprune", tally.adventure.score, tally.rest.score, tally.vend.score)
 		return tally;

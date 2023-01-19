@@ -3727,3 +3727,298 @@ I pass in this.values.adventuring to use it to set this.values.adventuring.
 ... selectedTile is undefined still
 
 2021 adventuring overall for 000 is still 1.8
+
+2024 
+```
+attribute: 1
+​
+capacity: 2
+​
+desire: 0
+​
+distance: 1
+​
+energy: 0.9
+​
+health: 1
+​
+overall: 1.8
+​
+satiety: 1
+```
+
+desire. desire is low. what's up with desire, what did I do there?
+
+2026 so this was some of the tangle, I did a bunch of stuff to calculate it but never got it in right, this loopiness was pretty confounding!
+
+2026 no longer selectedTile error on turn 2
+
+2027 there is one a bit later after dumping the backpack contents though
+2027 same thing, bad selectedTile.
+2028 tiles and vend are empty arrays
+
+0-22 for vending? That seems... unlikely to be accurate. Only 000 has things for trading. 
+
+This may be related to other calculate score methods needing updating
+
+20230115 0931 so after the party dumps their loot
+
+0933 capacity score is 0 for all tiles in the vending context which makes sense: the pack is empty, vending is pointless when there are no items.
+
+0934 it is possible it is just getting the first tile in the list? but it shouldn't be I do not think this is actually the case just want to note it in case I don't think of anything else.
+
+0935 it's very tricky to understand where in this process something is failing. that's in part at least because I have no idea what I'm actually building right now since this is a feeling things out project not a do this specific thing project. also better tests and structure would help me be confident but none of the tests I would have written before like five days ago or whatever even really would protect for this stuff because they would be enforcing definitely wrong logic. So. Perhaps once I sort it out I'll see a good way to test it. 
+
+0937 anyway so something smells about vending but both adventure and vend have no tile in their array - do they both also have non-zero scores? an empty tile array should mean a zero score - no desire to go nowhere. 
+
+0939 scores for all three actions are 0
+```
+scoredActionsAndTiles 
+Object { adventure: {…}, rest: {…}, vend: {…} }
+  adventure: Object { score: 0, tiles: [] }
+  rest: Object { score: 0, tiles: (2) […] }​
+  vend: Object { score: 0, tiles: [] }
+```
+
+that's not good news either
+
+_and_ my sheet view is showing me conflicting information which is frustrating but there's a moderate to good chance that's because the flow is breaking before the state gets written out. can't update the scores being shown if the source of the data it is coming from hasn't changed.
+
+0946 so I have to keep going back up the chain. I'm going to end up in the calculate scores functions again almost certainly and there's a good chance that change to overall score stuff is what's doing it but that doesn't help me right now either. 
+
+this stuff, where I need to re-establish the system in my brain before I can understand it well enough is a genuine barrier to progress on a lot of projects for me. This writing I'm doing now is a workaround, a way to keep my brain in it even while it tries to avoid the structure. it sounds kind of cruel when I write about it in this fashion
+
+0948 I need to get the canned air and spray my s key, give that a shot first.
+
+0953 that's not what I'm doing now though now I'm just flipping around avoiding this effort. some of that is just where my brain is right now some of that is avoidance. 
+
+so why are all the character's action scores 0?
+
+0955 so character calculateAdventuringScore (and presumably the other two which happen right then as well) - oh maybe not though, to that parenthetical. 
+
+right after adv score is returned  `considering tile with id 000` is output so that's happening next. 
+
+0957 that's in best tiles for actions so that makes sense. actions are scored then tiles are determined. 
+
+but the score is 0 here right?
+
+0957 anyway the order of events makes sense. consider tile blah blah is part of tile scores which happens after action scores. 
+
+"progressTileScores" isn't a great name since it is - well I'll just change it to ProgressTilesForActions? I don't know. leaving it for now, it's a diversion. 
+
+but the scores are set by this point is the point including probably all the 0s?
+
+1000 so the scores seem fine adv: 8, rest: 0, vend: 2. Vend 2 seems high
+1001 yeah the backpack is empty. So 2 seems inappropriate even, vending should not be interesting at this time for this character.
+
+1004 calculating capacity for vending desire. a full backpack means they want to vend. 
+
+capacity = current / base
+
+ so like, 1/1 = 1 = 100% _capacity_. high capacity means low desire. higher is not better. 
+
+ 1005 that change did not change the behaviour. selectedtile is still undefined in the party
+
+ 1006 but partyMemberScores looks better. adv is 8, rest and vend are both 0 which seems just fine for a party with full capacity and no damage. 
+
+vend is still picking -101 for its tile though, what the fuck vend? Sort that out.
+
+a debugging path that has worked on this for me here is checking out the partymembervotes stuff. if that looks good then the problem is in party progress. if it doesn't seem right, the problem is probably in character progression, then it's a matter of what is being progressed and what fails to progress.
+
+that's not super great workflow but hey it's kind of something that I have to remember each time I dip into this stuff.
+
+scoredActionsAndTiles is also kind of good to help scope things. 
+
+1018 so picking the vend tile is not going entirely right right now. 
+
+1025 000 tile data when considering it in bestTilesForActions has capacity 0 (and therefore overall 0) for vending. that isn't good that isn't what I want. dangit. 
+
+oh wait here yes I do I guess I just said I do because capacity is 100%. 100% capacity means that vending is no good, remember? 
+
+So here's the problem then. If every tile is no good for vending then - 
+
+well no this is actually probably should be okay right? We're not trying to vend we just vending. Adventuring is still the problem.
+
+000 has adventuring.desire 0 which is good, this place is _terrible_ for adventures.
+
+-101 is fine overall 0.55
+
+1029 bestTiles.vend is an object containing properties adventuring, resting, vendingn each of which has 
+
+oh okay this is something I restructured and probably this method isn't using the restructured stuff somewhere. okay starting to get a bit closer yet. 
+
+1030 no wait no, okay that was tiles.values being output first. my shitty logging is confounding me once again.
+
+1031 bestTiles.vend.tile is undefined. Contenders has 8 entries. 
+
+what resolves contenders or tile? adventuring is so rich in possibility that it could be one of any of these 8. But instead we picked `undefined` because we didn't look at the right property, maybe? 
+
+1032 this is when it should happen
+```
+bestTiles.adventure.tile = Deck.pickOneCard(bestTiles.adventure.contenders)
+```
+
+1032 oh I was looking at vend which is why there were 8 contenders, all were 0 because vending is bad. 
+
+outputting adventure stuff now. 
+
+1033 okay adventures does have a contender, 0-11
+
+partyMemberVotes has a tile for adventure 0-11 still.
+rest is scored 0 and has 000 for tile. that is okay though maybe it should have no tile but defaulting to 000 is probably fine, get them to town and then stall out there until the player changes something type of thing perhaps.
+vend is score 0 and has 0-22 for the tile. that doesn't make any sense. 
+
+but by scoreActionsAndTiles adventure is scored 0 and has no tile, same with vend, and rest has two instances of 000.
+
+so. that's not good.
+
+1036 I'm very confused right now. 
+
+scoreActionsAndTiles returns good data it seems right? That's what that log statement is demonstrating? (except for the weird vend choice but there is data there, tiles have been selected)
+
+1039 `memberAdventure.tile.decks.adventuring.cards.length` is not > 0 so there are no cards in that deck - either legitimately or as far as can be determined at this point. this is inside party. 
+
+there isn't __layout output since processing dies too soon so I can't look directly at the board. I deleted the log prior to the turn where the beahviour shows. 
+
+so run up to this point without deleting the log, what does 0-11's adventuring deck look like? 
+
+1041 adventuring deck is indeed empty. 
+
+1042 so the party knows more than the character does but because there's no other tile options it gets snared up and shitty.
+
+this feels like a tile knowledge problem. If the character was there when the deck was depleted they should know that. Or at least, if a party goes to a tile and tries to adventure but there's nothing to do, all the characters in the party should know that that tile is now not good for whatever action.
+
+shit that's another big chunk of work. all this stuff is so tightly coupled. gripe about architecture, complete. this is necessary to get irritated enough to change the architecture but I still want to focus on functionality first because doing a full code overhaul in a non-functional state would be bad. Sure would have been nice to have it done before wrestling with this shit but I'm in the mix and it is better to get the behaviour back then rearchitect. I guess in theory I have motivation to do that now. 
+
+in theory. it's easy to keep on behaviour because it is much more gratifying to me to see these pieces come together, though I do think that when I finally get a good state-focused functional structure in place and well tested small things, that will feel pretty good too.
+
+So the next thing to focus on is tile knowledge stuff. 
+
+Well I guess also it should be possible for a party to move to a tile with an empty deck and when they do their action there discover the deck is depleted. I guess this is all the same thing really. 
+
+1047 it might be the case that the activity decks are .. not useful in the way I thought. I'm not sure, I'm starting to smell some darling killing but just the early moments of it. It might just be death in the tarot way and the decks get repurposed into a better system. Unsure yet!
+
+but I think it simplifies a lot of the stuff I have protecting the game from the party drawing from an empty deck. It's not a damaging act it just means that they know not to do that any more. 
+
+I don't really even know how to wrangle that logic into things. 
+
+So I guess walk through what happens when a character moves into a tile and when they draw. 
+
+1610 oh right, turned over a stone and found another impacted system. 
+
+so I need to walk through the action phase of the turn and specifically the move and draw action phases. That's in the party.
+
+1612 `party.performAction` flows into `action` which features:
+```
+		if(deck.length < 1) {
+			console.error("party action deck has no cards what!");
+		}
+```
+
+but it's not possible to get here I think because of the tally pruning? if they want to adventure on this tile then they should be able to even if there isn't anything to do. the lack of osmething to do and/or eventually the ease with which it is done should dampen adventuring desire in the tile relationship.
+
+1614 "adventuring desire" is probably poor or at least inconsistent terminology.
+1614 making soup at 5.
+
+1615 so it needs to be valid to adventure when .. hrm. 
+
+1617 adventure goes from 8 to 0 in progress
+
+inside scoreActionAndTiles
+1620 commented out where the number of cards is considered
+
+1621 restored those, commented out the part where if the length was 0 the score became 0. changed in game behaviour of course. I think the weirdness of the vending score stuff might be making vending win because it isn't being surpressed because there were no cards but the scores were 8 0 0 I think this is a different point in the game that I am seeing state at.
+
+which means unravelling what's happening right now. I don't even remember what that big refactor was supossed to be right now oh yeah letting parties draw empty deck cards, making tile relatonships be where the size of the deck is considered I guess? the party doesn't _know_ it is empty until the can't find an encounter. 
+
+that should get logged, too. 
+
+1623 but yeah this is what I'm getting: 
+```
+selected ones PARTY_ACTION_VEND undefined Party.js:49:9
+Uncaught TypeError: selectedTile is undefined
+```
+
+why is it vend? oh the party just won, totally makes sense. Why is vend empty then? 
+
+it has 0-11 in partyMemberVotes. 
+
+1627 it is in vend contenders in character bestTiles stuff.
+
+1629 
+```
+Considering tile with ID 000 
+Object { attribute: 1, desire: 0, capacity: 0, distance: 0.5, energy: 0.45, health: 1, satiety: 1, overall: 0 }
+ 
+Object { attribute: 1, desire: 3.5, capacity: 1, distance: 0.5, energy: 0.45, health: 1, satiety: 1, overall: 0.7875 }
+ 
+Object { attribute: 1, desire: 3.5, capacity: 2, distance: 0.5, energy: 0.45, health: 1, satiety: 1, overall: 1.575 }
+
+Considering tile with ID 0-11 
+Object { attribute: 2.113027795150757, desire: 1, capacity: 0, distance: 1, energy: 0.9, health: 1, satiety: 1, overall: 0 }
+ 
+Object { attribute: 2.113027795150757, desire: 1, capacity: 1, distance: 1, energy: 0.9, health: 1, satiety: 1, overall: 1.9017250156356813 }
+ 
+Object { attribute: 2.113027795150757, desire: 1, capacity: 2, distance: 1, energy: 0.9, health: 1, satiety: 1, overall: 3.8034500312713626 }
+```
+
+big fan of it for vending. big big fan!
+
+so big wins on attribute but also capacity. it should hate it for vending. it does for adventuring. is capacity not considering context or something?
+
+1638 capacity score doesn't take whether or not there are vending cards into possibility. or any cards at all. should it? 
+
+this is why. I have it so that capacity score is always 2 if the bag is full. It doesn't matter which tile it is. But the tile's vend deck capacity needs to modify it. the tile knowledge about that. 
+
+1639 but it feels weird to do that in these methods. does it? it's inside tile relationship, that's exactly what it's for. capacity score when vending only has any impact if it considers whether or not vending is possible. 
+```
+			// want lots of space in bags
+			// that's the only criteria it doesn't really matter what's possible just that there's space
+			capacityScore = Modifiers.percentToScore(percentAvailable)
+		} else if(context == CONTEXT_VENDING) {
+			// but when thinking about vending whether or not vending is available should? matter? 
+```
+
+this one is going to be a struggle. Tile Relationship scores are provided for what this character thinks about this tile for this action. 
+
+so if a character is going adventuring the only thing they carry about is "do I have space for stuff" If yes, then good. If no then bad. 
+
+but it can be overly bad or maybe it is if no then just neutral, not bad. this tiles value is not impacted by ... a full bag? 
+
+The way it is writtin is that: 
+
+if adventuring, high capacity is good. 0 capacity is 0 good. 
+if vending, low capacity is good. 100% capacity is no good.
+
+but these aren't attributes of the tile right? These are the character's relatoinship with the tile? 
+
+    Every tile is bad for adventuring when the character has no capacity.
+
+that's an okay assertion. That seems reasonable. 
+
+    Every tiles is good for vending when the character has no capacity.
+
+that is less good of one. The character really wants to vend when they have no capacity but whether or not this particular tile is any good either has:
+- nothing at all to do with whether or not the character can vend there
+- everything to do with whether or not the character can vend there
+
+Does capacity matter to the character/tile relationship? 
+
+Based on the state of their attributes (and therefore gear) and resources a character decides that from the options [adventure, rest, vend] they want to vend.
+
+When considering whether or not a tile is good for vending, a character bases their knowledge on what they know of deck sizes. 
+
+So in theory the character should want to adventure and try to adventure in origin town and discover that there are no adventures to be had in origin town.
+
+Then
+
+okay I am stepping away shortly when I get back I want to keep workingi through this decision making logic. I've been using a handful of methods that might not actually be relevant and I like this thing that ties _what action to take_ to the state of the character and _what tile to perform that action_ based on what the character knows about tiles. 
+
+action is based on state of self
+value of tile for actions is based on tile knowledge alone
+
+1652 that feels like it make sense. 
+
+20230117 2009 dipping in. 
+
+20230118 2121 dip again. "I want to keep working through this decision making logic". But where did I leave off?

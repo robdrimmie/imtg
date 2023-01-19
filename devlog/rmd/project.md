@@ -27,7 +27,8 @@
   - ✅ figure out the actual math
   - ✅ make methods that make use of the math
   - ✅ make a method that scores with diminishing returns (line goes up then up slowly then down then down quickly)
-
+- * party should be able to adventure on a tile with no cards without crashing everything
+  - tile deck knowledge gets updated once the deck is definitely updated so it's sort of a lost turn but knowledge is gained and then the character never picks that tile for that purpose again.
 - ✅ party gets stuck on tile down-leftwards
 - ✅ associate regions with attributes
   - 20221210 entries hold detail
