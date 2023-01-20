@@ -201,6 +201,9 @@ export default class Character {
 		// update tile relationships based on something
 		this.progressTileRelationships()
 
+		///// the above stuff is about ensuring state is correct
+		///// the below stuff is about making decisions based on that state
+
 		// update the character's scores for each action
 		this.progressActionScores() 
 
@@ -579,15 +582,13 @@ export default class Character {
 
 	// #region calculate Action Score methods
 
-	// A character wants to go adventuring if they are healthy, energetic and satiated
-	// A character with high neuroticism has a high threshold, so that is the threshold for now
+	// Scoring an action is a function of:
+	// - what sort of resources does it consume?
+	// - capacity, which is a resource but not like an attributes.resource
 	calculateAdventuringScore() {
 		const energy = this.getEnergy();
 		const health = this.getHealth();
 		const satiety = this.getSatiety();
-
-		// rmd todo consider personality - how does neuroticism affect the set point
-		// and perhaps physicality but I'm not sure for the scores, for example?
 
 		// if any resource is zero the character is not able to adventure
 		if (energy.current === 0 || health.current === 0 || satiety.current === 0) {
@@ -599,6 +600,7 @@ export default class Character {
 			return 0.1
 		}
 
+		// higher resources increase adventure scores
 		const score = energy.asScore() 
 			* health.asScore() 
 			* satiety.asScore()
@@ -612,6 +614,7 @@ export default class Character {
 		const health = this.getHealth();
 		const satiety = this.getSatiety();
 
+		// lower resources increase resting scores
 		return energy.asScore(false) 
 			* health.asScore(false) 
 			* satiety.asScore(false)
@@ -673,23 +676,17 @@ export default class Character {
 
 	// A character wants to vend (dump gear at minimum) if they have low capacity
 	calculateVendingScore() {
-		let vendingActionScore = 1
-
 		const capacity = {
 			base: this.backpack().capacity,
 			current: this.backpack().availableCapacity()
 		}
 
-		// _really_ wants to vend if there's no capacity
-		if(capacity.current === 0) {
-			vendingActionScore = 2
-		} else {
-			vendingActionScore = Modifiers.percentToScore(capacity.current / capacity.base, false)
-		}
-		
-		
-		console.log("calcvendscore return", vendingActionScore)
-		return vendingActionScore
+		// todo: should low currency impact vending score? need some money!
+		// money doesn't really have value to the _character_ yet
+		// since the chest is effectively communal at this time, currency is very devalued
+
+		// lower capacity increases vending score
+		return Modifiers.percentToScore(capacity.current / capacity.base, false)
 	}
 	// #endregion calculate Desire methods
 

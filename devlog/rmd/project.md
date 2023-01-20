@@ -5,6 +5,9 @@
 *NOTE:* This list is not a commitment to you, it is a reference for me. There is no guarantee that any of these items will be implemented.
 
 ## big tasks (not prioritized, but a little bit preference-ized)
+- 20230119, 1951 entry. it was not the first timestamp for that date so that full string won't get a hit
+  - implement the progress character workflow described there.
+- make capacity a resource - calculate it when all the attributes are updated probably
 - 🟠 audit character progress workflow
  - ✅ reorder and revisit flow
  - ✅ get progressTileScores using the new Modifier percentToScore methods
@@ -27,16 +30,10 @@
   - ✅ figure out the actual math
   - ✅ make methods that make use of the math
   - ✅ make a method that scores with diminishing returns (line goes up then up slowly then down then down quickly)
-- * party should be able to adventure on a tile with no cards without crashing everything
+  - use this stuff a bunch when scoring to feel confident it works
+- party should be able to adventure on a tile with no cards without crashing everything
   - tile deck knowledge gets updated once the deck is definitely updated so it's sort of a lost turn but knowledge is gained and then the character never picks that tile for that purpose again.
-- ✅ party gets stuck on tile down-leftwards
-- ✅ associate regions with attributes
-  - 20221210 entries hold detail
-  - ✅ deal attributes to regions
-  - ✅ impact mob generation 
-  - impact loot generation
-- ✅ associate region attributes with tile relationships
-  - 20221210 entries touch on it but no specific implementation is described
+- region attributes should impact loot generation
 - interface
   - images need to exist for all item types
     - 🟠 missing Win Condition and Food
@@ -52,25 +49,13 @@
   - make it impossible to sell to vendor
   - add hint to log about needing to restore the item
   - update character to desire going to the region the win condition tile is in
-- ✅ pretty sure traps are misbehaving now, result of item modifiers?
-  - removing the Traps class really made that better
-- ✅ probably need to remove everything about the vendor action
-  - this was wrong. the vendor action gets characters into OriginTown and eventually other vend locations
 - character jobs should probably be removed entirely but I'm keeping that particular darling on life support
 - 🟠 Combat needs to be replaced with a generic encounter type that tests the strongest attributes or something based on 
   - handle party loss
   - ✅ tile relationships updated with loss and victory changes
-- figure out how to derive resources from attributes and how to differentiate resources, revisit how to deplete and renew them, etc. see entry 20221231 timestamp 0912 for some vague thoughts
-- ✅ give player something to do (perhaps something that is fun?)
- - ✅ single character starts with no gear
- - ✅ early fights acquire gear but can only ~equip or hold in hands~ put in 1-slot sack
- - ✅ when ~hands~ 1-slot sack full, unload in town
- - ✅ the above should happen pretty quickly
- - ✅ working towards a good loop of adventure a few rounds, manage items, adventure a few rounds, manage items
- - ✅ probably need a lot more encounter cards in early tiles to make it of interest. 
-
 
 ### scope creep - this are future current targets
+- figure out how to derive resources from attributes and how to differentiate resources, revisit how to deplete and renew them, etc. see entry 20221231 timestamp 0912 for some vague thoughts
 - maybe switch to HEXACO https://en.wikipedia.org/wiki/HEXACO_model_of_personality_structure
   - add a 6th physicality, maybe speed
 - add more encounters
@@ -158,6 +143,26 @@ that is interesting.
 
 ## notes and such (reverse chrono)
 As work in the sections above gets completed, I archive it down here. This is not a _good_ system, but it is _a_ system. Eventually this should all be migrated into issues or the project tooling or whatever. 
+
+### 20230119 - figuring out a core mechanic led to brand new destabilization
+- ✅ party gets stuck on tile down-leftwards
+- ✅ associate regions with attributes
+  - 20221210 entries hold detail
+  - ✅ deal attributes to regions
+  - ✅ impact mob generation 
+- ✅ associate region attributes with tile relationships
+  - 20221210 entries touch on it but no specific implementation is described
+- ✅ pretty sure traps are misbehaving now, result of item modifiers?
+  - removing the Traps class really made that better
+- ✅ probably need to remove everything about the vendor action
+  - this was wrong. the vendor action gets characters into OriginTown and eventually other vend locations
+- ✅ give player something to do (perhaps something that is fun?)
+ - ✅ single character starts with no gear
+ - ✅ early fights acquire gear but can only ~equip or hold in hands~ put in 1-slot sack
+ - ✅ when ~hands~ 1-slot sack full, unload in town
+ - ✅ the above should happen pretty quickly
+ - ✅ working towards a good loop of adventure a few rounds, manage items, adventure a few rounds, manage items
+ - ✅ probably need a lot more encounter cards in early tiles to make it of interest. 
 
 ### 20221125 - new repo and stabilization
 0942

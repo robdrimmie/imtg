@@ -4022,3 +4022,84 @@ value of tile for actions is based on tile knowledge alone
 20230117 2009 dipping in. 
 
 20230118 2121 dip again. "I want to keep working through this decision making logic". But where did I leave off?
+
+2124 scoring tiles
+
+2125 `selectedTile is undefined` is still a problem. turn after encounter. 
+
+20230119 1935 
+1939 zone out. reading up on some stuff above a tiny bit but mostly off in space. 
+
+1941 perhaps: capacity should impact action decision only?
+
+- decide what the character wants to do
+- decide which tile is the best for each possible action
+
+they aren't related.
+
+1944 I mean they are but they aren't directly coupled. They are two distinct operations
+
+A1945 above I phrased it like: 
+> I like this thing that ties _what action to take_ to the state of the character and _what tile to perform that action_ based on what the character knows about tiles. 
+
+but that's kind of wrong because it couples them
+
+they are two different votes.
+
+1946 it _might_ be the case that the action the Party chooses should impact which tile the Character chooses to perform that action, but I'm going to keep it separated into like, phases. Progress Character phase. Progress Party phase. 
+
+So progressing a character is them making their votes for actions and tiles. 
+
+Deciding action is a function of:
+- available resources
+- capacity, which is a resource but not like an attributes.resource
+  - should it be? it gets calculated every turn why not treat it the same?
+
+Each _might_ be modified by 
+
+1949 something? 
+
+is that the only stuff deciding action is based on?
+
+deciding tile for action is based on:
+- what the character knows about the tile
+
+is it more than that, or more granular that that?
+
+1951 is 
+- whether or not the character can handle the difficulty?
+
+in that tile for action stuff? 
+
+attributes don't get explicitly stated here. They are definitely a _very_ important part of identifying the best tile for action.
+
+- what the character knows about the tile 
+- in the context of each ActionType
+
+- adventuring:
+  - do I think there are cards available?
+  - do I think my attributes exceed the thresholds?
+- vending:
+  - is the tile OriginTown?
+    - eventually more complicated really but for right now this really is it
+    - but make it a function still so that future behaviour can be squozed in
+- resting:
+  - is one or more resource low?
+  - do I think there are cards available 
+    - eventually: are there cards available _that restore this resource_
+
+
+so work to be done:
+- make capacity a resource?
+- review character progression in the context of the above behaviours and refactor appropriately
+
+2000 OH and the party has to be able to draw from an empty deck if they chose to adventure on the tile. If they know the deck is empty the tile won't be picked for that action.
+
+that work is in project, how do I get this work re-written tonight into it?
+
+2058 likely not starting up again meaningfully tonight
+2109 maybe a bit?
+
+2112 archived a chunk of big tasks. It's very big right now but there's a lot of stuff that will collapse quickly as the refactor progresses. 
+
+2115 so I think I need to go through the progress cycle again, with the 
