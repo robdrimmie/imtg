@@ -5,7 +5,7 @@
 *NOTE:* This list is not a commitment to you, it is a reference for me. There is no guarantee that any of these items will be implemented.
 
 ## big tasks (not prioritized, but a little bit preference-ized)
-- 20230119, 1951 entry. it was not the first timestamp for that date so that full string won't get a hit
+- * 20230119, 1951 entry. it was not the first timestamp for that date so that full string won't get a hit
   - implement the progress character workflow described there.
 - make capacity a resource - calculate it when all the attributes are updated probably
 - 🟠 audit character progress workflow

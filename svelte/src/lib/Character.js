@@ -681,7 +681,7 @@ export default class Character {
 			current: this.backpack().availableCapacity()
 		}
 
-		// todo: should low currency impact vending score? need some money!
+		// rmd todo: should low currency impact vending score? need some money!
 		// money doesn't really have value to the _character_ yet
 		// since the chest is effectively communal at this time, currency is very devalued
 

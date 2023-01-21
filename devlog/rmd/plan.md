@@ -4103,3 +4103,13 @@ that work is in project, how do I get this work re-written tonight into it?
 2112 archived a chunk of big tasks. It's very big right now but there's a lot of stuff that will collapse quickly as the refactor progresses. 
 
 2115 so I think I need to go through the progress cycle again, with the 
+
+20230121 0845 I'm writing up some entities/concepts in docs/entities.md and as I write about Environments I realize that there _might_ be something lost by removing encounters, because there are no mobs and interesting individual interactions, just the big two attributes thing. 
+
+But that is just the _first_ interaction, the _baseline_ interaction. Environments will still be able to flavour them in some fashion or another. It's worth having encounters in a region that perhaps aren't just about the attributes perhaps? It's tough to say but right now this encounter mechanic is solid. 
+
+I guess the risk is the loss of flavour. In one aspect of this project, it is a world-builder for role playing games and adventures and such. It's a theoretical secondary effect yet but thus far hasn't been eliminated by other things. The emphasis on attributes is perhaps weird but at any rate it would be necessary to modify the environment, translate it to a specific system. 
+
+Anyway, thoughts sparked by other things. 
+
+The work is still working through the progress cycle with the workflow (perhaps? design?) outlined above
