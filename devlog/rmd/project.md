@@ -14,20 +14,20 @@
  - ✅ reorder and revisit flow
  - ✅ get progressTileScores using the new Modifier percentToScore methods
 - party gets stuck going back and forth between -101 and -202
-     - in TileRelationship calculate?????Score methods need to be updated
+     - ✅ in TileRelationship calculate?????Score methods need to be updated
       - ✅ calculateAttributeScore
       - ✅ calculateCapacityScore
       - ✅ calculateDistanceScore
       - ✅ calculateEnergyScore
-      - calculateHealthScore
-      - calculateSatietyScore
-- should I use context in the calculateWhateverScore methods?
+      - ✅ calculateHealthScore
+      - ✅ calculateSatietyScore - leaving as is for reasons documented in comments
+- ✅ should I use context in the calculateWhateverScore methods?
       - ✅ calculateAttributeScore - doesn't need it
       - ✅ calculateCapacityScore - uses it
       - ✅ calculateDistanceScore - doesn't need it
       - ✅ calculateEnergyScore - uses it
-      - calculateHealthScore - uses it
-      - calculateSatietyScore - uses it
+      - ✅ calculateHealthScore - uses it
+      - ✅ calculateSatietyScore - uses it - leaving as is for reasons documented in comments
 - finally figure out the math to convert percentages to scores consistently
   - ✅ figure out the actual math
   - ✅ make methods that make use of the math
@@ -57,6 +57,8 @@
   - ✅ tile relationships updated with loss and victory changes
 
 ### scope creep - this are future current targets
+- revisit `calculateXScore` functions in TileRelationships - can they be extracted and made functional?
+  - eg if health is passed to calculateHealthScore it has no need to get anything from the class it is in so it can be extracted, placed under test and then just used by this class. but I don't know where to put them all for that purpose yet. 
 - figure out how to derive resources from attributes and how to differentiate resources, revisit how to deplete and renew them, etc. see entry 20221231 timestamp 0912 for some vague thoughts
 - maybe switch to HEXACO https://en.wikipedia.org/wiki/HEXACO_model_of_personality_structure
   - add a 6th physicality, maybe speed
@@ -93,6 +95,7 @@
 - another type of container, potion bags
 - persistence - I shouldn't entirely lose state on reload
 - character death
+- clear out dead darlings and unused things
 
 ### far future - there's a better spot for this but I don't have one
 - it would be nifty if adventurers had like, personal quests. [[20210704 1011]]

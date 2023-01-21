@@ -4362,3 +4362,57 @@ anyway keep going for now. at least I can see the ways this isn't functional.
 
 1155 okay, scores are fucky in some fashion but I'm going to keep working ahead. Perhaps not entirely the best but I don't want to wade into progress stuff again until there's more consistently in these scoring things. then I'll unravel better. 
 
+1158 `calculateHealthScore` now. 
+
+So this is very similar to energy. matters a bit for adventuring a bit more for resting. does health matter at all for vending? I don't think it does. 
+
+is it bad to have adv and rest treat it the same? except higherIsBetter only for adv. 
+
+So this is a pattern - adv/rest inverse of each other, vending doesn't matter. 
+
+oh not quite, capacity does this but doesn't care about resting. so for now copy/paste the logic and update it. 
+
+1202 could get more interesting curves but for now linear is fine.
+
+1203 oh shit I can just put like, health into the parameters and then call it from the orchestrating function. then they become much easier to test. I will do that here to start and maybe double back for others if I think about it. 
+
+1207 okay not yet I can feel the cascade of questions. These methods should then be static or outside the class anyway right? they're just functions does the class need to expose them? does it make sense to have them there if they aren't bound to the tilerelationship?
+
+so anyway, a bit of stuff to think on. 
+
+1210 okay, time to step away. calculateHealthScore updated. Satiety next. 
+
+thought: Resource score calculations might follow - oh no they don't. energy and health logic differ. 
+
+- should resource calculations take into consideration deck size? probably right? perhaps deck size influences set points and modifies score accordingly? 
+
+```
+return Modifiers.percentToScore(healthPercent) * context-appropriate-deck.size.asScore()
+```
+
+something like that. 
+
+satiety likely behaves very similarly to energy. the differences in resources should be how they replenish but that refinement can come later. Satiety is very much like energy in that if something is far then I need to expend satiety. 
+
+I'm still not sure satiety makes a lot of sense. It is still a bolted-on mechanic and I'm not entirely sure why I have it. 
+
+1424 I think I have a good stretch here. No fixed time limit this time, just until interruption which might be 30 minutes away? Maybe less. 
+
+So moving on to the next calculate method, right? oh right `calculateSatietyScore`.
+
+I don't want to rip satiety out yet. I can't defend it and I think it is useless but I don't want to rip it all out.
+
+1453 so I should make its calc method consistent. 
+
+1453 ew. ew ew ew it is using foraging still. shit do I want foraging? I don't think so. 
+
+1454 maybe? it's implemented throughout, in all the tile relationships and shit. 
+
+So I could convert it to distance and satiety to function like energy. Little or none of these things are using tile knowledge right now. Tile knowledge is kind of useless right now? 
+
+So, okay fine. I'm going to leave satiety bound to foraging for now. Foraging is always nothing so satiety is never really going to be an issue, and this will be a good reference for bringing in consideration of decks in the other calculation things. So keep it for now. 
+
+1458 okay I will call satiety done for now. I'm going to add a note to it.
+
+1459 it would be nice to modularize a lot of this stuff so I can just like, turn off the feature? But it's not obvious that will be something I want to do here, will an implementation of this system want to calculateEnergyScore differently? Maybe but like... that is also kind of core? Well I guess only if there are characters that explore tiles independently. Even in that scenario though it might be interesting to show users what characters know about where.
+

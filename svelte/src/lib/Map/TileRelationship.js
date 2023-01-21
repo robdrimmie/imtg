@@ -323,75 +323,23 @@ export default class TileRelationship {
 		return score
 	}
 
-	calculateEnergyScoreOld(context, distance) {
-		// at present vending is 
-		const tileToConsider = this.tile
-		// console.log("calculateEnergyScore - tileToConsider, distance", tileToConsider,distance)
-
-		const percentAvailable = energy.current / energy.base
-
-		// rmd todo energetic threshold should be modified by stats. not sure which ones 
-		// endurance has a direct impact. 
-		// highly neurotic people might have less energy because they burn a lot thinking.
-		// more? 
-		const characterIsEnergetic = percentAvailable > 0.4
-
-		let multiplier = 1
-		if (tileToConsider) {
-			if (characterIsEnergetic) {
-				if (tileToConsider.hasAdventuringAvailable()) {
-					multiplier *= Modifiers.INCREASE
-				} else {
-					multiplier *= Modifiers.DECREASE
-				}
-			} else {
-				if (tileToConsider.hasRestingAvailable()) {
-					multiplier *= Modifiers.INCREASE
-				} else {
-					multiplier *= Modifiers.DECREASE
-				}
-			}
+	calculateHealthScore(context) {
+		if(context == CONTEXT_VENDING) {
+			// health has no impact on desire to vend
+			return 1
 		}
 
-		const energyScore = multiplier * distance
-
-		// console.log("calculated [energy score] for [currenttile] with [multiplier] dampened by [distanceScore]",
-		//   energyScore,
-		//   tileToConsider,
-		//   multiplier,
-		//   distanceScore
-		// )
-		return energyScore
-	}
-
-
-
-	// RMD TODO improve calculate health score
-	// can get a lot more nuanced here, get a bit of a curve that plateaus around 90 or something.
-	// but anyway.
-	calculateHealthScore(context) {
 		const characterHealth = this.resources.get(Attributes.RESOURCES_HEALTH)
 		const percentAvailable = characterHealth.current / characterHealth.base
 
-		const adventuringValue = this.values.adventuring
-		const restingValue = this.values.resting
+		const higherIsBetter = (context == CONTEXT_ADVENTURING)
+			? false				// low health means high desire to rest, low to adventure
+			: true				// high health means high desire to adventure, low to rest
 
-		// This is pretty heavy handed still, but basically, if I have a lot of health available
-		// then do whatever (neutral multiplier), otherwise rest.
-
-		const healthScore = percentAvailable > 0.5 ? 1 : restingValue
-
-		// console.log(
-		//   "calculateCapacityScore values",
-		//   tileKnowledge,
-		//   percentAvailable,
-		//   adventuringValue,
-		//   vendingValue,
-		//   operator,
-		//   capacityScore
-		// )
-
-		return healthScore
+		return Modifiers.percentToScore(
+			percentAvailable, 
+			higherIsBetter
+		)
 	}
 
 	// This looks at satiety and if it is low then decides to camp.
@@ -406,6 +354,11 @@ export default class TileRelationship {
 
 		const percentAvailable = satiety.current / satiety.base
 
+
+		// 20230121 using an older pattern with none of the Modifiers.percentAsScore-related logic.
+		// this is intentional but only because it is unclear as I write this whether or not 
+		// satiety adds value I'm interested in, or if it is just too similar to energy to really
+		// have value
 		if (tileToConsider) {
 			//// If satiety is low, bias in favour of finding a tile with food
 			if (percentAvailable < 0.5) {
