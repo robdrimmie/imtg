@@ -285,6 +285,7 @@ export default class TileRelationship {
 		
 		const energy = this.resources.get(Attributes.RESOURCES_ENERGY)
 
+		console.log("calculateEnergyScore - a", distance, energy, energy.asPercent())
 		// if I don't have enough energy to get there it is the worst
 		if (distance > energy.current) return 0
 
@@ -292,13 +293,12 @@ export default class TileRelationship {
 		// see: 20230121 1048 or thereabouts (not the first entry so not an exact match)
 		// sharper curve for Resting because if I want to rest I do _not_ want to expend energy
 		// andventuring and vending have the same curve at present but these are complete guesses anyway
-		// lower is better for all contexts so they all slope down
 		const curves = {
 			CONTEXT_ADVENTURING: [
-				{ x: 0.0,     y: 2.0 },
-				{ x: 0.5,     y: 1.0 },
-				{ x: 0.99999, y: 0.3 },
-				{ x: 1.0,     y: 0.0 }
+				{ x: 0.0,     y: 0.0 },
+				{ x: 0.5,     y: 0.3 },
+				{ x: 0.99999, y: 1.0 },
+				{ x: 1.0,     y: 2.0 }
 			],
 			CONTEXT_RESTING:  [
 				{ x: 0.0,     y: 2.0 },
@@ -307,19 +307,22 @@ export default class TileRelationship {
 				{ x: 1.0,     y: 0.0 }
 			],
 			CONTEXT_VENDING:  [
-				{ x: 0.0,     y: 2.0 },
-				{ x: 0.5,     y: 1.0 },
-				{ x: 0.99999, y: 0.3 },
-				{ x: 1.0,     y: 0.0 }
+				{ x: 0.0,     y: 0.0 },
+				{ x: 0.5,     y: 0.3 },
+				{ x: 0.99999, y: 1.0 },
+				{ x: 1.0,     y: 2.0 }
 			],
 		}
+
+		console.log("calculateEnergyScore - b", curves, context, curves[context])
 
 		const score = Modifiers.percentToScoreBySetpoints(
 			energy.asPercent(), 
 			curves[context]
 		)
 
-		// console.log("energy curves" , curves, context, curves[context])
+		console.log("calculateEnergyScore - c", score)
+
 		return score
 	}
 

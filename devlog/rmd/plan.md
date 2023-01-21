@@ -4416,3 +4416,49 @@ So, okay fine. I'm going to leave satiety bound to foraging for now. Foraging is
 
 1459 it would be nice to modularize a lot of this stuff so I can just like, turn off the feature? But it's not obvious that will be something I want to do here, will an implementation of this system want to calculateEnergyScore differently? Maybe but like... that is also kind of core? Well I guess only if there are characters that explore tiles independently. Even in that scenario though it might be interesting to show users what characters know about where.
 
+1513 so reviewing the calc functions is done. Next step is going to be confirming that selected tile bug still happens, then working through the progress flow again to find out why. A lot of 0 scores and no tiles are still causing problems
+
+1523 yep, still happens fast. I'm seeing a log statement:
+
+`tile scores 0 0 0`
+
+that's happening for all tiles.
+
+1523 because:
+```
+attribute: 1
+​
+capacity: 2
+​
+desire: 0
+​
+distance: 1
+​
+energy: 0
+​
+health: 0
+​
+overall: 0
+​
+satiety: 1
+```
+
+that's for 000. 
+
+desire and overall overlap in ways I don't remember but I think they are both impacted by energy and health being 0.
+
+desire being 0 does kind of make sense for 000 on turn 1. like fuck this place I wanna see the world!
+
+other tiles do have non-zero desires. but all have energy 0, so that's the place to start. 
+
+many have health 0? no looks like just 000. That makes sense too though, max health? this place sucks for that. 
+
+But energy is allllll 0. Which makes sense, that changed right around when the behaviour changes. 
+
+1531 so maybe energy for adventure curve is inverted? 
+
+higher is better when considering energy in the adventure context. Why am I making it lower is better? I was so certain lower is always better, was I not? low energy _suuuuuucks_ for adventuring. 
+
+1626 okay I flipped it I think? yes. 
+
+1627 oh selectedtile bug is fixed! 
