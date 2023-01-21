@@ -1,5 +1,8 @@
 # Math
 
+notes: 
+- Modifiers.spec.js has tests that create arrays of setpoints that are a helpful reference
+
 This is not a great doc or anything but I keep coming across the same two basic math problems and forgetting how to do them.
 
 graphing calculator tool that seems good: https://www.desmos.com/calculator

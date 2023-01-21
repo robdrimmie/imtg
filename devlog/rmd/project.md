@@ -16,18 +16,18 @@
 - party gets stuck going back and forth between -101 and -202
      - in TileRelationship calculate?????Score methods need to be updated
       - ✅ calculateAttributeScore
-      - calculateCapacityScore
-      - calculateDistanceScore - probably okay
+      - ✅ calculateCapacityScore
+      - ✅ calculateDistanceScore
       - calculateEnergyScore
       - calculateHealthScore
       - calculateSatietyScore
 - should I use context in the calculateWhateverScore methods?
       - ✅ calculateAttributeScore - doesn't need it
-      - calculateCapacityScore
-      - calculateDistanceScore - probably okay
-      - calculateEnergyScore
-      - calculateHealthScore
-      - calculateSatietyScore
+      - ✅ calculateCapacityScore - uses it
+      - ✅ calculateDistanceScore - doesn't need it
+      - calculateEnergyScore - uses it
+      - calculateHealthScore - uses it
+      - calculateSatietyScore - uses it
 - finally figure out the math to convert percentages to scores consistently
   - ✅ figure out the actual math
   - ✅ make methods that make use of the math
@@ -99,27 +99,18 @@
 - characters form, join and leave parties according to how strongly they want to travel in certain directions and perhaps other factors
 - notes on characters, parties and tiles (player notes "this is what I want to do there" "this char needs poison resist" etc)
 - review berlin interpretation - do I want to do any of that?
+- item stacking
 - go deeper on crafting
   - Items are composed of some number of Resource of Modify Attribute.
   - like, 10 Resource of Modify [Attribute] can be combined into 1 Torso of Modify [Attribute] by 1 (increase or decrease)
   - and then 1 Torso of Modify [Attribute] by 1 (increase or decrease) decomposes into, say, 9 Resources of Modify [Attribute]. Some cost to crafting/destroying should exist.
   - see [[20220724 1106]] in bucket for slightly more thoughts but not really all that many
 - maybe capacity should impact how much energy travelling costs? would impact rest
-
-## What 1.0 Might Require
-- 6 regions with 16 tiles
-- one party with 6 characters
-- a functional if basic inventory management interface
-- 6 win condition items with target tiles for each
-
-### Probably should not require
-- item stacking
-- crafting
-- win conditions being discovered "in the wild"
-
-### known issues that are okay to launch with
-- no persistance
-- moving backpack and win condition breaks a lot of things
+- rewrite the engine in Rust? Good way to get into it and systems programming. Ideally the engine will be small and portable and stateless and then like, persistance and interface etc are bolted on as appropriate for wherever.
+  - step 1 here is figuring out how to write something in rust and have it compiled into a node module. seems very doable.
+  - then small new areas could be written there, or anything that would be part of a significant refactor anyway could be migrated
+- something to render an array of SetPoints as a graph and then pieces to futz with it
+  - could be a decent rust wasm project? 
 
 ## epics sort of I guess?
 ### RPG Setting Mode

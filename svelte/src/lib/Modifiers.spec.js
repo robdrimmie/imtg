@@ -74,7 +74,7 @@ const threeSegmentLowerBetter = [
 	{ x: 0.3, y: 1.4 },
 	{ x: 0.9, y: 0.4 },
 	{ x: 1, y: 0 }
-  ]
+]
 
 const fourSegmentZigZag = [
 	{x: 0, y: .8}, 

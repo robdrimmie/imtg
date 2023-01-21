@@ -220,9 +220,10 @@ export default class TileRelationship {
 	/*
 		Scores the tile based on how well the character's Attributes exceed the threshold
 		created by winning and losing encounters on this tile
+
+		I do not believe context matters here, since attributes do not impact resting or vending
 	*/
 	calculateAttributeScore(context) {
-		// RMD TODO consider context. Does it matter if it is for adventure, resting or vending? 
 		let attributeScore = 1
 
 		if (this.tile.isOrigin()) return attributeScore
@@ -260,35 +261,69 @@ export default class TileRelationship {
 			: true				// want very empty bags when adventuring to hold all that loot!
 
 		return Modifiers.percentToScore(
-			this.backpack().availableCapacityAsPercent, 
+			this.backpack().availableCapacityAsPercent(), 
 			higherIsBetter
 		)
 	}
 
+	// I genuinely can't think of a context (of those that exist in the game) in which a tile 
+	// that is far away from a character is better than one that is near to it.
+	// to the extent that it does, it is a function of energy and therefore impacted by calculateEnergyScore
 	calculateDistanceScore(context) {
 		const distance = Hex.distance(this.tile.hex, this.currentTile.hex)
 
-		// rmd todo the tile the character on is always best from a distance perspective
-		// maybe some character personality attributes alter that, but for now simple is good
-
-		// simple fall off. 1/2, 1/3, 1/4 etc.
-		// this might end up having too much of an impact but it should impact all decisions
-		// in the same way so maybe that balances out? :shrug:
-
-		const retval = (distance === 0) ? 1 : 1 / (distance + 1)
-
-		// console.log("distance", this.tile.hex, this.currentTile.hex, distance, retval)
-
-		// console.log("calculateDistanceScore", this.tile.hex, this.currentTile.hex, distance, retval)
-
-		return retval
+		// console.log("calculateDistanceScore", this.tile.hex, 
+		//	this.currentTile.hex, distance, (distance === 0) ? 1 : 1 / (distance + 1)
+		// )
+		
+		return (distance === 0) ? 1 : 1 / (distance + 1)
 	}
 
 	calculateEnergyScore(context, distance) {
+		// expending no energy is the best!
+		if (distance === 0) return 2
+		
+		const energy = this.resources.get(Attributes.RESOURCES_ENERGY)
+
+		// if I don't have enough energy to get there it is the worst
+		if (distance > energy.current) return 0
+
+		// context changes the value curve but all are lower is better
+		const higherIsBetter = false
+	
+		// rmd todo: these curves may be reusable. If so, they would make good constants in Modifiers
+		// see: 20230121 1048 or thereabouts (not the first entry so not an exact match)
+		// sharper curve for Resting because if I want to rest I do _not_ want to expend energy
+		// andventuring and vending have the same curve at present but these are complete guesses anyway
+		const curves = {
+			CONTEXT_ADVENTURING: [
+				{ x: 0.0,                  y: 2.0 },
+				{ x: 0.5 * energy.current, y: 1.0 },
+				{ x: energy.current,       y: 0.3 },
+				{ x: 1.0,                  y: 0.0 }
+			],
+			CONTEXT_RESTING:  [
+				{ x: 0.0,                  y: 2.0 },
+				{ x: 0.5 * energy.current, y: 0.5 },
+				{ x: energy.current,       y: 0.1 },
+				{ x: 1.0,                  y: 0.0 }
+			],
+			CONTEXT_VENDING:  [
+				{ x: 0.0,                  y: 2.0 },
+				{ x: 0.5 * energy.current, y: 1.0 },
+				{ x: energy.current,       y: 0.3 },
+				{ x: 1.0,                  y: 0.0 }
+			],
+		}
+
+		// return something with curves[context] into the proper setpoint method in modifiers 
+		return 1
+	}
+	calculateEnergyScoreOld(context, distance) {
+		// at present vending is 
 		const tileToConsider = this.tile
 		// console.log("calculateEnergyScore - tileToConsider, distance", tileToConsider,distance)
 
-		const energy = this.resources.get(Attributes.RESOURCES_ENERGY)
 		const percentAvailable = energy.current / energy.base
 
 		// rmd todo energetic threshold should be modified by stats. not sure which ones 

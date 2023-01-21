@@ -4118,3 +4118,191 @@ The work is still working through the progress cycle with the workflow (perhaps?
 0910 moving on to progressTileScores() which is higher complexity
 
 0910 wait, are tile relationships being progressed correctly? can't progress tile scores until I know the relationships are right.
+
+0920 for distance score, closer is always better. I 
+
+0959 just captured the notion to rewrite the engine in rust. details are in project, far future stuff. I need to get the system (I'm thinking of the thing that I'm building as a system more than a game) stabilized and then I can maybe start poking around with that. I want to read The Book first and like actually learn some rust first and before I take time for that I want to finish this cycle of effort. it is actually a really good definition of a siginificant chunk of the system I want it to be. 
+
+1001 so `calculateEnergyScore` is next
+
+so energy. If I have high energy, adventuring is really good. 
+
+if I have low energy, resting is really good.
+
+vending desire is not impacted by energy I think, just like uhh that one I did a little bit ago doesn't impact rest. 
+
+there's a system in how these different things are impacted by context maybe? but it isn't emerging yet. 
+
+right, that other one was capacity. 
+
+I am also bringing distance in at present. If I am low energy it is going to be _really_ important to me that the tile be close. especially when resting? If my energy is like 1 and there is only one tile nearby where I can even attempt to rest (there's no risk at present but maybe there will be) then that's the fucking tile I need to go to!
+
+Somewhat similarly when adventuring, though I think the impact would be different so this might not be straight percentAsScore stuff? 
+
+is there a simple thing I can do first and then complicate it with the setpoints stuff? 
+
+So go through each scenario:
+- vending
+  - don't care, return 1
+- adventuring
+  - higher is better
+  - closer is important but as long as there is enough energy then like something else makes it better? think more on this
+- resting
+  - lower is better
+  - closer is _critical_
+  - right now safety doesn't matter because there is no risk to resting but in the future resting might trigger an encounter
+
+1007 so closer is important vs closer is critical. that's like, 0.0 - 0.1 is 2 and everything else drifts off to 0?
+
+I need to rest and the tile is _x_ units away so I value it _y_
+
+x       y
+0       2
+6       0
+
+but it isn't 6 right, the threshold is , this is all a function of _energy_, so energy should be the threshold.
+
+so if my energy is 1/10 then I can only go 1 tile away.
+
+if my energy is 6/10 and the tile is distance 5, then I can go there sure but one that is 4 is a little bit better. 
+
+it is similar but less important for adventuring. If I can adventure where I am then fuck yeah adventure
+
+so if distance == 0, return 2. 
+
+1013 I'm not sure any more that energy doesn't matter for vending. That is because OriginTown is the only place to vend. 
+
+It is reasonable to just test for that but I do want more vending tiles and I do have things set up with a vending _deck_ so I think that I should do it based on tile knowledge. that's the point, right? 
+
+1015 so deck knowledge matters when considering a tile for an action. Of course it does, it should! Did I over look that in any of the previous things? 
+
+1016 it is really unclear to me right now that distance and energy scores should be distinct. 
+
+Distance score is straight up closer is better. That seems universally true right? 
+
+When I'm thinking about a tile based on how much energy I have, distance is a factor, but not the only one.
+
+Okay they are distinct, good. 
+
+The importance of distance changes depending on what action I'm taking. If I have 7 energy and there are three viable tiles within 2-4 hexes of me sure the 2-hex away one is more attractive but not so much so that like, really really good loot on the 4-hex away one. 
+
+Energy doesn't care about the quality of the loot, but it shouldn't be weighed as heavily .
+
+If energy > distance the tile has value 0. I cannot reach it, that's a shitty place. 
+
+1021 oh there is some stuff in there alright. `isEnergetic`. A good way to manage it but this will be a lot tidier I hope
+
+1022 energy isn't context dependant, context changes the curve. 
+
+1025 so how does context change the curve? 
+
+how does the curve stuff work again? setpoints and such. 
+
+1027 modifers spec is a good resource for this stuff
+
+```
+const threeSegmentLowerBetter = [
+	{ x: 0, y: 2 },
+	{ x: 0.3, y: 1.4 },
+	{ x: 0.9, y: 0.4 },
+	{ x: 1, y: 0 }
+]
+
+// make a lookup table based on context, not if/else
+// adventure w
+const adventure =  = [
+	{ x: 0, y: 2 },
+	{ x: 0.3, y: 1.4 },
+	{ x: 0.9, y: 0.4 },
+	{ x: 1, y: 0 }
+]
+
+```
+
+maybe Modifiers should have a curves enum or set of constants `Modifiers.CURVE_LB_SHARP_THEN_FLAT`? 
+
+not sure. 
+
+moving this code into the function.
+
+1034 moving thinking back here. I say adventuring is a gentle curve but what does that mean? 
+
+This scores the relationship between energy and distance within a specific context. 
+
+Something that is further away is less desireable, so `higherIsBetter` is false. 
+
+so if my energy is 7, distance = 7 is not as good as distance = 0. 
+
+but is it bad? I guess I'm trying to figure out the setpoint. What's neutral here? 0 is 2, is 1 1 and everything else < 1?
+
+Or is
+x (dist)     y (score)
+0             2
+.5 energy     - this might be 1
+= energy      - like pretty low. there is risk to draining energy
+> energy      0
+
+oh _food_ matters? The ability to restore energy matters. But there is no food consumption at presence, so food's influence is negligible. oh and that's satiety. 
+
+_potions_ might matter? that starts to get really complex. To start with, and because it's mechanically true right now, the only thing that restores energy is resting, so 
+
+hmmm
+
+- from an energy perspective the only thing that matters is being above a certain threshold. I've been assuming it is 0.
+
+1039 that was not where I was intending to go when I started typing the previous sentence. 
+
+- from an energy perspective the only thing that matters is being restored
+
+that is what I was going to write. So a tile that has resting available is going to be really important from an energy standpoint. 
+
+But _how_ important is modified by context? The curve is less sharp for adventuring but if a character wants to rest then energy is _really_ important.
+
+I'm restating what was said above I think but also confirming to myself that it continues to be sensible. 
+
+is "it is sensible" an alternate way to express "it makes sense"? that is how I am using it and have done so a few times now. anyway the more typical definition of being practical is good too. that also makes sense.
+
+1043 so the curves still make sense and I need to continue to figure out what the curves should be
+
+distance (x)  adventuring   resting
+0             2              2
+.5 energy     1              .5
+= energy      .3             .1
+> energy      0              0
+
+I mean I have no way right now of judging whether or not these curves are any good but at least it is a start.
+
+1046 and what about vending? I mean I could just do it so everything is 1 to start and then energy doesn't matter but distance still does. or I guess just linear lower is better would also work? 
+
+But it's worth spending a minute on it. 
+
+So if I have vending desire, closer is better. My inclination is that it is adventuring-like urgency moreso than resting-like urgency. that might be useful names for Modifiers constants CURVE_LB_URGENCY_LOW, _MEDIUM, _HIGH
+
+if this stuff pans out. It's unclear to me that this is reusable actually so I will make a note in code and try to leave that thought for later.
+
+1053 so vending. Just now set it to the adventuring curve. When I want to vend, energy is important but it isn't critical until it gets low. 
+
+1101 so I think done? Make sure browser still works.
+1102 sure doesn't!
+
+1102 but that shouldn't be related to these chagnes? 
+
+```
+Uncaught TypeError: setPoints[indexOfLowBoundary] is undefined
+    percentToScoreBySetpoints Modifiers.js:157
+    percentToScore Modifiers.js:42
+    calculateCapacityScore TileRelationship.js:263
+    calculateActionValue TileRelationship.js:181
+    calculateAdventuringValue TileRelationship.js:205
+    progress TileRelationship.js:102
+```
+
+1103 I guess in a lot of ways imtg is the first game to make use of this system, which is certainly some rpg engine sort of thing. There's a lot of other stuff outside of characters and encounters and stuff in theory but anyway. 
+
+for world-building purposes the hub and spoke pattern makes a lot less sense. ah well, that's still a hope not a plan.
+
+this bug though, that's neither of those things.
+
+1107 okay, did `this.backpack().availableCapacityAsPercent` instead of `this.backpack().availableCapacityAsPercent(), `. game still stalls out on undef selected tile but that's to be expected. 
+
+good commit point.
