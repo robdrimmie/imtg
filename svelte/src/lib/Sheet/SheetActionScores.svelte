@@ -18,8 +18,6 @@
     {header} overall: {
         formatScore(action.overall)
     }
-
-    [{action.desire}]
     </div>
     
     {#if visible}
@@ -29,6 +27,7 @@
         <li>distance: {formatScore(action.distance)}</li>
         <li>energy: {formatScore(action.energy)}</li>
         <li>health: {formatScore(action.health)}</li>
+        <li>knowledge: {formatScore(action.knowledge)}</li>
         <li>satiety: {formatScore(action.satiety)}</li>
     </ul>
     {/if}

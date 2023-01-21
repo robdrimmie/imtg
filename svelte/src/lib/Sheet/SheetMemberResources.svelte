@@ -1,14 +1,17 @@
 <script>
     export let member
+
+    const health = member.getHealth()
+    const energy = member.getEnergy()
+    const satiety = member.getSatiety()
 </script>
 
 <div class="resources">
     <div><b>resources</b></div>
     <div class="row">
-        <div> health {member.getCurrentHealth()}</div>
-        <div> energy {member.getCurrentEnergy()}</div>
-        <div> satiety {member.getCurrentSatiety()}</div>
-
+        <div> health {health.current} / {health.base}</div>
+        <div> energy {energy.current} / {energy.base}</div>
+        <div> satiety {satiety.current} / {satiety.base}</div>
     </div>
 </div>
 

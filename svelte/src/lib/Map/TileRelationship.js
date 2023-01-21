@@ -29,42 +29,36 @@ export default class TileRelationship {
 		this.knowledgeLevel = Tile.KNOWLEDGE_UNKNOWN
 
 		this.values = {
-			adventuring: {
-				// desires are absolute, so 0 is a baseline
-				desire: 0,
-
+			adventuring: {			
 				// Scores are modifiers, so 1 is neutral
 				attribute: 1,
 				capacity: 1,
 				distance: 1,
 				energy: 1,
 				health: 1,
+				knowledge: 1,
 				satiety: 1,
 				overall: 1
 			},
 			resting: {
-				// desires are absolute, so 0 is a baseline
-				desire: 0,
-
 				// Scores are modifiers, so 1 is neutral
 				attribute: 1,
 				capacity: 1,
 				distance: 1,
 				energy: 1,
 				health: 1,
+				knowledge: 1,
 				satiety: 1,
 				overall: 1
 			},
 			vending: {
-				// desires are absolute, so 0 is a baseline
-				desire: 0,
-
 				// Scores are modifiers, so 1 is neutral
 				attribute: 1,
 				capacity: 1,
 				distance: 1,
 				energy: 1,
 				health: 1,
+				knowledge: 1,
 				satiety: 1,
 				overall: 1
 			}
@@ -120,62 +114,8 @@ export default class TileRelationship {
 	// #endregion Encounter results
 
 	// #region Calculate Tile Values
-	calculateDesire(knowledge) {
-		// console.log("calculating value for knowledge and tile.id", knowledge, this.tile.id)
-		let value = 1
-
-		if (knowledge.deckSize) {
-			switch (knowledge.deckSize) {
-				case Deck.SIZE_EMPTY:
-					value = 0
-					break
-
-				case Deck.SIZE_SMALL:
-					// value *= 1.25
-					value *= 1.1
-					break
-
-				case Deck.SIZE_MEDIUM:
-					// value *= 1.5
-					value *= 1.2
-					break
-
-				case Deck.SIZE_LARGE:
-					// value *= 1.75
-					value *= 1.3
-					break
-
-				case Deck.SIZE_UNLIMITED:
-					// value *= 2
-					value *= 1.4
-					break
-			}
-
-			// if there are no cards remaining then testing knowledge.cardsRemaining doesn't work because 0 is falsey
-			// so explicitly test that the property exists
-			if (knowledge.hasOwnProperty('cardsRemaining') && knowledge.cardsRemaining) {
-				if (knowledge.cardsRemaining === 0) {
-					value = 0
-				} else {
-					// will default to 1/1 = 1, basically
-					let denominator = knowledge.cardsRemaining
-
-					value *= 2 * (knowledge.cardsRemaining / denominator)
-				}
-			}
-		}
-
-		// rmd todo I don't recall the reasoning behind this blanket increase
-		// if I know about it I want to go but does this actually make a difference? experiment.
-		if (knowledge.available) {
-			value *= 1.25
-		}
-
-		return value
-	}
-
 	calculateActionValue(context, knowledgeForAction) {
-		const desire = this.calculateDesire(knowledgeForAction)
+		const knowledge = this.calculateKnowledgeScore(knowledgeForAction)
 		
 		const attribute = this.calculateAttributeScore(context)
 		const capacity = this.calculateCapacityScore(context)
@@ -186,7 +126,7 @@ export default class TileRelationship {
 
 		const actionValue = {
 			attribute,
-			desire,
+			knowledge,
 			capacity,
 			distance,
 			energy,
@@ -285,7 +225,7 @@ export default class TileRelationship {
 		
 		const energy = this.resources.get(Attributes.RESOURCES_ENERGY)
 
-		console.log("calculateEnergyScore - a", distance, energy, energy.asPercent())
+		// console.log("calculateEnergyScore - a", distance, energy, energy.asPercent())
 		// if I don't have enough energy to get there it is the worst
 		if (distance > energy.current) return 0
 
@@ -314,14 +254,14 @@ export default class TileRelationship {
 			],
 		}
 
-		console.log("calculateEnergyScore - b", curves, context, curves[context])
+		// console.log("calculateEnergyScore - b", curves, context, curves[context])
 
 		const score = Modifiers.percentToScoreBySetpoints(
 			energy.asPercent(), 
 			curves[context]
 		)
 
-		console.log("calculateEnergyScore - c", score)
+		// console.log("calculateEnergyScore - c", score)
 
 		return score
 	}
@@ -343,6 +283,60 @@ export default class TileRelationship {
 			percentAvailable, 
 			higherIsBetter
 		)
+	}
+
+	calculateKnowledgeScore(knowledge) {
+		// console.log("calculating value for knowledge and tile.id", knowledge, this.tile.id)
+		let value = 1
+console.log("calculateKnowledgeScore - a", knowledge)
+		if (knowledge.deckSize) {
+			switch (knowledge.deckSize) {
+				case Deck.SIZE_EMPTY:
+					value = 0
+					break
+
+				case Deck.SIZE_SMALL:
+					// value *= 1.25
+					value *= 1.1
+					break
+
+				case Deck.SIZE_MEDIUM:
+					// value *= 1.5
+					value *= 1.2
+					break
+
+				case Deck.SIZE_LARGE:
+					// value *= 1.75
+					value *= 1.3
+					break
+
+				case Deck.SIZE_UNLIMITED:
+					// value *= 2
+					value *= 1.4
+					break
+			}
+
+			// if there are no cards remaining then testing knowledge.cardsRemaining doesn't work because 0 is falsey
+			// so explicitly test that the property exists
+			if (knowledge.hasOwnProperty('cardsRemaining') && knowledge.cardsRemaining) {
+				if (knowledge.cardsRemaining === 0) {
+					value = 0
+				} else {
+					// will default to 1/1 = 1, basically
+					let denominator = knowledge.cardsRemaining
+
+					value *= 2 * (knowledge.cardsRemaining / denominator)
+				}
+			}
+		}
+
+		// rmd todo I don't recall the reasoning behind this blanket increase
+		// if I know about it I want to go but does this actually make a difference? experiment.
+		if (knowledge.available) {
+			value *= 1.25
+		}
+
+		return value
 	}
 
 	// This looks at satiety and if it is low then decides to camp.
@@ -398,11 +392,11 @@ export default class TileRelationship {
 		
 		return 1 * 
 			actionValue.attribute * 
-			actionValue.desire *
 			actionValue.capacity * 
 			actionValue.distance *
 			actionValue.energy * 
 			actionValue.health * 
+			actionValue.knowledge *
 			actionValue.satiety
 
 	}

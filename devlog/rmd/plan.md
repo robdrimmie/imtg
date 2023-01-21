@@ -4462,3 +4462,112 @@ higher is better when considering energy in the adventure context. Why am I maki
 1626 okay I flipped it I think? yes. 
 
 1627 oh selectedtile bug is fixed! 
+1628 now party roams around, never stops to pull the card. tile for adventure is perhaps out of whack?
+
+1630 oh now selected tile is back. what?
+1630 ohhhhhh it looks like it only happens on that second move. if you keep moving it just keeps going. okay so that's easy enough to reproduce at least.
+
+1632 yeah no best tile for adventure and all "adventuring overall" values in the sheet are 8. many of them have [1] in square brackets. I don't remember what that is.
+1633
+```
+ overall: {
+        formatScore(action.overall)
+    }
+
+    [{action.desire}]
+```
+
+so overall is 0 but desire is 1, in some cases. what's desire? overall is everything. 
+
+1635 desire considers deck size. 
+1637 can hide all the energy logs
+
+1638 desire is really knowledge. Score this tile based on my knowledge of it.
+
+1640 desire is considered different than the others, but it shouldn't be. it's just knowledge, a score like all the others.
+
+1643
+```
+
+Adventuring overall: 0
+
+    attribute: 1
+    capacity: 2
+    distance: 1
+    energy: 2
+    health: 0
+    knowledge: 0
+    satiety: 1
+
+Resting overall: 0
+
+    attribute: 1
+    capacity: 1
+    distance: 1
+    energy: 0
+    health: 2
+    knowledge: 3.5
+    satiety: 1
+
+Vending overall: 0
+
+    attribute: 1
+    capacity: 0
+    distance: 1
+    energy: 2
+    health: 1
+    knowledge: 3.5
+    satiety: 1
+```
+
+So each of them have a 0 so none of them are good for any activity. soooooo too absolute? does it make any sense if capacity is 1? Or capacity should have a lower limit of say 0.1
+
+but the validate setpoints force going from 0 to 1. but just in terms of x. 
+
+I guess it's figuring out what the lowest non-zero value to worry about is. Most stuff is percent and does that matter? hmm.
+
+so if context is vending and the character has 0% capacity, that's terrible. so this is a higher is better situation maybe?
+
+but capacity should never rule out a tile? maybe? or like, none of these scores should ever rule out a tile maybe? Just make it very unlikely? but knowledge should. if there are no cards to draw the tile is no good for that action. 
+
+well but wait. This is 000 being looked at here. It is reasonable for the character to want nothing to do with this tile. 
+
+what about one of the others though?
+
+```
+
+Adventuring overall: 0
+
+    attribute: 1
+    capacity: 2
+    distance: 0.333
+    energy: 2
+    health: 0
+    knowledge: 1
+    satiety: 1
+
+Resting overall: 0
+
+    attribute: 1
+    capacity: 1
+    distance: 0.333
+    energy: 0
+    health: 2
+    knowledge: 1
+    satiety: 1
+
+Vending overall: 0
+
+    attribute: 1
+    capacity: 0
+    distance: 0.333
+    energy: 2
+    health: 1
+    knowledge: 1
+    satiety: 1
+```
+
+health score is 0 for adventuring? and 2 for resting. Health is backwards? 
+
+1651 okay. updated the character sheet, just about time for dinner prep. Next step is looking into whether or not health is backwards. This is in service of resolving the null selectedTile on move 2 behaviour.
+

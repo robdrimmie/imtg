@@ -13,7 +13,7 @@
 - 🟠 audit character progress workflow
  - ✅ reorder and revisit flow
  - ✅ get progressTileScores using the new Modifier percentToScore methods
-- party gets stuck going back and forth between -101 and -202
+- ✅ party gets stuck going back and forth between -101 and -202
      - ✅ in TileRelationship calculate?????Score methods need to be updated
       - ✅ calculateAttributeScore
       - ✅ calculateCapacityScore
@@ -28,11 +28,11 @@
       - ✅ calculateEnergyScore - uses it
       - ✅ calculateHealthScore - uses it
       - ✅ calculateSatietyScore - uses it - leaving as is for reasons documented in comments
-- finally figure out the math to convert percentages to scores consistently
+- ✅ finally figure out the math to convert percentages to scores consistently
   - ✅ figure out the actual math
   - ✅ make methods that make use of the math
   - ✅ make a method that scores with diminishing returns (line goes up then up slowly then down then down quickly)
-  - use this stuff a bunch when scoring to feel confident it works
+  - ✅ use this stuff a bunch when scoring to feel confident it works
 - party should be able to adventure on a tile with no cards without crashing everything
   - tile deck knowledge gets updated once the deck is definitely updated so it's sort of a lost turn but knowledge is gained and then the character never picks that tile for that purpose again.
 - region attributes should impact loot generation
