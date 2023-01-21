@@ -72,6 +72,10 @@ export default class Container {
 		}, 0);
 	}
 
+	availableCapacityAsPercent() {
+		return this.availableCapacity() / this.capacity
+	}
+
 	contain(items) {
 		items = Array.isArray(items) ? items : [items]
 

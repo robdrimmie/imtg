@@ -245,30 +245,24 @@ export default class TileRelationship {
 			characterPhysicality/100, 
 			this.attributes.physicalityThreshold/100
 		)
-		console.log("phys", characterPhysicality, attributeScore)
-	
-		console.log("attrscore", this.tile.id, attributeScore, context)
+
 		return attributeScore
 	}
 
 	calculateCapacityScore(context) {
-		let capacityScore = 1
-		const percentAvailable = this.backpack().availableCapacity() / this.backpack().capacity
+		if(context == CONTEXT_RESTING) {
+			// capacity has no impact on desire to rest
+			return 1
+		}
 
-		// for adventuring, we want a high score if we have a lot of capacity and a low score otherwise
-		if(context == CONTEXT_ADVENTURING) {
-			// want lots of space in bags
-			// that's the only criteria it doesn't really matter what's possible just that there's space
-			capacityScore = Modifiers.percentToScore(percentAvailable)
-		} else if(context == CONTEXT_VENDING) {
-			// but when thinking about vending whether or not vending is available should? matter? 
-			capacityScore = Modifiers.percentToScore(percentAvailable, false)
-		} 
+		const higherIsBetter = (context == CONTEXT_VENDING)
+			? false				// want very full bags when vending so there is stuff to sell!
+			: true				// want very empty bags when adventuring to hold all that loot!
 
-		console.log("capacityScore", this.tile.id, percentAvailable, capacityScore)
-
-		// capacity doesn't really matter when resting
-		return capacityScore
+		return Modifiers.percentToScore(
+			this.backpack().availableCapacityAsPercent, 
+			higherIsBetter
+		)
 	}
 
 	calculateDistanceScore(context) {

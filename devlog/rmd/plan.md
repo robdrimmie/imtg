@@ -4113,3 +4113,8 @@ I guess the risk is the loss of flavour. In one aspect of this project, it is a 
 Anyway, thoughts sparked by other things. 
 
 The work is still working through the progress cycle with the workflow (perhaps? design?) outlined above
+
+0909 So I think that the progressAttributes pass is complete.
+0910 moving on to progressTileScores() which is higher complexity
+
+0910 wait, are tile relationships being progressed correctly? can't progress tile scores until I know the relationships are right.
