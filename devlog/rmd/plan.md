@@ -4306,3 +4306,59 @@ this bug though, that's neither of those things.
 1107 okay, did `this.backpack().availableCapacityAsPercent` instead of `this.backpack().availableCapacityAsPercent(), `. game still stalls out on undef selected tile but that's to be expected. 
 
 good commit point.
+
+1111 my setpoints are invalid. Well done Rob! That Modifiers class is doing well. So what is wrong with these points? 
+
+1113 oh I'm putting energy current into the curves not as percent
+
+wait but if energy.current establishes the curves and I pass it in it's just always going to be whatever value matches energy.current. 
+
+something, I did something wrong when converting from that table to setpoints I think? 
+
+Dang it. 
+
+Okay so I need to establish curves that aren't dependant on energy.current but are universal to energy.asPercent. 
+
+So I have these functionsn of energy but they just should be hardcoded percents. .5 energy is just .5. 
+
+1117 okay I think the table was about distance values and how energy should be something something and I'm implementing it around the wrong way?
+
+distance (x)  adventuring   resting
+0             2              2
+.5 energy     1              .5
+= energy      .3             .1
+> energy      0              0
+
+oh if I get these setpoints right it eliminates the need for the early check, right? it's just build into the curve.
+
+so this table is trying to establish the relationship between distance and energy.
+
+the percent is like, distance/energy or something like that? 
+
+distance    energy    % (x)    adventuring (y1)   resting (y2)
+0        /    4    = 0              2               2
+2        /    4    =  .5            1                .5
+4        /    4    = 1               .3              .1
+6        /    4    = 1.5            0               0
+
+I do think I need to explicitly check for distance > energy and return 0. I'm not really sure 
+how to let 100% just be a deterrant and not eliminate it without the slow slope from .1 to 0 that is here.
+if left as-is, characters would occasionally choose a tile that they cannot reach and that's no good. 
+
+SOOOoooo I need to update the thing I have that sets the points up based on energy and I guess just 
+use this chart. x is % and y is different based on context. 
+
+1129 null selected tile pops up much earlier now
+
+1145 stepped away. I'm uncertain if I should get into selected tile. Do these score methods use class properties?
+
+yeah. I could extract everything else and put it in a function that creates the curves given certain values? 
+
+it doesn't need values to construct the curves. So to test the curves I should run them through tests like are in modifiers? which suggests that they should be part of modifiers. 
+
+anyway keep going for now. at least I can see the ways this isn't functional. 
+
+1153 will say 12:10 for getting into kitchen.
+
+1155 okay, scores are fucky in some fashion but I'm going to keep working ahead. Perhaps not entirely the best but I don't want to wade into progress stuff again until there's more consistently in these scoring things. then I'll unravel better. 
+

@@ -238,6 +238,10 @@ export default class Attributes {
 		this.wounds = []
 	}
 
+	asPercent() {
+		return this.current / this.base
+	}
+
 	asScore(higherIsBetter = true) {
 		return Modifiers.percentToScore(this.current / this.base, higherIsBetter)
 	}

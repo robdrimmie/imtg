@@ -18,14 +18,14 @@
       - ✅ calculateAttributeScore
       - ✅ calculateCapacityScore
       - ✅ calculateDistanceScore
-      - calculateEnergyScore
+      - ✅ calculateEnergyScore
       - calculateHealthScore
       - calculateSatietyScore
 - should I use context in the calculateWhateverScore methods?
       - ✅ calculateAttributeScore - doesn't need it
       - ✅ calculateCapacityScore - uses it
       - ✅ calculateDistanceScore - doesn't need it
-      - calculateEnergyScore - uses it
+      - ✅ calculateEnergyScore - uses it
       - calculateHealthScore - uses it
       - calculateSatietyScore - uses it
 - finally figure out the math to convert percentages to scores consistently
