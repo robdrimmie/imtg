@@ -276,8 +276,8 @@ export default class TileRelationship {
 		const percentAvailable = characterHealth.current / characterHealth.base
 
 		const higherIsBetter = (context == CONTEXT_ADVENTURING)
-			? false				// low health means high desire to rest, low to adventure
-			: true				// high health means high desire to adventure, low to rest
+			? true				// high health means high desire to adventure, low to rest
+			: false				// low health means high desire to rest, low to adventure
 
 		return Modifiers.percentToScore(
 			percentAvailable, 

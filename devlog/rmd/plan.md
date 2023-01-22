@@ -4571,3 +4571,4 @@ health score is 0 for adventuring? and 2 for resting. Health is backwards?
 
 1651 okay. updated the character sheet, just about time for dinner prep. Next step is looking into whether or not health is backwards. This is in service of resolving the null selectedTile on move 2 behaviour.
 
+1913 so. next? health. backwards?
