@@ -19,30 +19,33 @@ export default class Deck {
 	}
 
 	draw(numberOfCardsToDraw = 1) {
-		if (this.cards.length < numberOfCardsToDraw) {
-			// RMD TODO Investigate
-			// I'm not sure what the behaviour should be if more cards are in the deck.
-			// Probably it should return as many as it can and then anythign that cares about
-			// how many actually get drawn needs to be concerned but I want an actual use case
-			// for this before making this sort of conclusion
-			console.error('Deck - draw - trying to pull more cards than are in the deck');
-			return false;
-		}
+		let drawnCards = []
 
-		let drawnCards = [];
-		for (let cardsDrawn = 0; cardsDrawn < numberOfCardsToDraw; cardsDrawn++) {
-			const cardIndex = Dice.roll(this.cards.length) - 1;
-			const card = this.cards.splice(cardIndex, 1);
-
-			drawnCards = [...drawnCards, card[0]];
+		if(drawnCards.length <= numberOfCardsToDraw ) {
+			// not enough cards so return the rest
+			drawnCards = [...this.cards]
+			this.cards = []
+		} else {
+			// pull out the requested number of cards, one at a time, randomly
+			for (let cardsDrawn = 0; cardsDrawn < numberOfCardsToDraw; cardsDrawn++) {
+				const cardIndex = Dice.roll(this.cards.length) - 1;
+				const card = this.cards.splice(cardIndex, 1);
+	
+				drawnCards.push(card[0])
+			}	
 		}
-		// console.log("deck.draw drew cards", drawnCards, numberOfCardsToDraw)
+		
+		// console.log("deck.draw drew cards", drawnCards.length, numberOfCardsToDraw)
 		
 		return drawnCards;
 	}
 
-	drawOne(numberOfCardsToDraw = 1) {
-		return this.draw(numberOfCardsToDraw)[0]
+	drawOne() {
+		const drawnCards = this.draw(1)
+		
+		return drawnCards.length > 0
+			? this.draw(1)[0]
+			: null
 	}
 
 	length() {

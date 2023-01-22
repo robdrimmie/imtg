@@ -13,10 +13,75 @@ export default class Encounter {
 		this.run = options?.run ?? run
 	}
 
+	static DeckIsEmpty() {
+		return new Encounter({
+			description: 'The encounter type for this action is empty',
+			name: 'Empty Deck',
+			run: (params) => {
+				const {characters, chests} = params
+
+				const currentTile = characters[0].currentTile
+			}
+		})
+	}
+
+	static NothingHappens() {
+		return new Encounter({
+			description: 'Nothing happened',
+			name: 'Nothing happened',
+			run: (params) => {
+				const {characters, chests} = params
+				
+				let move = Move.other(this.description);
+
+				return {
+					characters,
+					move,
+					chests
+				};
+			}
+		});
+	}
+
+	static ReturnWinCondition(tile) {
+
+		const storeItemInTile = (item) => {
+			tile.storeItem(item)
+		}
+
+		return new Encounter({
+			description: 'The Win Condition is returned to its rightful place',
+			name: 'The Win Condition is Returned!',
+
+			run: (params) => {
+				const {characters, chests} = params
+				
+				let move = Move.other("The Win Condition's rightful place has been found")
+
+				// if any of the characters has the win condition
+				// remove it from them
+				// somehow indicating that the game has been won? 
+				characters.forEach(character => {
+					const item = character.lootWinConditionItem()
+
+					if (item) {
+						storeItemInTile(item)
+					}
+				});
+
+				return {
+					characters,
+					move,
+					chests
+				}
+			}
+		})
+	}
+
 	static TestAttributes() {
 		return new Encounter({
 			description: 'An encounter that tests the dominant attributes of this region',
-			name: 'Attribute test',
+			name: 'Attribute Test',
 			run: (params) => {
 				console.log("Encounter running with params", params)
 				const {characters, chests} = params
@@ -119,59 +184,6 @@ export default class Encounter {
 				return {
 					characters,
 					move: Move.other(description),
-					chests
-				}
-			}
-		})
-	}
-
-	static NothingHappens() {
-		return new Encounter({
-			description: 'Nothing happened',
-			name: 'Nothing happened',
-			run: (params) => {
-				const {characters, chests} = params
-				
-				let move = Move.other(this.description);
-
-				return {
-					characters,
-					move,
-					chests
-				};
-			}
-		});
-	}
-
-	static ReturnWinCondition(tile) {
-
-		const storeItemInTile = (item) => {
-			tile.storeItem(item)
-		}
-
-		return new Encounter({
-			description: 'The Win Condition is returned to its rightful place',
-			name: 'The Win Condition is Returned!',
-
-			run: (params) => {
-				const {characters, chests} = params
-				
-				let move = Move.other("The Win Condition's rightful place has been found")
-
-				// if any of the characters has the win condition
-				// remove it from them
-				// somehow indicating that the game has been won? 
-				characters.forEach(character => {
-					const item = character.lootWinConditionItem()
-
-					if (item) {
-						storeItemInTile(item)
-					}
-				});
-
-				return {
-					characters,
-					move,
 					chests
 				}
 			}
