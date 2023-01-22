@@ -5,12 +5,12 @@
 *NOTE:* This list is not a commitment to you, it is a reference for me. There is no guarantee that any of these items will be implemented.
 
 ## big tasks (not prioritized, but a little bit preference-ized)
-- 🟠 20230119, 1951 entry. it was not the first timestamp for that date so that full string won't get a hit
-  - 🟠 implement the progress character workflow described there.
+- ✅ 20230119, 1951 entry. it was not the first timestamp for that date so that full string won't get a hit
+  - ✅ implement the progress character workflow described there.
     - ✅ this.progressActionScores()
-    - * this.progressTileScores()
+    - ✅ this.progressTileScores()
 - make capacity a resource - calculate it when all the attributes are updated probably
-- 🟠 audit character progress workflow
+- ✅ audit character progress workflow
  - ✅ reorder and revisit flow
  - ✅ get progressTileScores using the new Modifier percentToScore methods
 - ✅ party gets stuck going back and forth between -101 and -202
@@ -33,7 +33,7 @@
   - ✅ make methods that make use of the math
   - ✅ make a method that scores with diminishing returns (line goes up then up slowly then down then down quickly)
   - ✅ use this stuff a bunch when scoring to feel confident it works
-- party should be able to adventure on a tile with no cards without crashing everything
+- * party should be able to adventure (or vend or rest) on a tile with no cards without crashing everything
   - tile deck knowledge gets updated once the deck is definitely updated so it's sort of a lost turn but knowledge is gained and then the character never picks that tile for that purpose again.
 - region attributes should impact loot generation
 - interface

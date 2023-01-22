@@ -4572,3 +4572,57 @@ health score is 0 for adventuring? and 2 for resting. Health is backwards?
 1651 okay. updated the character sheet, just about time for dinner prep. Next step is looking into whether or not health is backwards. This is in service of resolving the null selectedTile on move 2 behaviour.
 
 1913 so. next? health. backwards?
+1914 alright, inverted health. Party adventures again, gets loot, and selected tile is empty again. Back where I was quite some time ago. A couple sessions? yesterday? something like that.
+
+Anyway, so why is this one like this.
+
+1916 vend is 2. doesn't have any tiles. but vending overall is 7 for 000, what the heck.
+
+1916 vend is picking tile 0-11. Okay so I might be getting close. Is/should tile knowledge be a factor right now? 
+
+
+```
+000
+Vending overall: 7
+    attribute: 1
+    capacity: 2
+    distance: 0.5
+    energy: 2
+    health: 1
+    knowledge: 3.5
+    satiety: 1
+
+0-11
+Vending overall: 8.45
+
+    attribute: 2.11
+    capacity: 2
+    distance: 1
+    energy: 2
+    health: 1
+    knowledge: 1
+    satiety: 1
+```
+
+1918 so 0-11 wins over 000 some how but there are no cards there so it gets taken out. Much strong attribute score. And distance - that makes sense, they're right here. 
+
+distance is the deciding factor here, so 0-11 seems so much better. Tile knowledge is a 1 - is this the factor.
+
+Tile knowledge isn't 0 because we don't know there are 0 cards. 0-11 gets pruned during tally because it has no cards but that pruning shouldn't happen. The party should be able to draw from a deck with 0 cards. so this is the point I'm at finally, I need to make that starthappening. udpate project.
+
+1924 it isn't the prune step that is doing it. that's all commented out and can definitely be deleted, but vend has no tile before that even. 
+
+1925 ahh
+```
+			if (memberVend.tile !== null
+				 && memberVend.tile.decks.vending.cards.length > 0
+			) {
+				tally.vend.tiles.push(memberVend.tile)
+			}
+```
+
+1926 alright, console error:
+```
+Deck - draw - trying to pull more cards than are in the deck
+```
+
