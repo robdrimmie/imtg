@@ -57,11 +57,7 @@ baseRegions[Hex.LEFT_DOWNWARDS.id()] = {
 }
 
 export default class Regions {
-    constructor() {
-        const environments = new Deck(Environments.cards())
-		const personalities = new Deck([...Attributes.PERSONALITIES, null])
-		const physicalities = new Deck([...Attributes.PHYSICALITIES, null])
-		
+    constructor() {	
 		this.tiles = [Tile.origin()];
 
         this.regions = Object.assign(baseRegions)
@@ -75,9 +71,16 @@ export default class Regions {
             Hex.RIGHT_UPWARDS.id(),
         ]
         
+        const environments = new Deck(Environments.cards())
+		const personalities = new Deck([...Attributes.PERSONALITIES, null])
+		const physicalities = new Deck([...Attributes.PHYSICALITIES, null])
+
         regionIds.forEach(regionId => {
+            console.log("--- region id ----- ", regionId)
 			// allocate environment
+            console.log("draw env", environments, environments.length())
 			this.regions[regionId].environment = environments.drawOne()
+            console.log("drew env", this.regions[regionId].environment, environments.length())
 			this.regions[regionId].color = this.regions[regionId].environment.color
 			
 			// assign attributes	

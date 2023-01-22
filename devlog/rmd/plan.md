@@ -4626,3 +4626,110 @@ Tile knowledge isn't 0 because we don't know there are 0 cards. 0-11 gets pruned
 Deck - draw - trying to pull more cards than are in the deck
 ```
 
+1942 hmm. 
+
+current flow does not really support the idea of going back and updating the character knowledge.
+ohhhhhhh I should make an EmptyCard or something like that and run it like I do an encounter. Yep. 
+
+1951 but how do I know the action? 
+
+1951 Okay so I have some thoughts that need thinking about Decks. Mostly infinite decks I guess, or deck replenishment. 
+
+In theory decks could replenish over time. I don't want to do that right now. 
+
+So every deck should have an infinite number of EmptyDeck cards but _only_ once all the other cards are depleted.
+
+Some decks might not I guess, since there might just be an infinite number of something. 
+
+Infinite numbers only help in some cases.
+
+What about... I have a deck. I have a card type. I want to add some number of cards to the deck. 
+
+If the deck is infinite, when a card is removed it is immediately reinstantiated. So there's always x percent chance of getting this type of card, y percent chance of getting that type of card, and z percent change of getting another type of card.
+
+If the deck is not infinite, then there is a specific set of cards and when it is depleted, the deck will provide an empty action card for each one. 
+
+1957 maybe two params: (depletableCards, infiniteCards)
+
+depletableCards is an array with a specific set of cards. infiniteCards is an array where each card is replenished once it is used.
+
+by default, infineCards is an array containing only one EmptyAdventureDeckCard or EmptyVendingDeckCard
+
+and that is an encounter card that sets the tile knowledge for the appropriate action/context. 
+
+2007 decks don't have types and they shouldn't. it doesn't matter if it is adventure or what. so if there are no infinite cards and it tries to draw something then that's a problem. 
+
+if there are no infinite cards that's a problem.
+
+ugh. ugh I don't know if I like doing this to the deck. Sometimes there shouldn't be infinite cards! Sometimes it should return an empty array. It isn't this class's problem if whatever called it can't handle an empty array.
+
+2050 night snack, yum. This depletable infinite stuff is not good. Complicates Deck needlessly. I need to sort out the .. 
+
+argh. 
+
+Maybe the empty deck encounter needs to come from a different direction. I don't think I did these methods well, with these giant stacks of state variables trailing around. it's pretty gross but I don't want to redo all of that pile of things too.
+
+not right now at least. 
+
+2105 alright, things are going good now until we get up to the party tier where the deck is null. 
+
+2115 if a deck is finite it uses splice. if infinite it uses slice.
+
+I am on this path because I want to handle an empty deck. When a party tries to perform an action but the deck is depleted, they need to update their tile knowledge for that action. 
+
+I was trying to squeeze that logic into an Encounter because it does sort of make sense there. 
+
+But these are different behaviours and I feel ooky about it all 
+
+20230122 0952 New day. My initial thought is that it is probably just best to revisit this flow. BOO initial thought. 
+
+The constraint is updating the characters and changing their tile knowledge. 
+
+Whatever consumes deck must be able to handle an empty array from draw, or null from drawOne. Maybe there should be an exception or something but this isn't really an exception-y project. 
+
+1000 Deck does have a "SIZE_UNLIMITED" constant so there's some expectation of it built into the system but I'm actually increasingly inclined to say that decks _must_ be finite. Something outside the deck can restock it if need be but the deck itself doesn't need to know that. 
+
+unclear if it's like a subclass or a wrapper or just consumers have to know what to do? feels bad like that. Anyway, this class is finite. Maybe something else can manage otherwise. I guess for now just like, InfiniteDeck. 
+
+1003 okay make some commits and then try infinite decks? 
+
+1003 None of the decks should give a fuck about what happens when there are not enough cards returned by a `draw`. That's not what a deck does, something else needs to deal with that. The "use a card in the deck to update characters" is flawed. Using something that _looks_ like a card is fine perhaps so that this behaviour fits into a stream of others. That makes sense I am still pretty sure. 
+
+1006 okay make some commits. Deck is nicer now. 
+
+1025 not entirely right. there's some errors. It's presenting when selecting regions. The deck gets fully drawn, but there are 7 regions and only 6 should be drawn so I'm not sure why that is happening. It looks like it's get
+
+-- ohh two cards are getting removed every time one card is requested. So look into that when you come back.
+
+1148 okay, two cards being removed.
+
+1154 okay, outputting environments.length before and after the draw confirms that the draw process itself is taking out two cards. 
+
+1201 oh I'm focusing on the wrong loop I think. I converted a for loop to a while and I think I like this better so it isn't wasted effort, but this loop isn't the duplicate, the thing that calls the method this loop is in is the duplicate.
+
+```
+drawOne 
+Array [ {…} ]
+​
+0: Object { name: "The Magical Forest", color: "green" }
+​
+length: 1
+​
+<prototype>: Array []
+Deck.js:76:11
+drew env 
+Object { name: "The River Lands", color: "dodgerblue" }
+ 5
+```
+
+so .. drew env isn't sending back what was drawn?
+1204 ohhhhhh
+
+```
+		return drawnCards.length > 0
+			? this.draw(1)[0]
+			: null
+```
+
+I should be returning the drawncard, I'm drawing again. ace refactor my dude! though the tests did fail and flag it this time, that's good. 
+

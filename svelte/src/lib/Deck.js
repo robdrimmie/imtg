@@ -21,30 +21,62 @@ export default class Deck {
 	draw(numberOfCardsToDraw = 1) {
 		let drawnCards = []
 
-		if(drawnCards.length <= numberOfCardsToDraw ) {
+		// console.log("cards length - A", this.cards.length, numberOfCardsToDraw)
+
+		// console.log("draw", numberOfCardsToDraw, this.cards.length, this.cards)
+		if(numberOfCardsToDraw >= this.cards.length ) {
+			// console.log("cards length - B1", this.cards.length)
 			// not enough cards so return the rest
 			drawnCards = [...this.cards]
+
+			// console.log("not enough, drawnCards", drawnCards, this.cards)
 			this.cards = []
 		} else {
+			// console.log("cards length - B2", this.cards.length, numberOfCardsToDraw)
 			// pull out the requested number of cards, one at a time, randomly
-			for (let cardsDrawn = 0; cardsDrawn < numberOfCardsToDraw; cardsDrawn++) {
+
+
+			while(drawnCards.length < numberOfCardsToDraw) {
+				// console.log("cards length - C", this.cards.length, drawnCards.length, drawnCards.length < numberOfCardsToDraw)
+				
 				const cardIndex = Dice.roll(this.cards.length) - 1;
+				// console.log("cards length - D", this.cards.length)
+
 				const card = this.cards.splice(cardIndex, 1);
+				// console.log("cards length - E", this.cards.length, card)
 	
-				drawnCards.push(card[0])
-			}	
+				drawnCards.push(card[0])	
+				
+				// console.log("drawncards length", drawnCards.length, drawnCards.length < numberOfCardsToDraw)
+			}
+
+			// for (let cardsDrawn = 0; cardsDrawn < numberOfCardsToDraw; cardsDrawn++) {
+
+			// 	console.log("cards length - C", this.cards.length, cardsDrawn)
+			// 	// console.log("loop", cardsDrawn, numberOfCardsToDraw, cardsDrawn < numberOfCardsToDraw)
+				
+			// 	const cardIndex = Dice.roll(this.cards.length) - 1;
+			// 	console.log("cards length - D", this.cards.length)
+			// 	// console.log("CAAARD len bef", this.cards.length)
+			// 	const card = this.cards.splice(cardIndex, 1);
+			// 	console.log("cards length - E", this.cards.length)
+			// 	// console.log("CAAARD", card, this.cards.length)
+	
+			// 	drawnCards.push(card[0])
+			// }	
 		}
-		
 		// console.log("deck.draw drew cards", drawnCards.length, numberOfCardsToDraw)
 		
+		// console.log("cards length - Z", this.cards.length)
 		return drawnCards;
 	}
 
 	drawOne() {
 		const drawnCards = this.draw(1)
-		
+		// console.log("drawOne", drawnCards)
+
 		return drawnCards.length > 0
-			? this.draw(1)[0]
+			? drawnCards[0]
 			: null
 	}
 
