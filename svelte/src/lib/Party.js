@@ -56,7 +56,7 @@ console.log("selected ones", selectedAction, selectedTile)
 			this.updateMemberTileRelationship(
 				selectedTile, 
 				this.membersInCharacters(characters));
-
+console.log("returning board", board)
 			return this.performAction(selectedAction, board, characters, chests, moves);
 		}
 
@@ -304,7 +304,7 @@ console.log("selected ones", selectedAction, selectedTile)
 		// console.log(`action drew card ${card.name} card results`, card, results);
 
 		move.moves = [];
-
+console.log("board", board)
 		const progressedBoard = board
 		// RMD TODO This only works when there's only one party
 		const progressedCharacters = results.characters
@@ -313,7 +313,7 @@ console.log("selected ones", selectedAction, selectedTile)
 			...moves, 
 			results.move
 		]
-
+		console.log("progboard", progressedBoard)
 		return {
 			progressedBoard,
 			progressedCharacters,
@@ -333,10 +333,10 @@ console.log("selected ones", selectedAction, selectedTile)
 			const progressedCharacters = this.deckHasNoCards(Party.PARTY_ACTION_ADVENTURE, characters)
 		
 			return {
-				board,
+				progressedBoard: board,
 				progressedCharacters,
-				chests,
-				moves,
+				progressedChests: chests,
+				progressedMoves: moves,
 			}
 		}
 
@@ -354,10 +354,10 @@ console.log("selected ones", selectedAction, selectedTile)
 			const progressedCharacters = deckHasNoCards(Party.PARTY_ACTION_REST, characters)
 		
 			return {
-				board,
+				progressedBoard: board,
 				progressedCharacters,
-				chests,
-				moves,
+				progressedChests,
+				progressedMoves,
 			}
 		}
 
@@ -375,10 +375,10 @@ console.log("selected ones", selectedAction, selectedTile)
 			const progressedCharacters = deckHasNoCards(Party.PARTY_ACTION_VEND, characters)
 		
 			return {
-				board,
+				progressedBoard: board,
 				progressedCharacters,
-				chests,
-				moves,
+				progressedChests,
+				progressedMoves,
 			}
 		}
 		

@@ -158,7 +158,7 @@ export default class TileRelationship {
 
 		actionValue.overall = this.calculateOverallScore(actionValue)
 
-		console.log("calculateActionValue returning", actionValue)
+		// console.log("calculateActionValue returning", actionValue)
 
 		return actionValue
 	}
@@ -197,7 +197,7 @@ export default class TileRelationship {
 			characterPersonality/100, 
 			this.attributes.personalityThreshold/100
 		)
-		console.log("per", characterPersonality, attributeScore)
+		// console.log("per", characterPersonality, attributeScore)
 
 		const characterPhysicality = (this.tile.region.physicality === null)
 			? this.physicality.get(this.getBestPhysicality()).apparent
@@ -309,7 +309,7 @@ export default class TileRelationship {
 	calculateKnowledgeScore(knowledge) {
 		// console.log("calculating value for knowledge and tile.id", knowledge, this.tile.id)
 		let value = 1
-console.log("calculateKnowledgeScore - a", knowledge)
+// console.log("calculateKnowledgeScore - a", knowledge)
 		if (knowledge.deckSize) {
 			switch (knowledge.deckSize) {
 				case Deck.SIZE_EMPTY:
@@ -409,7 +409,7 @@ console.log("calculateKnowledgeScore - a", knowledge)
 	}
 
 	calculateOverallScore(actionValue) {
-		console.log("calculateOverallScore", actionValue)
+		// console.log("calculateOverallScore", actionValue)
 		
 		return 1 * 
 			actionValue.attribute * 

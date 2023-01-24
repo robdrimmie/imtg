@@ -4782,3 +4782,37 @@ error in browser: deckHasNoCards is not defined.
 2045 oh! I didn't update the action() method to recieve a card instead of a deck. there was another thing before this, but I don't remember what it was - oh missed using `this` on a method call.
 
 2046 I'm clobbering something. There's a place where I duplicated a return object I think?
+
+2053 so it happens somewhere in the call to Party.progress in __layout
+
+Party.action is receiving a good `board` and returning undefined.
+
+2057 oh, nope. there's a .. huh
+
+2058 okay I do still think it is the card that is mangling it. there was a fully cycle that I didn't recognize as such, so what I thought were instances with data in them was for the previous iteration of the loop. 
+
+so it is somewhere inside party.progress, and I'm guessing it's in the area I just fucked with. so.. what was that again? the card right, it has to be the card. 
+
+2100 no that's the thing. it doesn't get that far in this loop? I think?
+
+2105 oh I'm not calling the properties `progressedBoard`, for example, but `board`. But just in this one flow. 
+
+it's not in Party.js
+
+2108 yes it is
+```
+			return {
+				board,
+				progressedCharacters,
+				chests,
+				moves,
+			}
+```
+
+2110 that was it! now the party just stays on the tile leftupwards of origin
+
+oh probably because they just keep drawing the empty card. 
+
+so I need to:
+- implement the empty deck card stuff
+- update calculateKnowledgeScore to use empty deck knowledge.

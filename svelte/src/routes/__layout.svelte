@@ -140,18 +140,31 @@
 		$parties.forEach((party, index) => {
 			Logger.info(`Progressing party [${party.id}] ${party.name}`)
 
-			const {
-				progressedBoard,
-				progressedCharacters,
-				progressedChests,
-				progressedMoves,
-			} = party.progress(
+			// const {
+			// 	progressedBoard,
+			// 	progressedCharacters,
+			// 	progressedChests,
+			// 	progressedMoves,
+			// } = party.progress(
+			const foo = party.progress(
 				$board,
 				$characters,
 				$chests,
 				$moves
 			)
+console.log("layout prog foo", foo)
+			const {
+				progressedBoard,
+				progressedCharacters,
+				progressedChests,
+				progressedMoves,
+			} = foo
 				
+console.log("progressed", 				progressedBoard,
+				progressedCharacters,
+				progressedChests,
+				progressedMoves)
+
 			$board = progressedBoard
 			$characters = progressedCharacters
 			$chests = progressedChests

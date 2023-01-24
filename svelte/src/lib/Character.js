@@ -117,7 +117,7 @@ export default class Character {
 		this.actionScores.resting = this.calculateRestingScore()
 		this.actionScores.vending = this.calculateVendingScore()
 
-		console.log("action scores progressed", this.actionScores)
+		// console.log("action scores progressed", this.actionScores)
 	}
 
 	progressAttributes() {
@@ -605,7 +605,7 @@ export default class Character {
 			* health.asScore() 
 			* satiety.asScore()
 
-		console.log("adventuring score", score)
+		// console.log("adventuring score", score)
 		return score
 	}
 
@@ -802,17 +802,17 @@ export default class Character {
 		// find the best tiles for each type of action based on this character's knowledge
 		this.tileRelationships.forEach((tileRelationship, key, map) => {
 			const tileUnderConsideration = tileRelationship.tile
-			console.log(`Considering tile with ID ${tileUnderConsideration.id}`
-				, tileRelationship.values.adventuring
-				, tileRelationship.values.resting
-				, tileRelationship.values.vending
-			)
+			// console.log(`Considering tile with ID ${tileUnderConsideration.id}`
+			// 	, tileRelationship.values.adventuring
+			// 	, tileRelationship.values.resting
+			// 	, tileRelationship.values.vending
+			// )
 
 			const tileScoreForAdventuring = tileRelationship.values.adventuring.overall
 			const tileScoreForResting = tileRelationship.values.resting.overall
 			const tileScoreForVending = tileRelationship.values.vending.overall
 			
-			console.log("tile scores", tileScoreForAdventuring, tileScoreForResting, tileScoreForVending)
+			// console.log("tile scores", tileScoreForAdventuring, tileScoreForResting, tileScoreForVending)
 
 			// update best tiles
 			if (tileScoreForAdventuring > bestTiles.adventure.score) {
@@ -824,7 +824,7 @@ export default class Character {
 					contenders: [tileUnderConsideration]
 				};
 			} else if (tileScoreForAdventuring == bestTiles.adventure.score) {
-				console.log("adding adv contender")
+				// console.log("adding adv contender")
 				// combine if score is equal
 				bestTiles.adventure = {
 					score: tileScoreForAdventuring,
@@ -845,22 +845,22 @@ export default class Character {
 			}
 
 			if (tileScoreForVending > bestTiles.vend.score) {
-				console.log("Replacing vend score old new", tileScoreForVending, bestTiles.vend.score)
+				// console.log("Replacing vend score old new", tileScoreForVending, bestTiles.vend.score)
 
 				bestTiles.vend = {
 					score: tileScoreForVending,
 					contenders: [tileUnderConsideration]
 				};
 			} else if (tileScoreForVending == bestTiles.vend.score) {
-				console.log("adding vend contender")
+				// console.log("adding vend contender")
 				bestTiles.vend = {
 					score: tileScoreForVending,
 					contenders: [...bestTiles.vend.contenders, tileUnderConsideration]
 				};
 			}
 
-			console.log("bestTilesForActionsConcluding", 
-				tileRelationship.values, 
+			// console.log("bestTilesForActionsConcluding", 
+			// 	tileRelationship.values, 
 				// bestTiles.adventure,
 				// bestTiles.adventure.score, 
 				// bestTiles.adventure.contenders, 
@@ -872,19 +872,19 @@ export default class Character {
 				// tileScoreForResting, 
 				// tileScoreForResting > bestTiles.resting.score,
 
-				"outputting vend details",
-				bestTiles.vend,
-				bestTiles.vend.score, 
-				bestTiles.vend.tile, 
-				bestTiles.vend.contenders, 
-				tileScoreForVending, 
-				tileScoreForVending > bestTiles.vend.score
-			)
+			// 	"outputting vend details",
+			// 	bestTiles.vend,
+			// 	bestTiles.vend.score, 
+			// 	bestTiles.vend.tile, 
+			// 	bestTiles.vend.contenders, 
+			// 	tileScoreForVending, 
+			// 	tileScoreForVending > bestTiles.vend.score
+			// )
 		});
 
-		console.log('adventure', bestTiles.adventure.contenders)
-		console.log('rest', bestTiles.rest.contenders)
-		console.log('vend', bestTiles.vend.contenders)
+		// console.log('adventure', bestTiles.adventure.contenders)
+		// console.log('rest', bestTiles.rest.contenders)
+		// console.log('vend', bestTiles.vend.contenders)
 
 		bestTiles.adventure.tile = Deck.pickOneCard(bestTiles.adventure.contenders)
 		bestTiles.rest.tile = Deck.pickOneCard(bestTiles.rest.contenders)
