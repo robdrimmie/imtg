@@ -4733,3 +4733,52 @@ so .. drew env isn't sending back what was drawn?
 
 I should be returning the drawncard, I'm drawing again. ace refactor my dude! though the tests did fail and flag it this time, that's good. 
 
+1206 okay but it was a bit of wasted effort, all that for a draw refactor. Ah well, better code is better code.
+
+Things are coming along though, play continues, the party adventures, loses and draws another advneture card (I think. another card, not sure which one) and that card is null. so party needs to update its characters when the card is null. 
+
+This is where I didn't want to go yesterday but I think I need to refactor this flow. Ugh. It's kind of integral. 
+
+So the problem is I don't know what action this is, so I can't tell it to update the tile relationship because that's keyed by action. 
+
+1209 Okay so the right place for this logic, I think?, is in the adventure(), rest() and vend() methods. These are passthroughs into action(), which is where the card is called. 
+
+The action can't happen if there isn't a card so it ideally would report that and then each of those methods would trigger an update of the appropriate thing on each of the characters? 
+
+1213 I can move the draw up into each of those and pass just the card, not the deck. the deck is only used to get the card, so this is consistent and tidier I think? lovely!
+
+1222 I don't think there's just a way to say "this character knows this tile's action deck is empty". It's bound up in TileKnowledge stuff, right?
+
+1224
+```
+		const knowledge = this.tile.getKnowledgeForLevel(this.knowledgeLevel)
+
+		this.values.adventuring = this.calculateAdventuringValue(knowledge)
+		this.values.resting = this.calculateRestingValue(knowledge)
+		this.values.vending = this.calculateVendingValue(knowledge)
+```
+
+1225 yeah. the tile knowledge stuff is a bit bumpy. 
+
+Okay I'm going to hack it a bit? knowledgeForKnowledgeLevel or whatever will accept an 
+
+ugh. shit. the tile relationship needs to store deckIsEmpty.adventuring, .vending etc. then it passes that whole thing into getKnowledgeForLevel. 
+
+GROSS but yes, tile knowledge refactor needs to occur eventually. 
+
+1229 captured that, moving on with this. 
+
+1235 alright, stepping away. In theory it is possible that characters are marking their deck empty this very minute but I have not tested and so probably not. When I return, see if anythign breaks in browser before the attempt to draw an empty deck. 
+
+I don't think the drawing from an empty deck thing is fully finished but I think _marking_ them empty is. That's not used yet when calculating Knowledge, so steps are:
+
+- if anything is breaking in the browser, fix it
+- update calculateKnowledgeScore to use empty deck knowledge.
+
+20230123 2043 likely not a long one today, woke up much too early and have felt off all day. 
+
+error in browser: deckHasNoCards is not defined.
+
+2045 oh! I didn't update the action() method to recieve a card instead of a deck. there was another thing before this, but I don't remember what it was - oh missed using `this` on a method call.
+
+2046 I'm clobbering something. There's a place where I duplicated a return object I think?

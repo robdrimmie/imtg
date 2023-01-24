@@ -917,6 +917,29 @@ export default class Character {
 		return relationship;
 	}
 
+	markDeckEmpty(tile, actionType) {
+		let context
+		switch(actionType) {
+			case Party.PARTY_ACTION_ADVENTURE: 
+				context = TileRelationship.CONTEXT_ADVENTURING
+				break;
+
+			case Party.PARTY_ACTION_REST: 
+				context = TileRelationship.CONTEXT_RESTING
+				break;
+
+			case Party.PARTY_ACTION_VEND: 
+				context = TileRelationship.CONTEXT_VENDING
+				break;
+		}
+
+		const relationship = this.tileRelationships.get(tile.id())
+
+		console.log("empty deck rel", relationship)
+
+		relationship.emptyDeck(context)
+	}
+
 	movedIntoTile(tile, neighbours) {
 		// learn a tiny bit about neighbouring tiles
 		neighbours.forEach((neighbour) => {

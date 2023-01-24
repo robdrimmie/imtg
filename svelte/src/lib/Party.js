@@ -283,16 +283,11 @@ console.log("selected ones", selectedAction, selectedTile)
 	}
 
 	// #region Party Actions
-	action(moveMessage, deck, board, characters, chests, moves) {
-		console.log("Party.action moveMessage, deck, board, characters, chests, moves", moveMessage, deck, board, characters, chests, moves)
+	action(moveMessage, card, board, characters, chests, moves) {
+		console.log("Party.action moveMessage, card, board, characters, chests, moves", moveMessage, card, board, characters, chests, moves)
 
 		const move = new Move(Move.TYPE_OTHER_MESSAGES, {}, moveMessage);
 
-		if(deck.length < 1) {
-			console.error("party action deck has no cards what!");
-		}
-		const card = deck.drawOne()
-		console.log("drew card", card, this.membersInCharacters(characters))
 		const something = card.run({
 			characters: this.membersInCharacters(characters),
 			chests: chests
@@ -327,31 +322,69 @@ console.log("selected ones", selectedAction, selectedTile)
 		}
 	}
 
+	deckHasNoCards(actionType, characters) {
+		return [...characters]
+	}
+
 	adventure(board, characters, chests, moves) {
-		// console.log("adventure", this.tile)
+		const card = this.tile.decks.adventuring.drawOne()
+
+		if(card == null) {
+			const progressedCharacters = this.deckHasNoCards(Party.PARTY_ACTION_ADVENTURE, characters)
+		
+			return {
+				board,
+				progressedCharacters,
+				chests,
+				moves,
+			}
+		}
+
 		return this.action(
 			`${this.name} is adventuring!`,
-			this.tile.decks.adventuring,
+			card,
 			board, characters, chests, moves
-		);
+		)
 	}
 
 	rest(board, characters, chests, moves) {
-		// console.log("rest", this.tile)
+		const card = this.tile.decks.resting.drawOne()
+
+		if(card == null) {
+			const progressedCharacters = deckHasNoCards(Party.PARTY_ACTION_REST, characters)
 		
+			return {
+				board,
+				progressedCharacters,
+				chests,
+				moves,
+			}
+		}
+
 		return this.action(
 			`${this.name} is resting!`, 
-			this.tile.decks.resting,
+			card,
 			board, characters, chests, moves	
-		);
+		)
 	}
 
 	vend(board, characters, chests, moves) {
-		// console.log("vend", this.tile)
+		const card = this.tile.decks.vending.drawOne()
+
+		if(card == null) {
+			const progressedCharacters = deckHasNoCards(Party.PARTY_ACTION_VEND, characters)
+		
+			return {
+				board,
+				progressedCharacters,
+				chests,
+				moves,
+			}
+		}
 		
 		return this.action(
 			`${this.name} is vending!`, 
-			this.tile.decks.vending,
+			card,
 			board, characters, chests, moves
 		);
 	}

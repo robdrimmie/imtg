@@ -4,12 +4,11 @@ import Hex from '$lib/Map/Hex.js'
 import Tile from '$lib/Map/Tile'
 import Modifiers from '$lib/Modifiers'
 
-
-const CONTEXT_ADVENTURING = 'CONTEXT_ADVENTURING'
-const CONTEXT_RESTING = 'CONTEXT_RESTING'
-const CONTEXT_VENDING = 'CONTEXT_VENDING'
-
 export default class TileRelationship {
+	static CONTEXT_ADVENTURING = 'CONTEXT_ADVENTURING'
+	static CONTEXT_RESTING = 'CONTEXT_RESTING'
+	static CONTEXT_VENDING = 'CONTEXT_VENDING'
+
 	constructor(character, tile) {
 		// Characters are big objects and store relationships, so taking just the bits I need
 		this.characterId = character.id
@@ -27,6 +26,15 @@ export default class TileRelationship {
 		this.tile = tile
 
 		this.knowledgeLevel = Tile.KNOWLEDGE_UNKNOWN
+
+		// rmd todo make tile knowledge a data object, see refactor notes in project.md
+		this.knowledge = {
+			emptyDecks: {
+				adventuring: false,
+				resting: false,
+				vending: false
+			}
+		}
 
 		this.values = {
 			adventuring: {			
@@ -107,6 +115,20 @@ export default class TileRelationship {
 		this.attributes.physicalityThreshold += 5
 	}
 
+	emptyDeck(context) {
+		if(context == TileRelationship.CONTEXT_ADVENTURING) {
+			this.knowledge.emptyDecks.adventuring = true
+		}
+
+		if(context == TileRelationship.CONTEXT_ADVENTURING) {
+			this.knowledge.emptyDecks.resting = true
+		}
+
+		if(context == TileRelationship.CONTEXT_ADVENTURING) {
+			this.knowledge.emptyDecks.vending = true
+		}
+	}
+
 	victory() {
 		this.attributes.personalityThreshold -= 5
 		this.attributes.physicalityThreshold -= 5
@@ -142,19 +164,18 @@ export default class TileRelationship {
 	}
 
 	calculateAdventuringValue(knowledge) {
-		return this.calculateActionValue(CONTEXT_ADVENTURING, knowledge.adventuring)
+		return this.calculateActionValue(TileRelationship.CONTEXT_ADVENTURING, knowledge.adventuring)
 	}
 
 	calculateRestingValue(knowledge) {
-		return this.calculateActionValue(CONTEXT_RESTING, knowledge.resting)
+		return this.calculateActionValue(TileRelationship.CONTEXT_RESTING, knowledge.resting)
 		
 	}
 
 	calculateVendingValue(knowledge) {
-		return this.calculateActionValue(CONTEXT_VENDING, knowledge.vending)		
+		return this.calculateActionValue(TileRelationship.CONTEXT_VENDING, knowledge.vending)		
 	}
 	// #endregion Calculate Tile Values
-
 
 	// #region Calculate Motivator Scores
 	/*
@@ -191,12 +212,12 @@ export default class TileRelationship {
 	}
 
 	calculateCapacityScore(context) {
-		if(context == CONTEXT_RESTING) {
+		if(context == TileRelationship.CONTEXT_RESTING) {
 			// capacity has no impact on desire to rest
 			return 1
 		}
 
-		const higherIsBetter = (context == CONTEXT_VENDING)
+		const higherIsBetter = (context == TileRelationship.CONTEXT_VENDING)
 			? false				// want very full bags when vending so there is stuff to sell!
 			: true				// want very empty bags when adventuring to hold all that loot!
 
@@ -267,7 +288,7 @@ export default class TileRelationship {
 	}
 
 	calculateHealthScore(context) {
-		if(context == CONTEXT_VENDING) {
+		if(context == TileRelationship.CONTEXT_VENDING) {
 			// health has no impact on desire to vend
 			return 1
 		}
@@ -275,7 +296,7 @@ export default class TileRelationship {
 		const characterHealth = this.resources.get(Attributes.RESOURCES_HEALTH)
 		const percentAvailable = characterHealth.current / characterHealth.base
 
-		const higherIsBetter = (context == CONTEXT_ADVENTURING)
+		const higherIsBetter = (context == TileRelationship.CONTEXT_ADVENTURING)
 			? true				// high health means high desire to adventure, low to rest
 			: false				// low health means high desire to rest, low to adventure
 

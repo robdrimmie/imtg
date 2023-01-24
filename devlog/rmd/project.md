@@ -82,6 +82,10 @@
 
 
 ### near future - I need to do this stuff but am putting it off because it's less fun
+- tile knowledge refactor. I wanted to store all tile knowledge in the tile itself then it just
+  gives that to anyone who asks but the discreet levels like that doesn't work nicely with empty
+  deck knowledge, etc. There perhaps should be a defined TileKnowledge data object-like thing that 
+  lives in the TileRelationship instance and is part of all that.
 - ensure that all uses of Modifiers.INCREASE and DECREASE are replaced with score calculations
 - once the party discovers the rightful place for a win condition, they should _really_ want to go there if they have it equipped. Like, beeline win the game woot! so like, some tile knowledge stuff here.
 - devopsy things
