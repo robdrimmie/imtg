@@ -116,6 +116,7 @@ export default class TileRelationship {
 	}
 
 	emptyDeck(context) {
+		console.log("EMPTY DECK CONTEXT", context)
 		if(context == TileRelationship.CONTEXT_ADVENTURING) {
 			this.knowledge.emptyDecks.adventuring = true
 		}

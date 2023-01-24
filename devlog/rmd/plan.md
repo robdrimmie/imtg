@@ -4816,3 +4816,8 @@ oh probably because they just keep drawing the empty card.
 so I need to:
 - implement the empty deck card stuff
 - update calculateKnowledgeScore to use empty deck knowledge.
+
+2117 oh I have a markDeckEmpty method in character
+
+
+ohhhhh sweet! I am now at the point where to progress I need to `- update calculateKnowledgeScore to use empty deck knowledge.` So they are the same task!

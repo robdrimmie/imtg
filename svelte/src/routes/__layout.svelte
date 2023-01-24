@@ -152,18 +152,13 @@
 				$chests,
 				$moves
 			)
-console.log("layout prog foo", foo)
+
 			const {
 				progressedBoard,
 				progressedCharacters,
 				progressedChests,
 				progressedMoves,
 			} = foo
-				
-console.log("progressed", 				progressedBoard,
-				progressedCharacters,
-				progressedChests,
-				progressedMoves)
 
 			$board = progressedBoard
 			$characters = progressedCharacters

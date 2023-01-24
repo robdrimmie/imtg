@@ -1,4 +1,5 @@
 import Attributes from '$lib/Attributes'
+import Party from '$lib/Party'
 import Backpacks from '$lib/Decks/Backpacks'
 import Dice from '$lib/Dice'
 import Jobs from '$lib/Decks/Jobs'
@@ -917,7 +918,7 @@ export default class Character {
 		return relationship;
 	}
 
-	markDeckEmpty(tile, actionType) {
+	markDeckEmpty(actionType) {
 		let context
 		switch(actionType) {
 			case Party.PARTY_ACTION_ADVENTURE: 
@@ -933,7 +934,7 @@ export default class Character {
 				break;
 		}
 
-		const relationship = this.tileRelationships.get(tile.id())
+		const relationship = this.tileRelationships.get(this.currentTile.id)
 
 		console.log("empty deck rel", relationship)
 

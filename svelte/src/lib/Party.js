@@ -43,10 +43,12 @@ export default class Party {
 		const scoredActionsAndTiles = this.scoreActionsAndTiles(
 			this.membersInCharacters(characters)
 		);
-console.log("scoredActionsAndTiles", scoredActionsAndTiles)
+		// console.log("scoredActionsAndTiles", scoredActionsAndTiles)
+
 		// Figure out the best tile for that action
 		const { selectedAction, selectedTile } = this.chooseActionAndTile(scoredActionsAndTiles);
-console.log("selected ones", selectedAction, selectedTile)
+		// console.log("selectedAction, selectedTile", selectedAction, selectedTile)
+
 		// If there already, do it!
 		if (this.tile.id === selectedTile.id) {
 			// RMD TODO This breaks increasing tile knowledge since moveintotile is only called if they move
@@ -56,7 +58,7 @@ console.log("selected ones", selectedAction, selectedTile)
 			this.updateMemberTileRelationship(
 				selectedTile, 
 				this.membersInCharacters(characters));
-console.log("returning board", board)
+
 			return this.performAction(selectedAction, board, characters, chests, moves);
 		}
 
@@ -173,14 +175,14 @@ console.log("returning board", board)
 		tally.rest.score /= partyMemberVotes.length
 		tally.vend.score /= partyMemberVotes.length
 
-		console.log(
-			"tally returning", 
-			tally, 
-			tally.vend,
-			tally.vend.tiles, 
-			tally.vend.tiles[0], 
-			tally.vend.tiles.length
-		)
+		// console.log(
+		// 	"tally returning", 
+		// 	tally, 
+		// 	tally.vend,
+		// 	tally.vend.tiles, 
+		// 	tally.vend.tiles[0], 
+		// 	tally.vend.tiles.length
+		// )
 	
 		return tally
 	}
@@ -322,7 +324,11 @@ console.log("board", board)
 		}
 	}
 
-	deckHasNoCards(actionType, characters) {
+	markDeckEmpty(actionType, characters) {
+		characters.forEach(character => {
+			character.markDeckEmpty(actionType)
+		})
+		
 		return [...characters]
 	}
 
@@ -330,7 +336,7 @@ console.log("board", board)
 		const card = this.tile.decks.adventuring.drawOne()
 
 		if(card == null) {
-			const progressedCharacters = this.deckHasNoCards(Party.PARTY_ACTION_ADVENTURE, characters)
+			const progressedCharacters = this.markDeckEmpty(Party.PARTY_ACTION_ADVENTURE, characters)
 		
 			return {
 				progressedBoard: board,
