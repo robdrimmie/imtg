@@ -4821,3 +4821,97 @@ so I need to:
 
 
 ohhhhh sweet! I am now at the point where to progress I need to `- update calculateKnowledgeScore to use empty deck knowledge.` So they are the same task!
+
+2123 I did pretty good setting myself up. I lost a lot of context, but fixing the browser issues ultimately gave me a chance to step through the logic again to help remember it, confirmed some things, changed a method name or two that sort of thing. 
+
+2131 need to 
+- add Moves not when a deck is empty
+- party stalls out sometime around moves length is around 6 but since empty deck moves are not added there's nothing - they want to vend, best vend tile is 0-22 (where they are)
+
+2134 ohhhh it is because every tile has 999 vend (and rest) cards so they are trying to vend, drawing a card and not being able to unload for some reason - not origin or something. 
+
+20230124 2048 hello. So all the not-Origin tiles need to have 0 vend cards. 
+
+2049 hmm. only Environment/OriginTown puts 999 cards in the vending deck, all other tiles should be an empty array.
+
+2051 yeah, the vending deck for 0-22 (the tile the party gets stuck on) is empty. so it's logic problem not data problem.
+
+2053 So. Huh. What would make 0-22 seem good for vending? Does the character know that 000 has a vending deck? It should score pretty big right? But deck size - knowledge. Right, it's part of the knowledge score. 
+
+0-22's overall vending is huge. It's knowledge level is 1. Everything else is 0 except origintown which is 85. So if it is knowledge score that's the reason, why is origin still lower? 
+
+```
+000
+Vending overall: 4.67
+
+    attribute: 1
+    capacity: 2
+    distance: 0.333
+    energy: 2
+    health: 1
+    knowledge: 3.5
+    satiety: 1
+
+0-22  
+Vending overall: 9.44
+
+    attribute: 2.36
+    capacity: 2
+    distance: 1
+    energy: 2
+    health: 1
+    knowledge: 1
+    satiety: 1
+```
+2056 very high attribute score. Right I saw that before. and distance degrades heavily
+
+0-22 - 2.36 * 2.000 * 2       = 9.44
+ 000 - 2.00 * 0.333 * 2 * 3.5 = 4.662
+ 000 - 2.00 * .       2 * 3.5 = 14
+
+2059 so if not for the distance, 000 would still win. 
+
+Attribute score being neutral for origintown feels like it is penalizing in some fashion. But it really is irrelevant. 
+
+Could increase capacity score when full also. 
+ 
+ 2.00 * .9 * 2 * 3.5 = 12.6
+
+ 2102 capacity score is 2 for all of them. I guess it should be in the context of vending, it's the same for all so I'm going to act as though it cancels out. It might? It feels weird that a tile without vending is just as good when my bag is full. 
+
+ 2.00 * .5 * 2 * 3.5 = 7
+ 2.00 * .6 * 2 * 3.5 = 8.4
+ 2.00 * .7 * 2 * 3.5 = 9.8
+
+ So that's tuning it to this very specific value. Hmm, at some point I'm going to want to expose a lot of these thresholds or setpoints or something for easier tweaking and experimenting. 
+
+ So distance is 0.33 right now because distance gets halved each time or something like that. The distance + 1 ends up as the denominator, so 1/(0+1), 1/(1+1), 1/(2+1) which is how far away from origin the party is right now. 
+
+ So this is a percentage, right? It should go through a call to setpoint to allow for sliding around. 
+
+ 2113 okay that worked in that the vending overall for 000 is now 10.7, but it is 18.9 for 0-22! It is because its distance now is 2 instead of 1
+
+ Closer is better. Wait, knowledge should be dropping the desirability of this place once the empty deck is known, shouldn't it? Am I missing something that handles and empty vend deck?
+
+ ```
+ 	emptyDeck(context) {
+		console.log("EMPTY DECK CONTEXT", context)
+		if(context == TileRelationship.CONTEXT_ADVENTURING) {
+			this.knowledge.emptyDecks.adventuring = true
+		}
+
+		if(context == TileRelationship.CONTEXT_ADVENTURING) {
+			this.knowledge.emptyDecks.resting = true
+		}
+
+		if(context == TileRelationship.CONTEXT_ADVENTURING) {
+			this.knowledge.emptyDecks.vending = true
+		}
+	}
+  ```
+
+  super differentiated if statements there my friend!
+
+  2116 yay that was it! so do I need to treat distance as a score? I think I should, I think it is perhaps good like this. I have no idea if the curve makes any sense but I like it. 
+
+  

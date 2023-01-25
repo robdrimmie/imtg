@@ -328,7 +328,7 @@ console.log("board", board)
 		characters.forEach(character => {
 			character.markDeckEmpty(actionType)
 		})
-		
+
 		return [...characters]
 	}
 
@@ -357,13 +357,13 @@ console.log("board", board)
 		const card = this.tile.decks.resting.drawOne()
 
 		if(card == null) {
-			const progressedCharacters = deckHasNoCards(Party.PARTY_ACTION_REST, characters)
+			const progressedCharacters = this.markDeckEmpty(Party.PARTY_ACTION_REST, characters)
 		
 			return {
 				progressedBoard: board,
 				progressedCharacters,
-				progressedChests,
-				progressedMoves,
+				progressedChests: chests,
+				progressedMoves: moves,
 			}
 		}
 
@@ -378,13 +378,13 @@ console.log("board", board)
 		const card = this.tile.decks.vending.drawOne()
 
 		if(card == null) {
-			const progressedCharacters = deckHasNoCards(Party.PARTY_ACTION_VEND, characters)
+			const progressedCharacters = this.markDeckEmpty(Party.PARTY_ACTION_VEND, characters)
 		
 			return {
 				progressedBoard: board,
 				progressedCharacters,
-				progressedChests,
-				progressedMoves,
+				progressedChests: chests,
+				progressedMoves: moves,
 			}
 		}
 		

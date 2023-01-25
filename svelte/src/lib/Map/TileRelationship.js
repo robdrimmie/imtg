@@ -100,7 +100,7 @@ export default class TileRelationship {
 		
 		// Calculate how valuable this tile is for each action type
 		const knowledge = this.tile.getKnowledgeForLevel(this.knowledgeLevel)
-
+console.log("retrieved knowledge for tile", knowledge, this.tile.id)
 		this.values.adventuring = this.calculateAdventuringValue(knowledge)
 		this.values.resting = this.calculateRestingValue(knowledge)
 		this.values.vending = this.calculateVendingValue(knowledge)
@@ -121,11 +121,11 @@ export default class TileRelationship {
 			this.knowledge.emptyDecks.adventuring = true
 		}
 
-		if(context == TileRelationship.CONTEXT_ADVENTURING) {
+		if(context == TileRelationship.CONTEXT_RESTING) {
 			this.knowledge.emptyDecks.resting = true
 		}
 
-		if(context == TileRelationship.CONTEXT_ADVENTURING) {
+		if(context == TileRelationship.CONTEXT_VENDING) {
 			this.knowledge.emptyDecks.vending = true
 		}
 	}
@@ -165,15 +165,20 @@ export default class TileRelationship {
 	}
 
 	calculateAdventuringValue(knowledge) {
+		if(this.knowledge.emptyDecks.adventuring) return 0
+
 		return this.calculateActionValue(TileRelationship.CONTEXT_ADVENTURING, knowledge.adventuring)
 	}
 
 	calculateRestingValue(knowledge) {
+		if(this.knowledge.emptyDecks.resting) return 0
+
 		return this.calculateActionValue(TileRelationship.CONTEXT_RESTING, knowledge.resting)
-		
 	}
 
 	calculateVendingValue(knowledge) {
+		if(this.knowledge.emptyDecks.vending) return 0 
+
 		return this.calculateActionValue(TileRelationship.CONTEXT_VENDING, knowledge.vending)		
 	}
 	// #endregion Calculate Tile Values
@@ -233,12 +238,19 @@ export default class TileRelationship {
 	// to the extent that it does, it is a function of energy and therefore impacted by calculateEnergyScore
 	calculateDistanceScore(context) {
 		const distance = Hex.distance(this.tile.hex, this.currentTile.hex)
+		const distanceAsPercent = (distance === 0) ? 1 : 1 / (distance + 1)
+		const curve = [
+			{ x: 0.0,     y: 0.0 },
+			{ x: 0.3,     y: 0.7 },
+			{ x: 1.0,     y: 2.0 }
+		]
 
-		// console.log("calculateDistanceScore", this.tile.hex, 
-		//	this.currentTile.hex, distance, (distance === 0) ? 1 : 1 / (distance + 1)
-		// )
-		
-		return (distance === 0) ? 1 : 1 / (distance + 1)
+		const score = Modifiers.percentToScoreBySetpoints(
+			distanceAsPercent, 
+			curve
+		)
+
+		return score
 	}
 
 	calculateEnergyScore(context, distance) {
@@ -311,6 +323,7 @@ export default class TileRelationship {
 		// console.log("calculating value for knowledge and tile.id", knowledge, this.tile.id)
 		let value = 1
 // console.log("calculateKnowledgeScore - a", knowledge)
+
 		if (knowledge.deckSize) {
 			switch (knowledge.deckSize) {
 				case Deck.SIZE_EMPTY:

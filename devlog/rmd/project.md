@@ -102,6 +102,8 @@
 - clear out dead darlings and unused things
 
 ### far future - there's a better spot for this but I don't have one
+- settings - expose interface to change setpoints and other magic values
+  - eg TileRelationship calculate* methods have "curves" variables. These should be editable eventually for easier 
 - it would be nifty if adventurers had like, personal quests. [[20210704 1011]]
 - characters form, join and leave parties according to how strongly they want to travel in certain directions and perhaps other factors
 - notes on characters, parties and tiles (player notes "this is what I want to do there" "this char needs poison resist" etc)
