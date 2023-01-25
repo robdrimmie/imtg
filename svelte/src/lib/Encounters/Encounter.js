@@ -13,18 +13,6 @@ export default class Encounter {
 		this.run = options?.run ?? run
 	}
 
-	static DeckIsEmpty() {
-		return new Encounter({
-			description: 'The encounter type for this action is empty',
-			name: 'Empty Deck',
-			run: (params) => {
-				const {characters, chests} = params
-
-				const currentTile = characters[0].currentTile
-			}
-		})
-	}
-
 	static NothingHappens() {
 		return new Encounter({
 			description: 'Nothing happened',

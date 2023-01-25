@@ -116,7 +116,6 @@ console.log("retrieved knowledge for tile", knowledge, this.tile.id)
 	}
 
 	emptyDeck(context) {
-		console.log("EMPTY DECK CONTEXT", context)
 		if(context == TileRelationship.CONTEXT_ADVENTURING) {
 			this.knowledge.emptyDecks.adventuring = true
 		}

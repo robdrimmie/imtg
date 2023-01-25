@@ -338,11 +338,15 @@ console.log("board", board)
 		if(card == null) {
 			const progressedCharacters = this.markDeckEmpty(Party.PARTY_ACTION_ADVENTURE, characters)
 		
+			
 			return {
 				progressedBoard: board,
 				progressedCharacters,
 				progressedChests: chests,
-				progressedMoves: moves,
+				progressedMoves: [
+					...moves,
+					Move.other("The party could not find an adventure here")
+				],
 			}
 		}
 
@@ -363,7 +367,10 @@ console.log("board", board)
 				progressedBoard: board,
 				progressedCharacters,
 				progressedChests: chests,
-				progressedMoves: moves,
+				progressedMoves: [
+					...moves,
+					Move.other("The party could not find any place to rest here")
+				],
 			}
 		}
 
@@ -384,7 +391,10 @@ console.log("board", board)
 				progressedBoard: board,
 				progressedCharacters,
 				progressedChests: chests,
-				progressedMoves: moves,
+				progressedMoves: [
+					...moves,
+					Move.other("The party could not find any vendors here")
+				],
 			}
 		}
 		

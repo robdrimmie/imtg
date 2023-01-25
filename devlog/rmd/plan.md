@@ -4908,10 +4908,17 @@ Could increase capacity score when full also.
 			this.knowledge.emptyDecks.vending = true
 		}
 	}
-  ```
+```
 
-  super differentiated if statements there my friend!
+super differentiated if statements there my friend!
 
-  2116 yay that was it! so do I need to treat distance as a score? I think I should, I think it is perhaps good like this. I have no idea if the curve makes any sense but I like it. 
+2116 yay that was it! so do I need to treat distance as a score? I think I should, I think it is perhaps good like this. I have no idea if the curve makes any sense but I like it. 
 
-  
+2121 some next things to do:
+- add Moves note when a deck is empty
+- sometime at like turn 15 or so error is logged:
+```
+Uncaught TypeError: charactersWithCapacity[characterIndex] is undefined
+    run Encounter.js:147
+```
+
