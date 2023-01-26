@@ -4922,3 +4922,20 @@ Uncaught TypeError: charactersWithCapacity[characterIndex] is undefined
     run Encounter.js:147
 ```
 
+2130 empty deck moves note added. That structure is pretty gross but it isn't terribly heavy yet so I'm going to leave it for now.
+
+2139 might be done for the night. I'm getting close to another stable release point though and that's exciting. 
+
+I want to start talking about this more on mastadon, too.
+
+20230125 2050 I did anothehr full post ramble on mastadon. starting to build up a background of information about it and where it is in terms of development status and what it is going to be and such. I'm trying so far to keep the story accurate to the present though sometimes it is probably getting smudged.
+
+2051 so the error character with capacity error. it just needs to destroy the item. "the party had no space to store the item"
+
+I'm not sure if there's even a log statement about acquiring items after encounters right now.
+
+2103 the game now runs on autoplay to turn 2000 and then starts erroring. It might be throwing other errors along the way. 
+
+The logger array is a little absurd. It's like 12000 lines? I need to work on that a lot. Levels and stuff.
+
+More important, the next step is going to be impmlementing character defeat. 

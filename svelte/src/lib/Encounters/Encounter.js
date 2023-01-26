@@ -123,7 +123,7 @@ export default class Encounter {
 					})
 
 					// allocate items
-					while(lootItems.length > 0) {
+					while(lootItems.length > 0 && charactersWithCapacity.length > 0) {
 						// pick a piece of loot
 						const lootIndex = Dice.roll(lootItems.length - 1)
 						const item = lootItems.splice(lootIndex, 1)[0]
@@ -132,6 +132,7 @@ export default class Encounter {
 						const characterIndex = Dice.roll(charactersWithCapacity.length - 1)
 						
 						// add piece of loot to picked character's backpack
+						console.log("ci, cwc", characterIndex, charactersWithCapacity)
 						charactersWithCapacity[characterIndex].backpack().contain(item)
 
 						// ensure only those with capacity remain eligible

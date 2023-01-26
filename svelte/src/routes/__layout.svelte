@@ -114,7 +114,7 @@
 			// autopilot setting here
 			// CHANGE THIS VALUE TO AUTOPLAY
 			// > adventure decks are much to large to autoplay, chest fills up
-			const autoplayToTurn = 0;
+			const autoplayToTurn = 2000;
 
 			Logger.info(`auto playing to turn ${autoplayToTurn}...`)
 			while (turn < autoplayToTurn) {

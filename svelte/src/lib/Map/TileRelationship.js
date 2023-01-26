@@ -100,7 +100,7 @@ export default class TileRelationship {
 		
 		// Calculate how valuable this tile is for each action type
 		const knowledge = this.tile.getKnowledgeForLevel(this.knowledgeLevel)
-console.log("retrieved knowledge for tile", knowledge, this.tile.id)
+
 		this.values.adventuring = this.calculateAdventuringValue(knowledge)
 		this.values.resting = this.calculateRestingValue(knowledge)
 		this.values.vending = this.calculateVendingValue(knowledge)
