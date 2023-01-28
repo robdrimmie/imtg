@@ -73,6 +73,8 @@ export default class TileRelationship {
 		}
 
 		// rmd todo revisit how a tile relationship's thresholds are set
+		// Starting with the character's attribute score so they can go in
+		// they'll get deterred if they get beaten
 		const personalityThreshold = (tile.region.personality === null)
 			? character.getPersonalityAverage()
 			: character.getAttribute(tile.region.personality).apparent
@@ -110,7 +112,6 @@ export default class TileRelationship {
 
 	// #region Encounter results
 	defeat() {
-
 		this.attributes.personalityThreshold += 5
 		this.attributes.physicalityThreshold += 5
 	}

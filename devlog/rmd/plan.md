@@ -4939,3 +4939,16 @@ I'm not sure if there's even a log statement about acquiring items after encount
 The logger array is a little absurd. It's like 12000 lines? I need to work on that a lot. Levels and stuff.
 
 More important, the next step is going to be impmlementing character defeat. 
+
+20230126 2052 Implementing character defeat. There's a console.error statement about that somewhere.
+
+2053 oh there's a bit implemented. Probably just stubs?
+
+2055 nope it even increases the thresholds. 
+
+20230127 2008 I've created a repo at codeberg for this project: https://codeberg.org/rmd/imtg
+
+that will be the canonical home eventually. I am trying to make good ethical choices for this project. Not in a terribly rigourous way but as I discover things I try to make better choices. I think that Microsoft right now is the least odious of the big ones but like a lot of the Internet I'm learning a lot more about the Fediverse and that's the Internet I _like_ like. 
+
+2010 I haven't been entirely blind to it over the years but I haven't been trying real hard, either. It's part of the reason I began exploring svelte. I learned about codeberg recently and it is more in line with this lightly enforced not-criteria and so that is where this work belongs.
+
